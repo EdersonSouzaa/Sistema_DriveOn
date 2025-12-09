@@ -1,0 +1,669 @@
+/* Frontend Stylesheet */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff; 
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Container: Mantido para manter a largura máxima customizada */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  background: transparent !important;
+}
+
+/* --- HEADER --- */
+.header {
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000; 
+}
+
+.header-content {
+  /* Não precisa de regras aqui, as classes do Bootstrap cuidam disso */
+}
+
+/* Logo */
+.logo-box {
+  width: 45px;
+  height: 45px;
+  background-color: #1E63F7;
+  border-radius: 12px;
+}
+
+.logo-text {
+  color: #2F6FF7;
+  font-weight: 700;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.nav {
+  gap: 2rem; /* Mantido para o espaçamento entre links */
+}
+
+.nav-link {
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #2F6FF7;
+}
+
+/* Auth Buttons */
+.btn-login,
+.btn-signup {
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  font-size: 0.95rem;
+}
+
+.btn-login {
+  color: #000;
+  background-color: transparent;
+}
+
+.btn-login:hover {
+  background-color: #f0f6ff;
+}
+
+.btn-signup {
+  background-color: #2F6FF7 !important; 
+  color: #fff !important;
+  margin-left: 1rem;
+}
+
+.btn-signup:hover {
+  background-color: #1E63F7 !important;
+  box-shadow: 0 4px 12px rgba(31, 99, 247, 0.3);
+}
+
+/* Ajuste de border-radius para o botão de signup */
+.btn-signup.text-white.text-decoration-none.px-3.py-2.ms-2 {
+  border-radius: 12px;
+}
+
+/* Menu Button (Mobile) */
+.menu-button {
+  display: none;
+  flex-direction: column;
+  background: none;
+  border: none;
+  cursor: pointer;
+  gap: 6px;
+}
+
+.menu-button span {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  border-radius: 2px;
+  transition: transform 0.28s cubic-bezier(.2,.8,.2,1), opacity 0.2s ease;
+  display: block;
+  transform-origin: center;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+  .header-content { position: relative; }
+  .menu-button { display: flex; }
+  
+  .menu-button.menu-open span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+
+  .menu-button.menu-open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .menu-button.menu-open span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+}
+
+main {
+  padding: 2rem 0;
+}
+
+/* --- HERO SECTION --- */
+.hero {
+  padding: 100px 20px;
+  min-height: 550px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.hero-content {
+  max-width: 850px;
+  width: 100%;
+  background: transparent !important;
+}
+
+.hero-badge {
+  background: #a9d0ff;
+  color: #0b1e78;
+  padding: 0.8rem 2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  /* Removido position: relative; bottom: 70px; */
+  /* Use mb-4 no HTML para controlar o espaçamento */
+}
+
+.hero-check {
+  background-color: #0044ff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.hero-title {
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1.1;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  /* REMOVIDO: white-space: nowrap !important; -> para permitir que o texto quebre */
+  width: 100%;
+  /* Removido position: relative; bottom: 50px; */
+  /* Use mb-3 no HTML para controlar o espaçamento */
+}
+
+.hero-title span {
+  color: #1E63F7;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: #17191b;
+  line-height: 1.5;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  /* Removido position: relative; bottom: 30px; */
+  /* Use mb-4 no HTML para controlar o espaçamento */
+}
+
+.hero-button {
+  background: #1E63F7 !important; 
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 18px;
+  box-shadow: 0 12px 30px rgba(30,99,247,0.18);
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+.hero-button:hover {
+  background-color: #155bd6 !important;
+}
+
+/* Mobile hero */
+@media (max-width: 768px) {
+  .hero-title { 
+    font-size: 40px; 
+    white-space: normal; /* Garante que o título quebre em telas menores */
+  }
+  .hero-subtitle { font-size: 18px; }
+  .hero { padding: 60px 16px; min-height: auto; }
+}
+
+/* --- SEÇÃO DE ESTATÍSTICAS --- */
+.stats-section {
+  width: 100%;
+  padding: 60px 0;
+  border-top: 1px solid #b4b0b0;
+  background-color: #fff; 
+  /* A classe d-flex justify-content-center no HTML já centraliza */
+}
+
+/* stats-grid é uma classe customizada no seu HTML */
+.stats-grid {
+  /* No HTML, você já tem 'row justify-content-center g-4 stats-grid'
+     Isso deve ser suficiente para responsividade.
+     Se houver um problema, é porque 'stats-item' tem largura fixa ou flex-basis.
+     Vamos garantir que 'stats-item' respeite as colunas do Bootstrap. */
+}
+
+.stat-item {
+  /* Certifica-se de que cada item se encaixa na coluna definida pelo Bootstrap */
+  /* Removido flex: 1 ou widths fixos que poderiam causar problemas */
+  padding: 10px; /* Adiciona um pouco de padding interno para melhor visual */
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1E63F7;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: #000;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .stat-number {
+    font-size: 1.7rem;
+  }
+  /* Garante que os itens de estatística fiquem em coluna em telas muito pequenas,
+     se o col-6 col-md-4 não estiver funcionando como esperado.
+     Você pode ter adicionado flex-basis diretamente em .stat-item que está causando o problema. */
+  .stats-grid .col-6 { /* Aponta para as colunas do Bootstrap */
+    flex-basis: 100%; /* Força cada item a ocupar a largura total em telas pequenas */
+    max-width: 100%;
+  }
+}
+
+/* --- WHY CHOOSE US SECTION --- */
+.why-choose-us {
+  padding: 80px 0 100px;
+  text-align: center;
+  background-color: #fff;
+}
+
+.wcu-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.wcu-subtitle {
+  font-size: 16px;
+  color: #666;
+  /* Removido position: relative; top: 7px; */
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3rem; /* Adicionado margem para espaçamento */
+}
+
+.wcu-item {
+  background-color: #D9D9D9; 
+}
+
+.wcu-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+/* Estilos de cor para os ícones */
+.wcu-icon-blue {
+  background-color: #145efc; 
+}
+
+.wcu-icon-green {
+  background-color: #37ed5e; 
+}
+
+.wcu-icon-orange {
+  background-color: #f5520c; 
+}
+
+.wcu-icon-purple {
+  background-color: #980ffa; 
+}
+
+.wcu-item-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.wcu-item-description {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+@media (max-width: 500px) {
+  .wcu-title {
+    font-size: 1.8rem;
+  }
+  .wcu-item {
+    padding: 20px; 
+  }
+}
+
+/* --- FLEET EXAMPLES SECTION --- */
+.fleet-examples {
+  padding: 100px 0;
+  text-align: center;
+  background-color: #fff;
+}
+
+.fleet-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.fleet-subtitle {
+  font-size: 1.0rem;
+  color: #3d3b3b;
+  margin-bottom: 3.5rem;
+}
+
+.fleet-card {
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.fleet-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-image-wrapper {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 8px 8px 0 0;
+  background-color: #333; 
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  object-position: center;
+  display: block;
+}
+
+.card-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.badge-green {
+  background-color: #5cb85c !important; 
+}
+
+.badge-blue {
+  background-color: #1E63F7 !important; 
+}
+
+.badge-orange {
+  background-color: #f0ad4e !important; 
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.3rem;
+}
+
+.card-description {
+  font-size: 0.95rem;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.card-price {
+  font-size: 0.95rem;
+  color: #1E63F7;
+  font-weight: 600;
+}
+
+.view-more-link {
+  color: #1E63F7;
+  font-size: 1rem;
+  font-weight: 600;
+  border-bottom: 2px solid #1E63F7; 
+  padding-bottom: 2px;
+  transition: color 0.3s ease;
+}
+
+.view-more-link:hover {
+  color: #155bd6;
+}
+
+/* Responsividade de frota simplificada */
+@media (max-width: 992px) {
+  .fleet-examples {
+    padding: 60px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .fleet-title {
+    font-size: 1.8rem;
+  }
+  .fleet-card {
+    max-width: 100%; 
+  }
+}
+
+
+/* --- HOW IT WORKS SECTION --- */
+.how-it-works {
+  padding: 50px 0; 
+  text-align: center;
+  background-color: #fff; 
+}
+
+.hiw-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.hiw-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 5rem; 
+}
+
+
+.hiw-number {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #1E63F7; 
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 5px 15px rgba(30, 99, 247, 0.3); 
+}
+
+.hiw-step-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.75rem;
+}
+
+.hiw-step-description {
+  font-size: 0.95rem;
+  color: #777;
+  line-height: 1.5;
+}
+
+.hero-badge.badge.rounded-pill.d-inline-flex.align-items-center.mb-4 {
+  position: relative;
+  bottom: 70px;
+}
+
+.hero-title.fw-bolder.mb-3 {
+  position: relative;
+  bottom: 50px;
+}
+
+.hero-subtitle.lead.mb-4.mx-auto {
+  position: relative;
+  bottom: 30px;
+}
+
+.cta-section.py-5.text-center{
+  position: relative;
+  top: 35px;
+}
+
+.view-more-link.d-inline-block.mt-4.text-decoration-none{
+
+  position: relative;
+  top: 20px;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .how-it-works {
+    padding: 60px 0;
+  }
+  .hiw-subtitle {
+    margin-bottom: 3rem;
+  }
+  .hiw-title {
+    font-size: 1.8rem;
+  }
+}
+
+/* --- CTA SECTION --- */
+.cta-section {
+    background-color: #2F6FF7;
+    padding: 80px 0;
+    text-align: center;
+    /* Removido position: relative; top: 40px; */
+    /* Use margin-top no elemento main ou na própria section se precisar */
+}
+
+.cta-question {
+    font-size: 20px;
+    font-weight: 500;
+    color: #ffffff; 
+    /* Removido position: relative; bottom: 10px; */
+}
+
+.cta-subtitle {
+    font-size: 17px;
+    font-weight: 300; /* Ajuste para font-weight: 300; conforme solicitado */
+    color: white;
+}
+
+.cta-buttons {
+    /* Removido position: relative; top: 10px; */
+}
+
+.btn-cta-white,
+.btn-cta-outline {
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-cta-white {
+    background-color: white !important; 
+    color: #2F6FF7 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-cta-white:hover {
+    background-color: #f0f0f0 !important;
+}
+
+.btn-cta-outline {
+    background-color: transparent !important;
+    color: white !important;
+    border: 2px solid white;
+}
+
+.btn-cta-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Responsividade CTA */
+@media (max-width: 600px) {
+    .cta-section {
+        padding: 50px 0;
+    }
+    .cta-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        padding: 0 10px;
+    }
+    .cta-buttons {
+        flex-direction: column;
+        gap: 1rem;
+        width: 80%;
+        max-width: 300px;
+        margin: 0 auto; 
+    }
+    .btn-cta-white,
+    .btn-cta-outline {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+
+/* --- FOOTER --- */
+.footer {
+    background-color: #1a1e26; 
+    padding: 20px 0;
+}
+
+
+.footer-copyright {
+    color: #ffffff; 
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-align: center; 
+    width: 100%; 
+}
+
+/* Responsividade Footer */
+@media (max-width: 480px) {
+    .footer-content {
+        gap: 15px;
+    }
+    .footer-copyright {
+        margin-top: 5px;
+    }
+}

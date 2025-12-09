@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./assets/icon_page.png" type="image/x-icon" />
+    <meta name="description" content="Catálogo de carros disponíveis para locação na DriveOn." />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="stylesheet" href="styles/tela_carros.css" />
+    <script defer src="js/tela_carros.js"></script>
+
+    <title>Tela de Carros • DriveOn</title>
+  </head>
+  <body>
+    <div class="dashboard-layout">
+      <aside class="sidebar_cliente" aria-label="Menu lateral">
+        <div class="logo-group">
+          <div class="container_img">
+            <img src="./assets/icon_page.png" alt="Logo DriveOn" />
+          </div>
+          <p class="text_logo">DriveOn</p>
+        </div>
+
+        <button id="btn-inicio" class="botao_inicios" onclick="window.location.href='tela_usuario.html';">
+          <img src="./assets/icon_home.png" alt="" class="icone_botao" />
+          Início
+        </button>
+
+        <button id="btn-carros" class="botao_inicio" onclick="window.location.href='/carros';">
+          <img src="./assets/icone_cars.png" alt="" class="icone_botao2" />
+          Carros
+        </button>
+
+        <button id="btn-historico" class="botao_inicio2" onclick="window.location.href='tela_historico.html';">
+          <img src="./assets/icone_historico.png" alt="" class="icone_botao3" />
+          Histórico
+        </button>
+
+        <button id="btn-calculadora" class="botao_inicio3" onclick="window.location.href='/calculadora';">
+          <img src="./assets/icone_calculator.png" alt="" class="icone_botao4" />
+          Calculadora
+        </button>
+
+        <button id="btn-perfil" class="botao_inicio4" onclick="window.location.href='/perfil';">
+          <img src="./assets/icone_profile.png" alt="" class="icone_botao5" />
+          Perfil
+        </button>
+
+        <button id="btn-duvidas" class="botao_inicio5" onclick="window.location.href='tela_duvidas.html';">
+          <img src="./assets/icone_duvidas.png" alt="" class="icone_botao6" />
+          Dúvidas
+        </button>
+
+        <button class="botao_deslogar" type="button">Deslogar</button>
+      </aside>
+
+      <main class="main-content">
+        <header class="page-header">
+          <div class="page-header__texts">
+            <p class="eyebrow">Catálogo DriveOn</p>
+            <h1>Carros disponíveis para locação</h1>
+            <p class="subtitle">
+              Escolha o veículo ideal e inicie sua próxima viagem com segurança, conforto e suporte 24h.
+            </p>
+          </div>
+
+          <div class="status-chip" aria-live="polite">
+            <p class="status-chip__label">Disponíveis agora</p>
+            <p class="status-chip__value"><span id="carsCounterValue">0</span> veículos</p>
+          </div>
+        </header>
+
+        <section class="filters-panel" aria-label="Filtros de busca">
+          <div class="input-group input-group--search">
+            <label for="filter-search">Buscar modelo ou categoria</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+              <input
+                type="text"
+                id="filter-search"
+                placeholder="Ex: SUV, Mini Cooper, luxo..."
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="filter-category">Categoria</label>
+            <select id="filter-category">
+              <option value="">Todas</option>
+              <option value="SUV">SUV</option>
+              <option value="Econômico">Econômico</option>
+              <option value="Luxo">Luxo</option>
+              <option value="Offroad">Offroad</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="filter-fuel">Combustível</label>
+            <select id="filter-fuel">
+              <option value="">Todos</option>
+              <option value="Gasolina">Gasolina</option>
+              <option value="Híbrido">Híbrido</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="filter-transmission">Câmbio</label>
+            <select id="filter-transmission">
+              <option value="">Todos</option>
+              <option value="Automático">Automático</option>
+              <option value="CVT">CVT</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="filter-price">Valor até</label>
+            <div class="input-wrapper input-wrapper--suffix">
+              <input type="number" id="filter-price" placeholder="Qualquer" min="50" step="10" />
+              <span class="input-suffix">/ dia</span>
+            </div>
+          </div>
+
+          <button class="btn-reset" type="button" id="clearFilters">
+            <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+            Limpar filtros
+          </button>
+        </section>
+
+        <section class="cards-grid" id="car-list" aria-live="polite"></section>
+
+        <div class="empty-state" id="car-empty-state" hidden>
+          <img src="./assets/question.png" alt="" />
+          <h3>Nenhum carro encontrado</h3>
+          <p>
+            Ajuste os filtros ou veja todos os veículos disponíveis para encontrar o modelo perfeito para você.
+          </p>
+          <button type="button" class="btn-primary" id="emptyReset">Ver todos os carros</button>
+        </div>
+      </main>
+    </div>
+
+    <section class="modal" id="detailsModal" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal__dialog">
+        <button class="modal__close" data-modal-close>&times;</button>
+        <div class="modal__body">
+          <p class="eyebrow">Detalhes do veículo</p>
+          <h2 id="detailsTitle"></h2>
+          <p id="detailsDescription" class="modal__description"></p>
+          <ul class="details-list">
+            <li>
+              <span>Categoria</span>
+              <strong id="detailsCategory"></strong>
+            </li>
+            <li>
+              <span>Combustível</span>
+              <strong id="detailsFuel"></strong>
+            </li>
+            <li>
+              <span>Câmbio</span>
+              <strong id="detailsTransmission"></strong>
+            </li>
+            <li>
+              <span>Lugares</span>
+              <strong id="detailsSeats"></strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="modal" id="reserveModal" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal__dialog">
+        <button class="modal__close" data-modal-close>&times;</button>
+        <div class="modal__body">
+          <p class="eyebrow">Reservar veículo</p>
+          <h2 id="reserveTitle"></h2>
+          <form id="reserveForm" class="modal-form">
+            <input type="hidden" id="reserveCarId" />
+            <label class="modal-form__field">
+              Nome completo
+              <input type="text" id="reserveName" required placeholder="Digite seu nome" />
+            </label>
+            <div class="modal-form__grid">
+              <label class="modal-form__field">
+                Retirada
+                <input type="date" id="reserveStart" required />
+              </label>
+              <label class="modal-form__field">
+                Devolução
+                <input type="date" id="reserveEnd" required />
+              </label>
+            </div>
+            <button type="submit" class="btn-primary">
+              <i class="fa-solid fa-car-side" aria-hidden="true"></i>
+              Confirmar reserva
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="assertive"></div>
+  </body>
+</html>

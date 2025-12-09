@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./assets/icon_page.png" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/tela_perfil_cliente.css">
+
+    <title>Perfil - DriveOn</title>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+      <aside class="sidebar_cliente" aria-label="Menu lateral">
+        <div class="logo-group">
+          <div class="container_img">
+            <img src="./assets/icon_page.png" alt="Logo DriveOn" />
+          </div>
+          <p class="text_logo">DriveOn</p>
+        </div>
+
+        <button id="btn-inicio" class="botao_inicios" onclick="window.location.href='tela_usuario.html';">
+          <img src="./assets/icon_home.png" alt="" class="icone_botao" />
+          <p class="text_inicio">Início</p>
+        </button>
+
+        <button id="btn-carros" class="botao_inicio2" onclick="window.location.href='/carros';">
+          <img src="./assets/icone_cars.png" alt="" class="icone_botao2" />
+          <p class="text_inicio2">Carros</p>
+        </button>
+
+        <button id="btn-historico" class="botao_inicio3" onclick="window.location.href='tela_historico.html';">
+          <img src="./assets/icone_historico.png" alt="" class="icone_botao3" />
+          <p class="text_inicio3">Histórico</p>
+        </button>
+
+        <button id="btn-calculadora" class="botao_inicio4" onclick="window.location.href='/calculadora';">
+          <img src="./assets/icone_calculator.png" alt="" class="icone_botao4" />
+          <p class="text_inicio4">Calculadora</p>
+        </button>
+
+        <button id="btn-perfil" class="botao_inicio5" type="button">
+          <img src="./assets/icone_profile.png" alt="" class="icone_botao5" />
+          <p class="text_inicio5">Perfil</p>
+        </button>
+
+        <button id="btn-duvidas" class="botao_inicio6" onclick="window.location.href='tela_duvidas.html';">
+          <img src="./assets/icone_duvidas.png" alt="" class="icone_botao6" />
+          <p class="text_inicio6">Dúvidas</p>
+        </button>
+
+        <button class="botao_deslogar" type="button">Deslogar</button>
+      </aside>
+
+    <div class="main-content">
+        <div class="header-saudacao">
+            <h2 class="title-header">Meu Perfil</h2>
+            <p class="subtitle-header">Gerencie suas informações pessoais e dados de conta</p>
+        </div>
+
+        <div class="perfil-container">
+            <div class="perfil-card">
+                <div class="perfil-header">
+                    <div class="icon-box-perfil">
+                        <img src="./assets/icone_profile.png" alt="perfil" width="30px" height="30px">
+                    </div>
+                    <div class="perfil-title-group">
+                        <h3>Informações Pessoais</h3>
+                        <p>Atualize seus dados quando necessário</p>
+                    </div>
+                </div>
+
+                <form id="perfil-form" class="perfil-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome">Nome Completo</label>
+                            <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" name="email" placeholder="seu@email.com" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telefone">Telefone</label>
+                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cpf">CPF</label>
+                            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" maxlength="14">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cnh">CNH</label>
+                            <input type="text" id="cnh" name="cnh" placeholder="00000000000" maxlength="11">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="data-cadastro">Data de Cadastro</label>
+                            <input type="text" id="data-cadastro" name="data-cadastro" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancelar" onclick="cancelarEdicao()">Cancelar</button>
+                        <button type="submit" class="btn-salvar">Salvar Alterações</button>
+                    </div>
+                </form>
+
+                <div id="mensagem-sucesso" class="mensagem-sucesso" style="display: none;">
+                    <p>✓ Perfil atualizado com sucesso!</p>
+                </div>
+            </div>
+
+            <div class="info-card-perfil">
+                <h4>🔒 Segurança</h4>
+                <ul>
+                    <li>Seus dados estão protegidos e criptografados</li>
+                    <li>O e-mail não pode ser alterado por questões de segurança</li>
+                    <li>Mantenha seus dados atualizados para facilitar as locações</li>
+                    <li>Em caso de dúvidas, entre em contato com o suporte</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        let dadosOriginais = {};
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Logout functionality
+            document.querySelector('.botao_deslogar').addEventListener('click', () => {
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userEmail');
+                window.location.href = 'login.html';
+            });
+
+            // Carregar dados do perfil
+            carregarPerfil();
+
+            // Form submission
+            const form = document.getElementById('perfil-form');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                salvarPerfil();
+            });
+
+            // Máscaras de input
+            document.getElementById('telefone').addEventListener('input', aplicarMascaraTelefone);
+            document.getElementById('cpf').addEventListener('input', aplicarMascaraCPF);
+        });
+
+        async function carregarPerfil() {
+            const userEmail = localStorage.getItem('userEmail');
+            
+            if (!userEmail) {
+                // Tentar obter do localStorage ou redirecionar para login
+                alert('Por favor, faça login novamente.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/user/profile?email=${encodeURIComponent(userEmail)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar perfil');
+                }
+
+                const dados = await response.json();
+                dadosOriginais = { ...dados };
+
+                // Preencher formulário
+                document.getElementById('nome').value = dados.nome || '';
+                document.getElementById('email').value = dados.email || '';
+                document.getElementById('telefone').value = dados.telefone || '';
+                document.getElementById('cpf').value = dados.cpf || '';
+                document.getElementById('cnh').value = dados.cnh || '';
+                
+                if (dados.criado_em) {
+                    const data = new Date(dados.criado_em);
+                    document.getElementById('data-cadastro').value = data.toLocaleDateString('pt-BR');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar perfil:', error);
+                alert('Erro ao carregar dados do perfil. Tente novamente.');
+            }
+        }
+
+        async function salvarPerfil() {
+            const userEmail = localStorage.getItem('userEmail');
+            
+            if (!userEmail) {
+                alert('Por favor, faça login novamente.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const dados = {
+                email: userEmail,
+                nome: document.getElementById('nome').value,
+                telefone: document.getElementById('telefone').value,
+                cpf: document.getElementById('cpf').value.replace(/\D/g, ''),
+                cnh: document.getElementById('cnh').value
+            };
+
+            try {
+                const response = await fetch('/api/user/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dados)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Erro ao salvar perfil');
+                }
+
+                // Mostrar mensagem de sucesso
+                document.getElementById('mensagem-sucesso').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('mensagem-sucesso').style.display = 'none';
+                }, 3000);
+
+                // Atualizar dados originais
+                dadosOriginais = { ...dadosOriginais, ...dados };
+            } catch (error) {
+                console.error('Erro ao salvar perfil:', error);
+                alert('Erro ao salvar perfil: ' + error.message);
+            }
+        }
+
+        function cancelarEdicao() {
+            // Restaurar valores originais
+            document.getElementById('nome').value = dadosOriginais.nome || '';
+            document.getElementById('telefone').value = dadosOriginais.telefone || '';
+            document.getElementById('cpf').value = dadosOriginais.cpf || '';
+            document.getElementById('cnh').value = dadosOriginais.cnh || '';
+        }
+
+        function aplicarMascaraTelefone(e) {
+            let valor = e.target.value.replace(/\D/g, '');
+            if (valor.length <= 10) {
+                valor = valor.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+            } else {
+                valor = valor.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+            }
+            e.target.value = valor;
+        }
+
+        function aplicarMascaraCPF(e) {
+            let valor = e.target.value.replace(/\D/g, '');
+            valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+            valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+            valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = valor;
+        }
+
+        // On page load, set active sidebar button background color
+        window.addEventListener('DOMContentLoaded', () => {
+            const btnPerfil = document.getElementById('btn-perfil');
+            if (btnPerfil) {
+                btnPerfil.classList.add('active');
+            }
+        });
+    </script>
+    <style>
+        .active {
+            background-color: #1655f5 !important;
+        }
+    </style>
+</body>
+</html>
+

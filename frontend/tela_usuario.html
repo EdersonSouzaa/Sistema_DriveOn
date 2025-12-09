@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./assets/icon_page.png" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/tela_cliente.css">
+
+    <title>Dashboard - usuário</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userName = localStorage.getItem('userName');
+            if (userName) {
+                document.getElementById('userGreeting').textContent = `Olá, ${userName}`;
+            } else {
+                // Fallback if no userName, perhaps redirect to login
+                window.location.href = 'login.html';
+            }
+
+            // Logout functionality
+            document.querySelector('.botao_deslogar').addEventListener('click', () => {
+                localStorage.removeItem('userName');
+                window.location.href = 'login.html';
+            });
+
+            // Ver Carros card click functionality
+            const verCarrosCard = document.getElementById('ver-carros-card');
+            verCarrosCard.addEventListener('click', () => {
+                verCarrosCard.classList.toggle('clicked');
+                // Add additional functionality here if needed, e.g., redirect or show content
+            });
+    });
+  </script>
+  <script>
+    // On page load, set active sidebar button background color
+    window.addEventListener('DOMContentLoaded', () => {
+        const btnInicio = document.getElementById('btn-inicio');
+        if (btnInicio) {
+            btnInicio.classList.add('active');
+        }
+    });
+  </script>
+  <style>
+    .active {
+        background-color: #1655f5 !important;
+    }
+  </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+      <aside class="sidebar_cliente" aria-label="Menu lateral">
+        <div class="logo-group">
+          <div class="container_img">
+            <img src="./assets/icon_page.png" alt="Logo DriveOn" />
+          </div>
+          <p class="text_logo">DriveOn</p>
+        </div>
+
+        <button id="btn-inicio" class="botao_inicios" onclick="window.location.href='tela_usuario.html';">
+          <img src="./assets/icon_home.png" alt="" class="icone_botao" />
+          <p class="text_inicio">Início</p>
+        </button>
+
+        <button id="btn-carros" class="botao_inicio2" onclick="window.location.href='/carros';">
+          <img src="./assets/icone_cars.png" alt="" class="icone_botao2" />
+          <p class="text_inicio2">Carros</p>
+        </button>
+
+        <button id="btn-historico" class="botao_inicio3" onclick="window.location.href='tela_historico.html';">
+          <img src="./assets/icone_historico.png" alt="" class="icone_botao3" />
+          <p class="text_inicio3">Histórico</p>
+        </button>
+
+        <button id="btn-calculadora" class="botao_inicio4" onclick="window.location.href='/calculadora';">
+          <img src="./assets/icone_calculator.png" alt="" class="icone_botao4" />
+          <p class="text_inicio4">Calculadora</p>
+        </button>
+
+        <button id="btn-perfil" class="botao_inicio5" onclick="window.location.href='/perfil';">
+          <img src="./assets/icone_profile.png" alt="" class="icone_botao5" />
+          <p class="text_inicio5">Perfil</p>
+        </button>
+
+        <button id="btn-duvidas" class="botao_inicio6" onclick="window.location.href='tela_duvidas.html';">
+          <img src="./assets/icone_duvidas.png" alt="" class="icone_botao6" />
+          <p class="text_inicio6">Dúvidas</p>
+        </button>
+
+        <button class="botao_deslogar" type="button">Deslogar</button>
+      </aside>
+
+    <div class="main-content">
+
+            <div class="header-saudacao">
+                <h2 class="title-header" id="userGreeting">Olá, Carlos Paulo teste</h2>
+                <p class="subtitle-header">Bem vindo ao sistema de locação de veículos</p>
+            </div>
+
+  <div class="card-progresso">
+    <div class="progresso-header">
+        <div class="icon-box">
+            <img src="./assets/icon_star.png" alt="star" class="icone_estrela">
+        </div>
+
+        <div class="textos">
+            <h3>Pontuação de progresso</h3>
+            <p class="subtitle-progresso">Atinga 100% de uso para garantir mais ofertas</p>
+        </div>
+    </div>
+
+    <div class="barra-container">
+        <div class="linha"></div>
+
+        <div class="ponto"></div>
+        <div class="ponto2"></div>
+        <div class="ponto3"></div>
+    </div>
+</div>
+
+
+            <div class="cards-metricas-grid">
+                
+               <div class="card-metrica">
+                     <span class="icon-metrica icon-laranja">
+                            <img src="./assets/calendar.png" alt="calendario" width="30px" height="30px">
+                     </span>
+                   <div class="info-metrica">
+                       <p class="metrica-titulo">Locações Ativas</p>
+                       <p class="metrica-valor">0</p>
+                   </div>
+               </div>
+                
+               <div class="card-metrica">
+                     <span class="icon-metrica2 icon-azul">
+                            <img src="./assets/car2.png" alt="calendario" width="35px" height="35px">
+                     </span>
+                   <div class="info-metrica">
+                       <p class="metrica-titulo">Carros Disponíveis</p>
+                       <p class="metrica-valor">0</p>
+                   </div>
+               </div>
+
+                <div class="card-metrica">
+                     <span class="icon-metrica3 icon-verde">
+                            <img src="./assets/dollar.png" alt="calendario" width="30px" height="30px">
+                     </span>
+                   <div class="info-metrica">
+                       <p class="metrica-titulo">Total Gasto</p>
+                       <p class="metrica-valor">0</p>
+                   </div>
+               </div>
+               
+                
+            </div>
+
+            <div class="cards-acao-grid">
+
+                <div class="card-metrica" id="ver-carros-card">
+                     <span class="icon-metrica4 icon-azul-escuro">
+                            <img src="./assets/car3.png" alt="calendario" width="35px" height="35px">
+                     </span>
+                   <div class="info-metrica2">
+                       <p class="metrica-titulo2">Ver Carros</p>
+                       <p class="metrica-valor2">confira nossos veículos Disponíveis<p>
+                   </div>
+               </div>
+
+                 <div class="card-metrica">
+                     <span class="icon-metrica5 icon-roxa">
+                            <img src="./assets/calculator2.png" alt="calendario" width="30px" height="30px">
+                     </span>
+                   <div class="info-metrica">
+                       <p class="metrica-titulo">Calculadora</p>
+                       <p class="metrica-valor">estime o valor da sua locação</p>
+                   </div>
+               </div>
+
+                <div class="card-metrica">
+                     <span class="icon-metrica6 icon-cinza">
+                            <img src="./assets/question.png" alt="calendario" width="35px" height="35px">
+                     </span>
+                   <div class="info-metrica">
+                       <p class="metrica-titulo">Dúvidas?</p>
+                       <p class="metrica-valor">consulte nossas perguntas frequentes</p>
+                   </div>
+               </div>
+            </div>
+
+        </div> 
+    </div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+/* Importando Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+/* Reset geral */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif !important;
+}
+
+html, body {
+    height: 100%;
+    overflow-y: hidden; /* sem scroll */
+}
+
+body {
+    background: #e6e7eb;
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
+}
+
+/* CONTAINER CENTRAL */
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* VOLTAR AO INÍCIO (botão estilo login) */
+.voltar {
+    position: absolute;
+    top: -1px;
+    left: -10px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    background: #0859fd;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+
+    transition: 0.25s;
+    box-shadow: 0px 4px 12px rgba(8, 89, 253, 0.25);
+    height: 40px;
+}
+
+.voltar:hover {
+    background: #004de0;
+}
+
+/* CARD ESTILIZADO */
+.card {
+    width: 860px;
+    background: #fff;
+    padding: 40px 55px;
+    border-radius: 20px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+    animation: fadeIn 0.35s ease;
+    text-align: center;
+}
+
+/* TÍTULOS */
+h2 {
+    font-size: 26px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #111;
+}
+
+.sub {
+    font-size: 14px;
+    color: #545454;
+    margin-bottom: 30px;
+}
+
+/* ROWS DO FORM */
+.row {
+    width: 100%;
+    display: flex;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.field {
+    flex: 1;
+    text-align: left;
+}
+
+.full {
+    flex: 100%;
+}
+
+/* LABELS */
+label {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #333;
+    display: block;
+}
+
+/* CAMPOS (inputs e selects) */
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d1d1;
+    border-radius: 10px;
+    outline: none;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+/* Efeito de foco igual ao login */
+input:focus, select:focus {
+    border-color: #0859fd;
+    box-shadow: 0 0 0 3px rgba(8, 89, 253, 0.18);
+}
+
+/* BOTÃO */
+.btn {
+    width: 60%;
+    padding: 13px 0;
+    background: #0859fd;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 35px auto 10px;
+    cursor: pointer;
+    transition: 0.25s;
+    display: block;
+    position: relative;
+    bottom: 10px;
+}
+
+.btn:hover {
+    background: #004de0;
+}
+
+/* TEXTO DE LOGIN */
+.login-text {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.login-text a {
+    text-decoration: none;
+    color: #0859fd;
+    font-weight: 500;
+}
+
+/* ANIMAÇÃO DO CARD */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./assets/icon_page.png" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/tela_calculadora.css">
+
+    <title>Calculadora - DriveOn</title>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+      <aside class="sidebar_cliente" aria-label="Menu lateral">
+        <div class="logo-group">
+          <div class="container_img">
+            <img src="./assets/icon_page.png" alt="Logo DriveOn" />
+          </div>
+          <p class="text_logo">DriveOn</p>
+        </div>
+
+        <button id="btn-inicio" class="botao_inicios" onclick="window.location.href='tela_usuario.html';">
+          <img src="./assets/icon_home.png" alt="" class="icone_botao" />
+          <p class="text_inicio">Início</p>
+        </button>
+
+        <button id="btn-carros" class="botao_inicio2" onclick="window.location.href='/carros';">
+          <img src="./assets/icone_cars.png" alt="" class="icone_botao2" />
+          <p class="text_inicio2">Carros</p>
+        </button>
+
+        <button id="btn-historico" class="botao_inicio3" onclick="window.location.href='tela_historico.html';">
+          <img src="./assets/icone_historico.png" alt="" class="icone_botao3" />
+          <p class="text_inicio3">Histórico</p>
+        </button>
+
+        <button id="btn-calculadora" class="botao_inicio4" type="button">
+          <img src="./assets/icone_calculator.png" alt="" class="icone_botao4" />
+          <p class="text_inicio4">Calculadora</p>
+        </button>
+
+        <button id="btn-perfil" class="botao_inicio5" onclick="window.location.href='/perfil';">
+          <img src="./assets/icone_profile.png" alt="" class="icone_botao5" />
+          <p class="text_inicio5">Perfil</p>
+        </button>
+
+        <button id="btn-duvidas" class="botao_inicio6" onclick="window.location.href='tela_duvidas.html';">
+          <img src="./assets/icone_duvidas.png" alt="" class="icone_botao6" />
+          <p class="text_inicio6">Dúvidas</p>
+        </button>
+
+        <button class="botao_deslogar" type="button">Deslogar</button>
+      </aside>
+
+    <div class="main-content">
+        <div class="header-saudacao">
+            <h2 class="title-header">Calculadora de Locação</h2>
+            <p class="subtitle-header">Estime o valor da sua locação de forma rápida e fácil</p>
+        </div>
+
+        <div class="calculadora-container">
+            <div class="calculadora-card">
+                <div class="calculadora-header">
+                    <div class="icon-box-calc">
+                        <img src="./assets/calculator2.png" alt="calculadora" width="30px" height="30px">
+                    </div>
+                    <div class="calculadora-title-group">
+                        <h3>Calcule o valor da locação</h3>
+                        <p>Preencha os campos abaixo para estimar o custo total</p>
+                    </div>
+                </div>
+
+                <form id="calculadora-form" class="calculadora-form">
+                    <div class="form-group">
+                        <label for="preco-diaria">Preço da Diária (R$)</label>
+                        <input type="number" id="preco-diaria" name="preco-diaria" placeholder="Ex: 250.00" min="0" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numero-dias">Número de Dias</label>
+                        <input type="number" id="numero-dias" name="numero-dias" placeholder="Ex: 5" min="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="desconto">Desconto (%) <span class="optional">(opcional)</span></label>
+                        <input type="number" id="desconto" name="desconto" placeholder="Ex: 10" min="0" max="100" step="0.01" value="0">
+                    </div>
+
+                    <button type="submit" class="btn-calcular">Calcular</button>
+                </form>
+
+                <div id="resultado-container" class="resultado-container" style="display: none;">
+                    <div class="resultado-header">
+                        <h4>Resultado do Cálculo</h4>
+                    </div>
+                    <div class="resultado-content">
+                        <div class="resultado-item">
+                            <span class="resultado-label">Subtotal:</span>
+                            <span class="resultado-value" id="subtotal">R$ 0,00</span>
+                        </div>
+                        <div class="resultado-item" id="desconto-item" style="display: none;">
+                            <span class="resultado-label">Desconto:</span>
+                            <span class="resultado-value desconto-value" id="valor-desconto">R$ 0,00</span>
+                        </div>
+                        <div class="resultado-item resultado-total">
+                            <span class="resultado-label">Total:</span>
+                            <span class="resultado-value total-value" id="total">R$ 0,00</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-limpar" onclick="limparCalculadora()">Limpar</button>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h4>💡 Dicas</h4>
+                <ul>
+                    <li>O cálculo é baseado no preço da diária multiplicado pelo número de dias</li>
+                    <li>Descontos podem ser aplicados para locações de longa duração</li>
+                    <li>Valores são estimados e podem variar conforme disponibilidade</li>
+                    <li>Consulte nossos carros disponíveis para ver os preços atualizados</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Logout functionality
+            document.querySelector('.botao_deslogar').addEventListener('click', () => {
+                localStorage.removeItem('userName');
+                window.location.href = 'login.html';
+            });
+
+            // Form submission
+            const form = document.getElementById('calculadora-form');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                calcularLocacao();
+            });
+        });
+
+        function calcularLocacao() {
+            const precoDiaria = parseFloat(document.getElementById('preco-diaria').value) || 0;
+            const numeroDias = parseInt(document.getElementById('numero-dias').value) || 0;
+            const desconto = parseFloat(document.getElementById('desconto').value) || 0;
+
+            if (precoDiaria <= 0 || numeroDias <= 0) {
+                alert('Por favor, preencha todos os campos obrigatórios com valores válidos.');
+                return;
+            }
+
+            const subtotal = precoDiaria * numeroDias;
+            const valorDesconto = (subtotal * desconto) / 100;
+            const total = subtotal - valorDesconto;
+
+            // Exibir resultados
+            document.getElementById('subtotal').textContent = formatarMoeda(subtotal);
+            document.getElementById('valor-desconto').textContent = formatarMoeda(valorDesconto);
+            document.getElementById('total').textContent = formatarMoeda(total);
+
+            // Mostrar item de desconto se houver
+            if (desconto > 0) {
+                document.getElementById('desconto-item').style.display = 'flex';
+            } else {
+                document.getElementById('desconto-item').style.display = 'none';
+            }
+
+            document.getElementById('resultado-container').style.display = 'block';
+        }
+
+        function formatarMoeda(valor) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(valor);
+        }
+
+        function limparCalculadora() {
+            document.getElementById('calculadora-form').reset();
+            document.getElementById('resultado-container').style.display = 'none';
+            document.getElementById('desconto').value = 0;
+        }
+
+        // On page load, set active sidebar button background color
+        window.addEventListener('DOMContentLoaded', () => {
+            const btnCalculadora = document.getElementById('btn-calculadora');
+            if (btnCalculadora) {
+                btnCalculadora.classList.add('active');
+            }
+        });
+    </script>
+    <style>
+        .active {
+            background-color: #1655f5 !important;
+        }
+    </style>
+</body>
+</html>
+

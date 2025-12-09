@@ -1,0 +1,17 @@
+{
+  "name": "driveon-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for DriveOn application",
+  "main": "home.html",
+  "scripts": {
+    "dev": "live-server --port=3000 --entry-file=home.html --open=home.html",
+    "start": "live-server --port=3000 --entry-file=home.html --open=home.html"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "keywords": ["driveon", "frontend", "html", "css", "javascript"],
+  "author": "",
+  "license": "ISC"
+}
