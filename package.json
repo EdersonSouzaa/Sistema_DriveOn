@@ -1,0 +1,11 @@
+{
+  "name": "driveon",
+  "private": true,
+  "scripts": {
+    "start": "node start.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "serve": "^14.2.0"
+  }
+}

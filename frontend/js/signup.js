@@ -1,228 +1,193 @@
-// --- Funções de Manipulação de Modal ---
+// ================= MODAIS =================
 
-// Variável global para armazenar o evento de submissão
 let storedSubmitEvent = null;
 
 function showModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
+    const modalElement = document.getElementById(modalId);
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
 }
 
 function closeModal() {
-    document.getElementById('incompleteDataModal').style.display = 'none';
+    const modalElement = document.getElementById('incompleteDataModal');
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    if (modal) modal.hide();
 }
 
 function closeDuplicateModal() {
-    document.getElementById('duplicateRegistrationModal').style.display = 'none';
+    const modalElement = document.getElementById('duplicateRegistrationModal');
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    if (modal) modal.hide();
 }
 
-// Quando o usuário escolhe "Continuar" no modal de dados incompletos, 
-// o código original simplesmente submetia o formulário.
-function proceedWithIncompleteData() {
-    closeModal();
-    // Re-chama o handleSubmit, mas agora passando o evento original que foi armazenado
-    // e a flag 'forceSubmit' como true.
-    if (storedSubmitEvent) {
-        handleSubmit(storedSubmitEvent, true);
-    }
-}
-
-// --- Funções de Formatação (Adaptadas do React) ---
+// ================= FORMATAÇÃO =================
 
 function restrictToNumbers(event) {
     const input = event.target;
-    let numericValue = input.value.replace(/[^0-9]/g, "");
-    const isCpf = input.name === "cpf";
-    const isTelefone = input.name === "telefone";
+    let value = input.value.replace(/\D/g, "");
 
-    let maxLength = isTelefone ? 11 : (isCpf ? 11 : 11); // Max length 11 for CPF and Telefone
-    if (numericValue.length > maxLength) numericValue = numericValue.substring(0, maxLength);
-
-    if (isCpf) {
-        if (numericValue.length <= 3) input.value = numericValue;
-        else if (numericValue.length <= 6)
-            input.value = `${numericValue.substring(0, 3)}.${numericValue.substring(3)}`;
-        else if (numericValue.length <= 9)
-            input.value = `${numericValue.substring(0, 3)}.${numericValue.substring(3, 6)}.${numericValue.substring(6)}`;
-        else
-            input.value =
-                `${numericValue.substring(0, 3)}.` +
-                `${numericValue.substring(3, 6)}.` +
-                `${numericValue.substring(6, 9)}-` +
-                `${numericValue.substring(9)}`;
-    } else if (isTelefone) {
-        if (numericValue.length <= 2) input.value = "(" + numericValue;
-        else if (numericValue.length <= 7)
-            input.value = `(${numericValue.substring(0, 2)}) ${numericValue.substring(2)}`;
-        else
-            input.value = `(${numericValue.substring(0, 2)}) ${numericValue.substring(2, 7)}-${numericValue.substring(7)}`;
+    if (input.name === "cpf") {
+        value = value.substring(0, 11);
+        input.value = value
+            .replace(/(\d{3})(\d)/, "$1.$2")
+            .replace(/(\d{3})(\d)/, "$1.$2")
+            .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    } else if (input.name === "telefone") {
+        value = value.substring(0, 11);
+        input.value = value
+            .replace(/^(\d{2})(\d)/g, "($1) $2")
+            .replace(/(\d{5})(\d)/, "$1-$2");
     } else {
-        input.value = numericValue;
+        input.value = value;
     }
 }
 
-// --- Funções de Lógica do Formulário (Adaptadas do React) ---
+// ================= SUBMIT =================
 
-async function handleSubmit(e, forceSubmit = false) {
-    // Previne o comportamento padrão do formulário e armazena o evento
-    storedSubmitEvent = e; 
+async function handleSubmit(e) {
     e.preventDefault();
 
-    const form = document.getElementById('registrationForm');
-    //const formData = new FormData(form);
-    const data = {};
-
-    // Inicializa data com valores padrão para garantir que todos os campos da entidade Users estejam presentes
-    // Isso evita problemas de desserialização no backend se um campo estiver ausente no JSON
-    data.nome = document.getElementById('nome_input').value || '';
-    data.email = document.getElementById('email_input').value || '';
-    data.senha = document.getElementById('senha_input').value || '';
     const tipo_usuario = document.getElementById('tipo_usuario').value;
-    data.tipo_usuario = tipo_usuario;
-    data.cpf = document.getElementById('cpf_input').value || '';
-    data.cnh = document.getElementById('cnh_input').value || '';
-    data.telefone = document.getElementById('telefone_input').value || '';
 
-    // Ajusta os campos com base no tipo de usuário
+    const data = {
+        nome: document.getElementById('nome_input').value.trim(),
+        email: document.getElementById('email_input').value.trim(),
+        senha: document.getElementById('senha_input').value.trim(),
+        tipoUsuario: tipo_usuario,
+
+        // CLIENTE
+        cpf: '',
+        cnh: '',
+        telefone: '',
+
+        // ADMIN
+        cargo: '',
+        codigoVerificacao: ''
+    };
+
+    // ================= ADMINISTRADOR =================
     if (tipo_usuario === "Administrador") {
-        const cargoSelect = document.getElementById('cpf_select');
-        data.cpf = cargoSelect.value; // 'cpf' armazena o cargo para Administrador
-        data.cnh = document.getElementById('cnh_input').value || ''; // 'cnh' armazena o código de verificação para Administrador
-        data.telefone = ''; // Administrador não usa telefone
+        data.cargo = document.getElementById('cpf_select').value.trim();
+        data.codigoVerificacao = document.getElementById('cnh_input').value.trim();
     }
 
-    // Lógica de validação do React:
-    const basic = data.nome && data.email && data.senha && data.tipo_usuario;
-    // O campo 'extra' só é obrigatório para Cliente
-    // Para Administrador, 'cpf' (cargo) e 'cnh' (código de verificação) são os campos 'extra'
-    let extra;
+    // ================= CLIENTE =================
     if (tipo_usuario === "Cliente") {
-        extra = data.cpf && data.cnh && data.telefone;
-    } else { // Administrador
-        extra = data.cpf && data.cnh; // Cargo e Código de Verificação são obrigatórios
+        data.cpf = document.getElementById('cpf_input').value.replace(/\D/g, '');
+        data.cnh = document.getElementById('cnh_input').value.replace(/\D/g, '');
+        data.telefone = document.getElementById('telefone_input').value.replace(/\D/g, '');
     }
 
-    // Se a validação falhar e não for uma submissão forçada (ou seja, a primeira tentativa)
-    if (basic && !extra && !forceSubmit) {
-        showModal('incompleteDataModal');
+    console.log("📤 DADOS ENVIADOS:", data);
+
+    // ================= VALIDAÇÃO =================
+    if (!data.nome || !data.email || !data.senha || !data.tipoUsuario) {
+        alert("Preencha os campos obrigatórios.");
         return;
     }
 
-    // Removendo a formatação para o envio (importante para o servidor)
-    const dataToSend = {};
-    // Mapeia os dados do formulário para o formato esperado pela entidade Java (camelCase)
-    Object.assign(dataToSend, data);
-    dataToSend.tipoUsuario = data.tipo_usuario; // Renomeia 'tipo_usuario' para 'tipoUsuario'
-    delete dataToSend.tipo_usuario; // Remove a chave antiga
-
-    if (tipo_usuario === "Administrador") {
-        // Para Admin, o 'cpf' é o cargo (texto) e não precisa de limpeza.
-        // Telefone é vazio e CNH é o código de verificação.
-        dataToSend.cpf = data.cpf; // O valor já está correto
-    } else { // Cliente
-        // A limpeza só é necessária para Cliente, que usa os campos formatados.
-        dataToSend.cpf = data.cpf ? data.cpf.replace(/\D/g, "") : ""; // Remove formatação do CPF
-        dataToSend.telefone = data.telefone ? data.telefone.replace(/\D/g, "") : ""; // Remove formatação do Telefone
-        dataToSend.cnh = data.cnh ? data.cnh.replace(/\D/g, "") : ""; // Remove formatação da CNH
+    if (tipo_usuario === "Cliente") {
+        if (!data.cpf || !data.cnh || !data.telefone) {
+            showModal('incompleteDataModal');
+            return;
+        }
     }
 
+    if (tipo_usuario === "Administrador") {
+        if (!data.cargo || !data.codigoVerificacao) {
+            showModal('incompleteDataModal');
+            return;
+        }
+    }
+
+    // ================= FETCH =================
     try {
-            const response = await fetch("http://localhost:8080/signup", {
+        const response = await fetch("http://localhost:3001/api/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(dataToSend)
+            body: JSON.stringify(data)
         });
 
-        if (response.ok) {
-            // Sucesso: Redireciona para a página de sucesso
-            window.location.href = "/sucesso";
-        } else {
-            const error = await response.json();
-            if (error.error && error.error.includes("já cadastrado")) {
-                // Erro de Duplicidade: Mostra o modal de duplicidade
+        const result = await response.json();
+
+        console.log("📥 RESPOSTA BACKEND:", result);
+
+        if (!response.ok) {
+            const msg = result.error || "Erro no cadastro";
+
+            if (msg.toLowerCase().includes("já")) {
+                document.getElementById('duplicateMessage').textContent = msg;
                 showModal('duplicateRegistrationModal');
-            } else {
-                // Outros Erros de API: Exibe um alerta
-                alert("Erro: " + (error.error || "Erro desconhecido"));
+                return;
             }
+
+            alert(msg);
+            return;
         }
+
+        // ✅ SUCESSO
+        window.location.href = "./success.html";
+
     } catch (err) {
-        // Erro de Rede ou Interno: Exibe um alerta
-        alert("Erro interno. Tente novamente.");
+        console.error("❌ ERRO FRONTEND:", err);
+        alert("Erro ao conectar com o servidor");
     }
 }
 
-// --- Lógica de Interação de UI e Inicialização ---
+
+// ================= UI =================
 
 function updateFormFields(tipoUsuario) {
     const cpfLabel = document.getElementById('cpf_label');
     const cpfInput = document.getElementById('cpf_input');
     const cpfSelect = document.getElementById('cpf_select');
+    const telefoneInput = document.getElementById('telefone_input');
+    const telefoneRow = telefoneInput.closest('.row');
     const cnhLabel = document.getElementById('cnh_label');
-    const telefoneField = document.getElementById('telefone_field');
-    const cnhInput = document.getElementById('cnh_input');
 
     if (tipoUsuario === 'Administrador') {
-        // Campos para Administrador
         cpfLabel.textContent = 'Cargo';
+
         cpfInput.style.display = 'none';
-        cpfInput.removeAttribute('required'); // Remove required do input CPF
+        cpfInput.removeAttribute('required');
+
         cpfSelect.style.display = 'block';
-        cpfSelect.setAttribute('required', 'required'); // Adiciona required ao select
-        
+        cpfSelect.setAttribute('required', 'required');
+
+        telefoneRow.style.display = 'none';
+        telefoneInput.removeAttribute('required');
+
         cnhLabel.textContent = 'Código de Verificação';
-        telefoneField.style.display = 'none';
-        document.getElementById('telefone_input').removeAttribute('required');
-    } else {
-        // Campos para Cliente
+    } 
+    else {
         cpfLabel.textContent = 'CPF';
+
         cpfInput.style.display = 'block';
-        cpfInput.setAttribute('required', 'required'); // Adiciona required de volta
+        cpfInput.setAttribute('required', 'required');
+
         cpfSelect.style.display = 'none';
         cpfSelect.removeAttribute('required');
-        
+
+        telefoneRow.style.display = 'flex';
+        telefoneInput.setAttribute('required', 'required');
+
         cnhLabel.textContent = 'CNH';
-        telefoneField.style.display = 'flex'; // Exibe o campo de telefone
-        document.getElementById('telefone_input').setAttribute('required', 'required');
     }
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('registrationForm');
-    const tipoUsuarioSelect = document.getElementById('tipo_usuario');
-    const cpfInput = document.getElementById('cpf_input');
-    const cnhInput = document.getElementById('cnh_input');
-    const telefoneInput = document.getElementById('telefone_input');
+    document.getElementById('registrationForm')
+        .addEventListener('submit', handleSubmit);
 
-    // 1. Event Listeners para a Submissão do Formulário
-    // Ajuste: Envolvemos a chamada em uma função anônima para garantir que o 'event' seja passado.
-    form.addEventListener('submit', (e) => {
-        handleSubmit(e);
-    });
+    document.getElementById('cpf_input')?.addEventListener('input', restrictToNumbers);
+    document.getElementById('cnh_input')?.addEventListener('input', restrictToNumbers);
+    document.getElementById('telefone_input')?.addEventListener('input', restrictToNumbers);
 
-    // 2. Event Listeners para Formatação (CPF/CNH/Telefone)
-    cpfInput.addEventListener('input', restrictToNumbers);
-    cnhInput.addEventListener('input', restrictToNumbers);
-    telefoneInput.addEventListener('input', restrictToNumbers);
+    const tipo = document.getElementById('tipo_usuario');
+    tipo.addEventListener('change', e => updateFormFields(e.target.value));
+    updateFormFields(tipo.value);
 
-    // 3. Event Listener para mudança de Tipo de Usuário
-    tipoUsuarioSelect.addEventListener('change', (e) => {
-        updateFormFields(e.target.value);
-    });
-
-    // 4. Inicialização do formulário com o valor padrão ('Cliente')
-    updateFormFields(tipoUsuarioSelect.value);
-
-    // Adiciona o listener para fechar o modal clicando no overlay
-    document.getElementById('incompleteDataModal').addEventListener('click', (e) => {
-        if (e.target.id === 'incompleteDataModal') {
-            closeModal();
-        }
-    });
-
-    document.getElementById('duplicateRegistrationModal').addEventListener('click', (e) => {
-        if (e.target.id === 'duplicateRegistrationModal') {
-            closeDuplicateModal();
-        }
-    });
-
+    document.getElementById('closeDuplicate')
+        ?.addEventListener('click', closeDuplicateModal);
 });

@@ -1,57 +1,113 @@
+const bcrypt = require('bcrypt');
 const express = require('express');
 const cors = require('cors');
-const { Sequelize } = require('sequelize');
+const path = require('path');
+const { Sequelize, DataTypes } = require('sequelize');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3001;
 
-// Configuração do MySQL
-const sequelize = new Sequelize({
-  dialect: 'mysql',
-  host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT || 3306,
-  username: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'driveon_db',
-  logging: console.log, // Mostra as queries SQL no console
-  define: {
-    timestamps: true, // Adiciona createdAt e updatedAt automaticamente
-    underscored: true, // Usa snake_case para nomes de colunas
-  },
-});
-
-// Testar conexão com o banco de dados
-async function testConnection() {
-  try {
-    await sequelize.authenticate();
-    console.log('✅ Conexão com MySQL estabelecida com sucesso!');
-    
-    // Sincronizar modelos com o banco de dados
-    // force: false - não recria as tabelas se já existirem
-    // alter: true - atualiza as tabelas existentes se houver mudanças
-    await sequelize.sync({ alter: false });
-    console.log('✅ Sincronização com o banco de dados concluída!');
-  } catch (error) {
-    console.error('❌ Erro ao conectar com o banco de dados:', error);
-  }
-}
-
-// Middleware
+// ================= MIDDLEWARES =================
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rotas básicas
-app.get('/', (req, res) => {
-  res.json({ message: 'Servidor DriveOn está rodando!' });
+// ================= BANCO =======================
+const sequelize = new Sequelize('driveon_db', 'root', 'Eder12345678!@', {
+  host: 'localhost',
+  dialect: 'mysql',
+  logging: false
 });
 
-// Iniciar servidor
-app.listen(PORT, async () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-  await testConnection();
+const Usuario = sequelize.define('Usuario', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  nome: { type: DataTypes.STRING, allowNull: false },
+  email: { type: DataTypes.STRING, allowNull: false, unique: true },
+  senha: { type: DataTypes.STRING, allowNull: false },
+  tipo_usuario: { type: DataTypes.STRING, allowNull: false },
+  cpf: { type: DataTypes.STRING, allowNull: true },
+  cnh: { type: DataTypes.STRING, allowNull: true },
+  telefone: { type: DataTypes.STRING, allowNull: true }
+}, {
+  tableName: 'usuarios',
+  timestamps: true
 });
 
-// Exportar sequelize para uso em outros arquivos se necessário
-module.exports = { app, sequelize };
+// ================= ROTAS API ===================
+app.get('/api/test', (req, res) => {
+  res.json({ status: 'OK' });
+});
 
+app.post('/api/signup', async (req, res) => {
+  try {
+    console.log("📦 BODY RECEBIDO:", req.body);
+
+    const {
+      nome,
+      email,
+      senha,
+      tipoUsuario,
+      cpf,
+      cnh,
+      telefone,
+      cargo,
+      codigoVerificacao
+    } = req.body;
+
+    if (!nome || !email || !senha || !tipoUsuario) {
+      return res.status(400).json({ error: 'Campos obrigatórios faltando.' });
+    }
+
+    const existente = await Usuario.findOne({ where: { email } });
+    if (existente) {
+      return res.status(409).json({ error: 'Email já cadastrado.' });
+    }
+
+    await Usuario.create({
+  nome,
+  email,
+  senha,
+  tipo_usuario: tipoUsuario,
+
+  cpf: tipoUsuario === 'Cliente' ? cpf : null,
+  cnh: tipoUsuario === 'Cliente' ? cnh : null,
+  telefone: tipoUsuario === 'Cliente' ? telefone : null,
+
+  cargo: tipoUsuario === 'Administrador' ? cargo : null,
+  codigoVerificacao: tipoUsuario === 'Administrador' ? codigoVerificacao : null
+});
+
+
+    res.status(201).json({ message: 'Cadastro realizado com sucesso' });
+
+  } catch (err) {
+    console.error("🔥 ERRO:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
+
+// ================= FRONTEND ====================
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// ================= FALLBACK ====================
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/home.html'));
+});
+
+// ================= START =======================
+(async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync();
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Sistema DriveOn rodando em http://localhost:${PORT}`);
+    });
+
+  } catch (err) {
+    console.error('❌ Erro ao iniciar o servidor:', err.message);
+  }
+})();
