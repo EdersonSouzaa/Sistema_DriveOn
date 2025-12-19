@@ -1,3 +1,6 @@
+/* =========================
+   STATE
+========================= */
 const state = {
   cars: [],
   filters: {
@@ -10,6 +13,51 @@ const state = {
   selectedCar: null
 };
 
+/* =========================
+   DADOS LOCAIS (ASSETS)
+========================= */
+const localCars = [
+  {
+    id: 1,
+    nome: "Mini Cooper",
+    categoria: "Urbano",
+    combustivel: "Gasolina",
+    cambio: "Automático",
+    lugares: 4,
+    preco_diaria: 180,
+    destaque: "Popular",
+    descricao: "Compacto, moderno e perfeito para a cidade.",
+    imagem: "./assets/cars/car_card3.jpg"
+  },
+  {
+    id: 2,
+    nome: "Jeep Compass",
+    categoria: "SUV",
+    combustivel: "Gasolina",
+    cambio: "Automático",
+    lugares: 5,
+    preco_diaria: 250,
+    destaque: "Offroad",
+    descricao: "Robusto, confortável e ideal para viagens.",
+    imagem: "./assets/cars/car_card1.jpg"
+  },
+  {
+    id: 3,
+    nome: "BMW X6",
+    categoria: "Luxo",
+    combustivel: "Gasolina",
+    cambio: "Automático",
+    lugares: 5,
+    preco_diaria: 420,
+    destaque: "Luxo",
+    descricao: "Alto desempenho e sofisticação premium.",
+    imagem: "./assets/cars/car_card4.jpg"
+  }
+];
+
+/* =========================
+   ELEMENTOS
+========================= */
 const elements = {
   carList: document.getElementById('car-list'),
   counter: document.getElementById('carsCounterValue'),
@@ -40,13 +88,14 @@ const elements = {
   detailsSeats: document.getElementById('detailsSeats')
 };
 
+/* =========================
+   UTILIDADES
+========================= */
 const badgeMap = {
   Popular: 'badge-popular',
-  'Econômico': 'badge-novo',
   Luxo: 'badge-oferta',
   Offroad: 'badge-offroad',
-  Urbano: 'badge-urbano',
-  Exótico: 'badge-exotico'
+  Urbano: 'badge-urbano'
 };
 
 const currencyFormatter = new Intl.NumberFormat('pt-BR', {
@@ -54,102 +103,47 @@ const currencyFormatter = new Intl.NumberFormat('pt-BR', {
   currency: 'BRL'
 });
 
-function formatCurrency(value) {
-  return currencyFormatter.format(Number(value) || 0);
-}
+const formatCurrency = (v) => currencyFormatter.format(Number(v) || 0);
 
-function buildSkeletonCards() {
-  return Array.from({ length: 4 })
-    .map(
-      () => `
-        <article class="car-card car-card--skeleton">
-          <div class="car-card__image shimmer"></div>
-          <div class="car-card__content">
-            <div class="skeleton-line skeleton-line--title"></div>
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line skeleton-line--short"></div>
-          </div>
-        </article>
-      `
-    )
-    .join('');
-}
-
+/* =========================
+   RENDERIZAÇÃO
+========================= */
 function buildCarCard(car) {
-  const badgeClass = badgeMap[car.destaque] ?? 'badge-default';
-  const badgeLabel = car.destaque ?? 'Disponível';
-
   return `
     <article class="car-card" data-car-id="${car.id}">
       <div class="car-card__image">
-        <img src="${car.imagem}" alt="${car.nome}" loading="lazy" />
-        <span class="badge ${badgeClass}">${badgeLabel}</span>
+        <img src="${car.imagem}" alt="${car.nome}">
+        <span class="badge ${badgeMap[car.destaque] || ''}">
+          ${car.destaque}
+        </span>
       </div>
-      <div class="car-card__content">
-        <header>
-          <p class="eyebrow">${car.categoria}</p>
-          <h3>${car.nome}</h3>
-          <p class="car-card__description">${car.descricao ?? ''}</p>
-        </header>
 
-        <ul class="car-card__features">
-          <li><i class="fa-regular fa-user" aria-hidden="true"></i> ${car.lugares} lugares</li>
-          <li><i class="fa-solid fa-gas-pump" aria-hidden="true"></i> ${car.combustivel}</li>
-          <li><i class="fa-solid fa-gears" aria-hidden="true"></i> ${car.cambio}</li>
+      <div class="car-card__content">
+        <h3 class="car-card__title">${car.nome}</h3>
+
+        <ul class="car-card__info">
+          <li><i class="fa-solid fa-user"></i> ${car.lugares}</li>
+          <li><i class="fa-solid fa-gas-pump"></i> ${car.combustivel}</li>
+          <li><i class="fa-solid fa-car"></i> ${car.categoria}</li>
         </ul>
 
-        <div class="car-card__footer">
-          <div>
-            <p class="eyebrow">Diária</p>
-            <p class="price">${formatCurrency(car.preco_diaria)} <span>/ dia</span></p>
-          </div>
-          <div class="card-actions">
-            <button class="btn-link" data-action="details">Ver detalhes</button>
-            <button class="btn-primary" data-action="reserve">Reservar</button>
-          </div>
+        <div class="car-card__price">
+          <strong>${formatCurrency(car.preco_diaria)}</strong>
+          <span>/ dia</span>
+        </div>
+
+        <div class="car-card__actions">
+          <button class="btn-link" data-action="details">Ver detalhes</button>
+          <button class="btn-primary" data-action="reserve">Reservar</button>
         </div>
       </div>
     </article>
   `;
 }
 
-async function loadCars() {
-  if (!elements.carList) return;
-
-  elements.carList.innerHTML = buildSkeletonCards();
-  elements.emptyState.hidden = true;
-
-  const params = new URLSearchParams();
-  if (state.filters.search) params.append('q', state.filters.search);
-  if (state.filters.categoria) params.append('categoria', state.filters.categoria);
-  if (state.filters.combustivel) params.append('combustivel', state.filters.combustivel);
-  if (state.filters.cambio) params.append('cambio', state.filters.cambio);
-  if (state.filters.maxPrice) params.append('maxPrice', state.filters.maxPrice);
-
-  const queryString = params.toString();
-  const url = queryString ? `http://localhost:8080/api/cars?${queryString}` : 'http://localhost:8080/api/cars';
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Erro ao consultar carros');
-    }
-
-    const cars = await response.json();
-    state.cars = cars;
-    renderCars();
-  } catch (error) {
-    console.error(error);
-    elements.carList.innerHTML = '';
-    showToast('Não foi possível carregar os carros. Tente novamente.', 'error');
-  }
-}
 
 function renderCars() {
-  if (elements.counter) {
-    elements.counter.textContent = state.cars.length;
-  }
+  elements.counter.textContent = state.cars.length;
 
   if (!state.cars.length) {
     elements.carList.innerHTML = '';
@@ -161,188 +155,90 @@ function renderCars() {
   elements.carList.innerHTML = state.cars.map(buildCarCard).join('');
 }
 
+/* =========================
+   LOAD + FILTROS
+========================= */
+function loadCars() {
+  let cars = [...localCars];
+
+  if (state.filters.search) {
+    const s = state.filters.search.toLowerCase();
+    cars = cars.filter(c =>
+      c.nome.toLowerCase().includes(s) ||
+      c.categoria.toLowerCase().includes(s)
+    );
+  }
+
+  if (state.filters.categoria)
+    cars = cars.filter(c => c.categoria === state.filters.categoria);
+
+  if (state.filters.combustivel)
+    cars = cars.filter(c => c.combustivel === state.filters.combustivel);
+
+  if (state.filters.cambio)
+    cars = cars.filter(c => c.cambio === state.filters.cambio);
+
+  if (state.filters.maxPrice)
+    cars = cars.filter(c => c.preco_diaria <= state.filters.maxPrice);
+
+  state.cars = cars;
+  renderCars();
+}
+
+/* =========================
+   EVENTOS
+========================= */
 function updateFilters() {
-  state.filters.search = elements.filters.search.value.trim();
-  state.filters.categoria = elements.filters.categoria.value;
-  state.filters.combustivel = elements.filters.combustivel.value;
-  state.filters.cambio = elements.filters.cambio.value;
-  state.filters.maxPrice = elements.filters.maxPrice.value;
+  Object.keys(elements.filters).forEach(key => {
+    state.filters[key] = elements.filters[key].value;
+  });
   loadCars();
 }
 
-function resetFilters() {
-  Object.values(elements.filters).forEach((input) => {
-    if (input) input.value = '';
-  });
-  updateFilters();
-}
-
-function openModal(modal) {
-  if (!modal) return;
-  modal.classList.add('modal--open');
-  modal.setAttribute('aria-hidden', 'false');
-}
-
-function closeModal(modal) {
-  if (!modal) return;
-  modal.classList.remove('modal--open');
-  modal.setAttribute('aria-hidden', 'true');
-}
-
-function handleCardClick(event) {
-  const action = event.target.dataset.action;
+function handleCardClick(e) {
+  const action = e.target.dataset.action;
   if (!action) return;
 
-  const card = event.target.closest('[data-car-id]');
-  if (!card) return;
-
-  const car = state.cars.find((item) => String(item.id) === card.dataset.carId);
-  if (!car) return;
+  const card = e.target.closest('[data-car-id]');
+  const car = state.cars.find(c => c.id == card.dataset.carId);
 
   if (action === 'details') {
-    openDetails(car);
+    elements.detailsTitle.textContent = car.nome;
+    elements.detailsDescription.textContent = car.descricao;
+    elements.detailsCategory.textContent = car.categoria;
+    elements.detailsFuel.textContent = car.combustivel;
+    elements.detailsTransmission.textContent = car.cambio;
+    elements.detailsSeats.textContent = car.lugares;
+    elements.detailsModal.classList.add('modal--open');
   }
 
   if (action === 'reserve') {
-    openReserve(car);
+    elements.reserveTitle.textContent = car.nome;
+    elements.reserveCarId.value = car.id;
+    elements.reserveModal.classList.add('modal--open');
   }
 }
 
-function openDetails(car) {
-  elements.detailsTitle.textContent = car.nome;
-  elements.detailsDescription.textContent = car.descricao ?? '';
-  elements.detailsCategory.textContent = car.categoria;
-  elements.detailsFuel.textContent = car.combustivel;
-  elements.detailsTransmission.textContent = car.cambio;
-  elements.detailsSeats.textContent = car.lugares;
-  openModal(elements.detailsModal);
+function wireEvents() {
+  Object.values(elements.filters).forEach(el =>
+    el.addEventListener('change', updateFilters)
+  );
+
+  elements.carList.addEventListener('click', handleCardClick);
+
+  document
+    .querySelectorAll('[data-modal-close]')
+    .forEach(btn =>
+      btn.addEventListener('click', () =>
+        btn.closest('.modal').classList.remove('modal--open')
+      )
+    );
 }
 
-function openReserve(car) {
-  state.selectedCar = car;
-  const today = new Date().toISOString().split('T')[0];
-  elements.reserveForm.reset();
-  elements.reserveStart.min = today;
-  elements.reserveEnd.min = today;
-  elements.reserveCarId.value = car.id;
-  elements.reserveTitle.textContent = car.nome;
-  openModal(elements.reserveModal);
-}
-
-async function submitReserve(event) {
-  event.preventDefault();
-  const carId = elements.reserveCarId.value;
-  if (!carId) return;
-
-  const payload = {
-    cliente_nome: elements.reserveName.value.trim(),
-    data_inicio: elements.reserveStart.value,
-    data_fim: elements.reserveEnd.value
-  };
-
-  if (!payload.cliente_nome) {
-    showToast('Informe o nome completo para continuar.', 'error');
-    return;
-  }
-
-  try {
-    const response = await fetch(`http://localhost:8080/api/cars/${carId}/reserve`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new Error(error.error || 'Erro ao reservar');
-    }
-
-    showToast('Reserva realizada com sucesso!', 'success');
-    closeModal(elements.reserveModal);
-    await loadCars();
-  } catch (error) {
-    showToast(error.message, 'error');
-  }
-}
-
-function wireModalClose() {
-  document.querySelectorAll('[data-modal-close]').forEach((button) => {
-    button.addEventListener('click', () => closeModal(button.closest('.modal')));
-  });
-
-  document.querySelectorAll('.modal').forEach((modal) => {
-    modal.addEventListener('click', (event) => {
-      if (event.target === modal) {
-        closeModal(modal);
-      }
-    });
-  });
-}
-
-function showToast(message, type = 'info') {
-  if (!elements.toast) return;
-  elements.toast.textContent = message;
-  elements.toast.className = `toast toast--${type}`;
-  elements.toast.classList.add('toast--visible');
-
-  setTimeout(() => {
-    elements.toast.classList.remove('toast--visible');
-  }, 3200);
-}
-
-function wireFilters() {
-  Object.values(elements.filters).forEach((input) => {
-    if (!input) return;
-    input.addEventListener('change', updateFilters);
-    if (input.tagName === 'INPUT') {
-      input.addEventListener('keyup', (event) => {
-        if (event.key === 'Enter') {
-          updateFilters();
-        }
-      });
-    }
-  });
-
-  elements.clearFilters?.addEventListener('click', resetFilters);
-  elements.emptyReset?.addEventListener('click', resetFilters);
-}
-
-function wireCardEvents() {
-  elements.carList?.addEventListener('click', handleCardClick);
-}
-
-function wireReserveForm() {
-  elements.reserveForm?.addEventListener('submit', submitReserve);
-}
-
-function wireAuthButtons() {
-  const logoutButton = document.querySelector('.botao_deslogar');
-  if (logoutButton) {
-    logoutButton.addEventListener('click', () => {
-      localStorage.removeItem('userName');
-      window.location.href = 'login.html';
-    });
-  }
-
-  const carrosButton = document.getElementById('btn-carros');
-  if (carrosButton) {
-    carrosButton.classList.add('nav-active');
-  }
-}
-
-function init() {
-  wireFilters();
-  wireCardEvents();
-  wireReserveForm();
-  wireModalClose();
-  wireAuthButtons();
+/* =========================
+   INIT
+========================= */
+document.addEventListener('DOMContentLoaded', () => {
+  wireEvents();
   loadCars();
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
+});

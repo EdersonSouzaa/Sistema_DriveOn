@@ -119,6 +119,51 @@ app.post('/api/signup', async (req, res) => {
 
 });
 
+// Login
+// Login
+app.post('/api/login', async (req, res) => {
+  try {
+    const { email, senha } = req.body;
+
+    if (!email || !senha) {
+      return res.status(400).json({
+        error: 'Email e senha são obrigatórios'
+      });
+    }
+
+    const usuario = await Usuario.findOne({ where: { email } });
+
+    if (!usuario) {
+      return res.status(401).json({
+        error: 'Usuário não encontrado'
+      });
+    }
+
+    const senhaValida = await bcrypt.compare(senha, usuario.senha);
+
+    if (!senhaValida) {
+      return res.status(401).json({
+        error: 'Senha inválida'
+      });
+    }
+
+    // Login OK
+    return res.status(200).json({
+      id: usuario.id,
+      nome: usuario.nome,
+      email: usuario.email,
+      tipo_usuario: usuario.tipo_usuario
+    });
+
+  } catch (error) {
+    console.error('❌ ERRO LOGIN:', error);
+    return res.status(500).json({
+      error: 'Erro interno ao fazer login'
+    });
+  }
+});
+
+
 /* ================= FRONTEND =================== */
 app.use(express.static(path.join(__dirname, '../frontend')));
 
