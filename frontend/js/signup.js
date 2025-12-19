@@ -1,17 +1,9 @@
 // ================= MODAIS =================
 
-let storedSubmitEvent = null;
-
 function showModal(modalId) {
     const modalElement = document.getElementById(modalId);
     const modal = new bootstrap.Modal(modalElement);
     modal.show();
-}
-
-function closeModal() {
-    const modalElement = document.getElementById('incompleteDataModal');
-    const modal = bootstrap.Modal.getInstance(modalElement);
-    if (modal) modal.hide();
 }
 
 function closeDuplicateModal() {
@@ -26,13 +18,13 @@ function restrictToNumbers(event) {
     const input = event.target;
     let value = input.value.replace(/\D/g, "");
 
-    if (input.name === "cpf") {
+    if (input.id === "cpf_input") {
         value = value.substring(0, 11);
         input.value = value
             .replace(/(\d{3})(\d)/, "$1.$2")
             .replace(/(\d{3})(\d)/, "$1.$2")
             .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-    } else if (input.name === "telefone") {
+    } else if (input.id === "telefone_input") {
         value = value.substring(0, 11);
         input.value = value
             .replace(/^(\d{2})(\d)/g, "($1) $2")
@@ -47,60 +39,46 @@ function restrictToNumbers(event) {
 async function handleSubmit(e) {
     e.preventDefault();
 
-    const tipo_usuario = document.getElementById('tipo_usuario').value;
+    const tipoUsuario = document.getElementById('tipo_usuario').value;
 
     const data = {
         nome: document.getElementById('nome_input').value.trim(),
         email: document.getElementById('email_input').value.trim(),
         senha: document.getElementById('senha_input').value.trim(),
-        tipoUsuario: tipo_usuario,
+        tipoUsuario,
 
-        // CLIENTE
-        cpf: '',
-        cnh: '',
-        telefone: '',
-
-        // ADMIN
-        cargo: '',
-        codigoVerificacao: ''
+        cpf: null,
+        cnh: null,
+        telefone: null,
+        cargo: null,
+        codigo_verificacao: null
     };
 
-    // ================= ADMINISTRADOR =================
-    if (tipo_usuario === "Administrador") {
+    // ===== ADMINISTRADOR =====
+    if (tipoUsuario === "Administrador") {
         data.cargo = document.getElementById('cpf_select').value.trim();
-        data.codigoVerificacao = document.getElementById('cnh_input').value.trim();
+        data.codigo_verificacao = document.getElementById('cnh_input').value.trim();
+
+        if (!data.cargo || !data.codigo_verificacao) {
+            showModal('incompleteDataModal');
+            return;
+        }
     }
 
-    // ================= CLIENTE =================
-    if (tipo_usuario === "Cliente") {
+    // ===== CLIENTE =====
+    if (tipoUsuario === "Cliente") {
         data.cpf = document.getElementById('cpf_input').value.replace(/\D/g, '');
         data.cnh = document.getElementById('cnh_input').value.replace(/\D/g, '');
         data.telefone = document.getElementById('telefone_input').value.replace(/\D/g, '');
-    }
 
-    console.log("📤 DADOS ENVIADOS:", data);
-
-    // ================= VALIDAÇÃO =================
-    if (!data.nome || !data.email || !data.senha || !data.tipoUsuario) {
-        alert("Preencha os campos obrigatórios.");
-        return;
-    }
-
-    if (tipo_usuario === "Cliente") {
         if (!data.cpf || !data.cnh || !data.telefone) {
             showModal('incompleteDataModal');
             return;
         }
     }
 
-    if (tipo_usuario === "Administrador") {
-        if (!data.cargo || !data.codigoVerificacao) {
-            showModal('incompleteDataModal');
-            return;
-        }
-    }
+    console.log("📤 DADOS ENVIADOS:", data);
 
-    // ================= FETCH =================
     try {
         const response = await fetch("http://localhost:3001/api/signup", {
             method: "POST",
@@ -110,30 +88,20 @@ async function handleSubmit(e) {
 
         const result = await response.json();
 
-        console.log("📥 RESPOSTA BACKEND:", result);
-
         if (!response.ok) {
-            const msg = result.error || "Erro no cadastro";
-
-            if (msg.toLowerCase().includes("já")) {
-                document.getElementById('duplicateMessage').textContent = msg;
-                showModal('duplicateRegistrationModal');
-                return;
-            }
-
-            alert(msg);
+            document.getElementById('duplicateMessage').textContent =
+                result.error || "Erro no cadastro";
+            showModal('duplicateRegistrationModal');
             return;
         }
 
-        // ✅ SUCESSO
         window.location.href = "./success.html";
 
     } catch (err) {
-        console.error("❌ ERRO FRONTEND:", err);
+        console.error("❌ ERRO:", err);
         alert("Erro ao conectar com o servidor");
     }
 }
-
 
 // ================= UI =================
 
@@ -147,34 +115,22 @@ function updateFormFields(tipoUsuario) {
 
     if (tipoUsuario === 'Administrador') {
         cpfLabel.textContent = 'Cargo';
-
         cpfInput.style.display = 'none';
-        cpfInput.removeAttribute('required');
-
         cpfSelect.style.display = 'block';
-        cpfSelect.setAttribute('required', 'required');
 
         telefoneRow.style.display = 'none';
-        telefoneInput.removeAttribute('required');
 
         cnhLabel.textContent = 'Código de Verificação';
-    } 
-    else {
+    } else {
         cpfLabel.textContent = 'CPF';
-
         cpfInput.style.display = 'block';
-        cpfInput.setAttribute('required', 'required');
-
         cpfSelect.style.display = 'none';
-        cpfSelect.removeAttribute('required');
 
         telefoneRow.style.display = 'flex';
-        telefoneInput.setAttribute('required', 'required');
 
         cnhLabel.textContent = 'CNH';
     }
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('registrationForm')
@@ -187,7 +143,4 @@ document.addEventListener('DOMContentLoaded', () => {
     const tipo = document.getElementById('tipo_usuario');
     tipo.addEventListener('change', e => updateFormFields(e.target.value));
     updateFormFields(tipo.value);
-
-    document.getElementById('closeDuplicate')
-        ?.addEventListener('click', closeDuplicateModal);
 });

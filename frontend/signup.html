@@ -25,23 +25,41 @@
 
         <form class="form" id="registrationForm">
 
+            <!-- DADOS BÁSICOS -->
             <div class="row g-3">
                 <div class="col-md-4 col-12 field">
                     <label>Nome completo</label>
-                    <input type="text" id="nome_input" class="Inome" placeholder="Nome" required>
+                    <input
+                        type="text"
+                        id="nome_input"
+                        class="Inome"
+                        placeholder="Nome"
+                        required
+                    >
                 </div>
 
                 <div class="col-md-4 col-12 field">
                     <label>E-mail</label>
-                    <input type="email" id="email_input" class="Iemail" required>
+                    <input
+                        type="email"
+                        id="email_input"
+                        class="Iemail"
+                        required
+                    >
                 </div>
 
                 <div class="col-md-4 col-12 field">
                     <label>Senha</label>
-                    <input type="password" id="senha_input" class="Isenha" required>
+                    <input
+                        type="password"
+                        id="senha_input"
+                        class="Isenha"
+                        required
+                    >
                 </div>
             </div>
 
+            <!-- TIPO DE USUÁRIO / CPF OU CARGO / CNH OU CÓDIGO -->
             <div class="row g-3 mt-2">
                 <div class="col-md-4 col-12 field">
                     <label>Tipo de usuário</label>
@@ -63,7 +81,12 @@
                     >
 
                     <!-- CARGO ADMIN -->
-                    <select id="cpf_select" style="display: none;">
+                    <select
+                        id="cpf_select"
+                        class="Icpf"
+                        style="display: none;"
+                    >
+                        <option value="">Selecione o cargo</option>
                         <option value="Gerente">Gerente</option>
                     </select>
                 </div>
@@ -79,6 +102,7 @@
                 </div>
             </div>
 
+            <!-- TELEFONE (APENAS CLIENTE) -->
             <div class="row g-3 mt-2">
                 <div class="col-12 field">
                     <label>Telefone</label>
@@ -91,7 +115,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn">
+            <button type="submit" class="btn mt-3">
                 Criar conta gratuitamente
             </button>
 
@@ -104,7 +128,7 @@
     </div>
 </div>
 
-<!-- Modal de Dados Incompletos -->
+<!-- MODAL DADOS INCOMPLETOS -->
 <div class="modal fade" id="incompleteDataModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -116,18 +140,15 @@
                 <p>Por favor, preencha todos os campos obrigatórios.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelIncomplete">
-                    Cancelar
-                </button>
-                <button type="button" class="btn btn-primary" id="continueIncomplete">
-                    Continuar
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Fechar
                 </button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal de Erro de Cadastro -->
+<!-- MODAL EMAIL DUPLICADO -->
 <div class="modal fade" id="duplicateRegistrationModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">

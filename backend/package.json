@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Backend do sistema DriveOn",
   "main": "server.js",
+  "type": "commonjs",
   "scripts": {
+    "dev": "nodemon server.js",
     "start": "node server.js"
   },
   "dependencies": {
@@ -12,5 +14,8 @@
     "express": "^4.19.2",
     "mysql2": "^3.9.7",
     "sequelize": "^6.37.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }

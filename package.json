@@ -2,6 +2,7 @@
   "name": "driveon",
   "private": true,
   "scripts": {
+    "dev": "serve .",
     "start": "node start.js"
   },
   "devDependencies": {
