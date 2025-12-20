@@ -319,8 +319,13 @@ select {
   background: #118ab2;
 }
 
+.badge-premium {
+  background: #6403a5;
+}
+
+
 .badge-exotico {
-  background: #8338ec;
+  background: #eb1818;
 }
 
 .badge-default {

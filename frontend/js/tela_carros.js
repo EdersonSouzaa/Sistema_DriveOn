@@ -52,7 +52,44 @@ const localCars = [
     destaque: "Luxo",
     descricao: "Alto desempenho e sofisticação premium.",
     imagem: "./assets/cars/car_card4.jpg"
+  },
+  {
+  id: 4,
+  nome: "Range Rover Evoque",
+  categoria: "SUV",
+  combustivel: "Gasolina",
+  cambio: "Automático",
+  lugares: 5,
+  preco_diaria: 380,
+  destaque: "Luxo",
+  descricao: "SUV premium com design sofisticado, excelente conforto e desempenho urbano e off-road.",
+  imagem: "./assets/cars/car_card6.png"
+  },
+  {
+  id: 5,
+  nome: "Maserati GranTurismo",
+  categoria: "Luxo",
+  combustivel: "Gasolina",
+  cambio: "Automático",
+  lugares: 4,
+  preco_diaria: 650,
+  destaque: "Exotico",
+  descricao: "Esportivo italiano com design marcante, motor potente e luxo refinado.",
+  imagem: "./assets/cars/car_card5.png"
+  },
+  {
+  id: 6,
+  nome: "McLaren 720S",
+  categoria: "Luxo",
+  combustivel: "Gasolina",
+  cambio: "Automático",
+  lugares: 2,
+  preco_diaria: 800,
+  destaque: "Premium",
+  descricao: "Superesportivo britânico com performance extrema, aerodinâmica avançada e exclusividade total.",
+  imagem: "./assets/cars/car_card2.jpg"
   }
+
 ];
 
 /* =========================
@@ -95,7 +132,10 @@ const badgeMap = {
   Popular: 'badge-popular',
   Luxo: 'badge-oferta',
   Offroad: 'badge-offroad',
-  Urbano: 'badge-urbano'
+  Urbano: 'badge-urbano',
+  Exotico: 'badge-exotico',
+  Premium: 'badge-premium'
+
 };
 
 const currencyFormatter = new Intl.NumberFormat('pt-BR', {
@@ -128,7 +168,6 @@ function buildCarCard(car) {
         </ul>
 
         <div class="car-card__price">
-          <strong>${formatCurrency(car.preco_diaria)}</strong>
           <span>/ dia</span>
         </div>
 

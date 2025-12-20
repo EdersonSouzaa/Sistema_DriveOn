@@ -1,18 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="./assets/icon_page.png" type="image/x-icon">
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./assets/icon_page.png" type="image/x-icon" />
+    <meta name="description" content="Catálogo de carros disponíveis para locação na DriveOn." />
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 
-    <link rel="stylesheet" href="styles/tela_historico.css">
+    <link rel="stylesheet" href="styles/tela_historico.css" />
+    <script defer src="js/tela_historico.js"></script>
 
-    <title>Carros - DriveOn</title>
-</head>
-<body>
-
+    <title>Tela de Carros • DriveOn</title>
+  </head>
+  <body>
     <div class="dashboard-layout">
       <aside class="sidebar_cliente" aria-label="Menu lateral">
         <div class="logo-group">
@@ -27,22 +38,22 @@
           Início
         </button>
 
-        <button id="btn-carros" class="botao_inicio3" onclick="window.location.href='/carros';">
+        <button id="btn-carros" class="botao_inicio" onclick="window.location.href='/tela_carros.html';">
           <img src="./assets/icone_cars.png" alt="" class="icone_botao2" />
           Carros
         </button>
 
-        <button id="btn-historico" class="botao_inicio2" onclick="window.location.href='historico';">
+        <button id="btn-historico" class="botao_inicio2" onclick="window.location.href='tela_historico.html';">
           <img src="./assets/icone_historico.png" alt="" class="icone_botao3" />
           Histórico
         </button>
 
-        <button id="btn-calculadora" class="botao_inicio3" onclick="window.location.href='/calculadora';">
+        <button id="btn-calculadora" class="botao_inicio3" onclick="window.location.href='/tela_calculadora.html';">
           <img src="./assets/icone_calculator.png" alt="" class="icone_botao4" />
           Calculadora
         </button>
 
-        <button id="btn-perfil" class="botao_inicio4" onclick="window.location.href='/perfil';">
+        <button id="btn-perfil" class="botao_inicio4" onclick="window.location.href='/tela_perfil.html';">
           <img src="./assets/icone_profile.png" alt="" class="icone_botao5" />
           Perfil
         </button>
@@ -55,171 +66,88 @@
         <button class="botao_deslogar" type="button">Deslogar</button>
       </aside>
 
+      <main class="main-content">
+        <header class="page-header">
+          <div class="page-header__texts">
+            <h1>Histórico de carros alugados</h1>
+            <p class="subtitle">
+              Gerencie o seu histórico de veiculos alugados de forma fácil e rápida.
+            </p>
+          </div>
 
-    <div>
+<section id="car-list" class="container-cards"></section>
 
-    <h1 class="titulo_carros">Carros Disponíveis para locação</h1>
-    <p class="subtitulo_carros">Escolha o veículo ideal e comece a sua próxima viagem com conforto</p>
-
-
-    <div class="container-cards">
-
-        <div class="card_um">
-            <div class="card-image-container">
-                <span class="badge badge-popular">Popular</span>
-                <img src="./assets/car_card1.jpg" alt="Jeep Renegade">
-            </div>
-            <h3 class="card-title">Jeep Renegade 2015</h3>
-            <div class="card-features">
-                <div class="feature-item"><i class="fa-regular fa-user"></i> 5</div>
-                <div class="feature-item"><i class="fa-solid fa-gas-pump"></i> Gasolina</div>
-                <div class="feature-item"><i class="fa-solid fa-car"></i> SUV</div>
-            </div>
-            <div class="card-price">
-                <span class="price-value">$250</span>
-                <span class="price-period">/ dia</span>
-            </div>
-            <div class="card-actions">
-                <button class="btn-reserve2">Cancelar</button>
-                <button class="btn-reserve">Reservado</button>
-            </div>
+        <div class="empty-state" id="car-empty-state" hidden>
+          <img src="./assets/question.png" alt="" />
+          <h3>Nenhum carro encontrado</h3>
+          <p>
+            Ajuste os filtros ou veja todos os veículos disponíveis para encontrar o modelo perfeito para você.
+          </p>
+          <button type="button" class="btn-primary" id="emptyReset">Ver todos os carros</button>
         </div>
-
-        <div class="card_um">
-            <div class="card-image-container">
-                <span class="badge badge-oferta">Luxo</span>
-                  <img src="./assets/car_card2.jpg" alt="Jeep Renegade">
-            </div>
-            <h3 class="card-title">Ferrari Enzo 2017</h3>
-            <div class="card-features">
-                <div class="feature-item"><i class="fa-regular fa-user"></i> 5</div>
-                <div class="feature-item"><i class="fa-solid fa-leaf"></i> Híbrido</div>
-                <div class="feature-item"><i class="fa-solid fa-car-side"></i> Sedan</div>
-            </div>
-            <div class="card-price">
-                <span class="price-value">$400</span>
-                <span class="price-period">/ dia</span>
-            </div>
-            <div class="card-actions">
-                <button class="btn-reserve2">Cancelar</button>
-                <button class="btn-reserve3">Reservar carro</button>
-            </div>
-        </div>
-
-        <div class="card_um">
-            <div class="card-image-container">
-                <span class="badge badge-novo">Econômico</span>
-                  <img src="./assets/car_card3.jpg" alt="mini cooper">
-            </div>
-            <h3 class="card-title">Mini Cooper S 2013</h3>
-            <div class="card-features">
-                <div class="feature-item"><i class="fa-regular fa-user"></i> 4</div>
-                <div class="feature-item"><i class="fa-solid fa-gas-pump"></i> Turbo</div>
-                <div class="feature-item"><i class="fa-solid fa-car"></i> Luxo</div>
-            </div>
-            <div class="card-price">
-                <span class="price-value">$150</span>
-                <span class="price-period">/ dia</span>
-            </div>
-            <div class="card-actions">
-                <button class="btn-reserve2">Cancelar</button>
-                <button class="btn-reserve3">Reservar carro</button>
-            </div>
-        </div>
-
-
-        <div class="card_um">
-            <div class="card-image-container">
-                <span class="badge badge-offroad">Offroad</span>
-                  <img src="./assets/car_card6.png" alt="mini cooper">
-            </div>
-            <h3 class="card-title">Nissan Rogue 2021</h3>
-            <div class="card-features">
-                <div class="feature-item"><i class="fa-regular fa-user"></i> 5</div>
-                <div class="feature-item"><i class="fa-solid fa-gas-pump"></i> Gasolina</div>
-                <div class="feature-item"><i class="fa-solid fa-car"></i> SUV</div>
-            </div>
-            <div class="card-price">
-                <span class="price-value">$200</span>
-                <span class="price-period">/ dia</span>
-            </div>
-            <div class="card-actions">
-                <button class="btn-reserve2">Cancelar</button>
-                <button class="btn-reserve3">Reservar carro</button>
-            </div>
-        </div>
-
-        
-         <div class="card_um">
-            <div class="card-image-container">
-                <span class="badge badge-urbano">Urbano</span>
-                  <img src="./assets/car_card4.jpg" alt="mini cooper">
-            </div>
-            <h3 class="card-title">Audi QS 2022</h3>
-            <div class="card-features">
-                <div class="feature-item"><i class="fa-regular fa-user"></i> 5</div>
-                <div class="feature-item"><i class="fa-solid fa-gas-pump"></i> Gasolina</div>
-                <div class="feature-item"><i class="fa-solid fa-car"></i> SUV</div>
-            </div>
-            <div class="card-price">
-                <span class="price-value">$200</span>
-                <span class="price-period">/ dia</span>
-            </div>
-            <div class="card-actions">
-                <button class="btn-reserve2">Cancelar</button>
-                <button class="btn-reserve3">Reservar carro</button>
-            </div>
-        </div>
-
-
-
-         <div class="card_um">
-            <div class="card-image-container">
-                <span class="badge badge-exotico">Exótico</span>
-                  <img src="./assets/car_card5.png" alt="mini cooper">
-            </div>
-            <h3 class="card-title">Maserati Conversível 2019</h3>
-            <div class="card-features">
-                <div class="feature-item"><i class="fa-regular fa-user"></i> 5</div>
-                <div class="feature-item"><i class="fa-solid fa-gas-pump"></i> Gasolina</div>
-                <div class="feature-item"><i class="fa-solid fa-car"></i> SUV</div>
-            </div>
-            <div class="card-price">
-                <span class="price-value">$380</span>
-                <span class="price-period">/ dia</span>
-            </div>
-            <div class="card-actions">
-                <button class="btn-reserve2">Cancelar</button>
-                <button class="btn-reserve3">Reservar carro</button>
-            </div>
-        </div>
-
-
-
-        
-        
-
-
+      </main>
     </div>
 
+    <section class="modal" id="detailsModal" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal__dialog">
+        <button class="modal__close" data-modal-close>&times;</button>
+        <div class="modal__body">
+          <p class="eyebrow">Detalhes do veículo</p>
+          <h2 id="detailsTitle"></h2>
+          <p id="detailsDescription" class="modal__description"></p>
+          <ul class="details-list">
+            <li>
+              <span>Categoria</span>
+              <strong id="detailsCategory"></strong>
+            </li>
+            <li>
+              <span>Combustível</span>
+              <strong id="detailsFuel"></strong>
+            </li>
+            <li>
+              <span>Câmbio</span>
+              <strong id="detailsTransmission"></strong>
+            </li>
+            <li>
+              <span>Lugares</span>
+              <strong id="detailsSeats"></strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-</div>
-  <script>
-    // Remove the first redundant script for old classes
-  </script>
-  <script>
-    // On page load, set active sidebar button background color
-    window.addEventListener('DOMContentLoaded', () => {
-        const btnHistorico = document.getElementById('btn-historico');
-        if (btnHistorico) {
-            btnHistorico.classList.add('active');
-        }
-    });
-  </script>
-  <style>
-    .active {
-        background-color: #1655f5 !important;
-    }
-  </style>
-</body>
+    <section class="modal" id="reserveModal" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal__dialog">
+        <button class="modal__close" data-modal-close>&times;</button>
+        <div class="modal__body">
+          <p class="eyebrow">Reservar veículo</p>
+          <h2 id="reserveTitle"></h2>
+          <form id="reserveForm" class="modal-form">
+            <input type="hidden" id="reserveCarId" />
+            <label class="modal-form__field">
+              Nome completo
+              <input type="text" id="reserveName" required placeholder="Digite seu nome" />
+            </label>
+            <div class="modal-form__grid">
+              <label class="modal-form__field">
+                Retirada
+                <input type="date" id="reserveStart" required />
+              </label>
+              <label class="modal-form__field">
+                Devolução
+                <input type="date" id="reserveEnd" required />
+              </label>
+            </div>
+            <button type="submit" class="btn-primary">
+              <i class="fa-solid fa-car-side" aria-hidden="true"></i>
+              Confirmar reserva
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="assertive"></div>
+  </body>
 </html>
