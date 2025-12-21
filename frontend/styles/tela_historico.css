@@ -26,7 +26,14 @@ body {
   background: var(--bg-body);
   font-family: 'Poppins', sans-serif;
   color: var(--text-dark);
+    background-color: #f5f6fa !important; /* ou branco */
+
 }
+
+body.modal-open {
+  background: #f5f6fa !important;
+}
+
 
 img {
   max-width: 100%;
@@ -109,10 +116,19 @@ select {
   transform: translateX(4px);
 }
 
-.sidebar_cliente .botao_inicio,
-.sidebar_cliente .nav-active {
+.sidebar_cliente button.active {
   background: var(--primary);
 }
+
+.sidebar_cliente button.active:hover {
+  background: var(--primary-dark);
+  transform: translateX(4px);
+}
+
+.sidebar_cliente button.active img {
+  filter: brightness(0) invert(1);
+}
+
 
 .sidebar_cliente .botao_deslogar {
   margin-top: auto;
@@ -403,6 +419,8 @@ select {
   border-radius: 10px;
   font-size: 14px;
   cursor: pointer;
+  position: relative;
+  left: 60px;
 }
 
 .btn-primary {
@@ -632,5 +650,172 @@ select {
 
   .modal-form__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* ===== MODAL CANCELAMENTO ===== */
+.modal-cancel {
+   background: red !important;
+}
+
+.modal-cancel.active {
+  opacity: 1;
+  pointer-events: all;
+     background: rgba(255, 255, 255, 0.466) !important;
+
+}
+
+.modal-cancel {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0, 0, 0, 0.55) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 99999 !important;
+}
+
+body.modal-open {
+  background: #fff !important;
+  overflow: hidden;
+}
+
+/* REMOVE QUALQUER FUNDO DO BOOTSTRAP */
+.modal-backdrop,
+.modal-backdrop.show,
+.fade.modal-backdrop {
+  display: none !important;
+  background: transparent !important;
+}
+
+.modal-cancel {
+  background: rgba(0, 0, 0, 0.55) !important;
+}
+
+
+.modal-cancel.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal-cancel__content {
+  background: #fff;
+  padding: 32px;
+  border-radius: 20px;
+  width: min(420px, 90%);
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+  animation: modalScale 0.3s ease;
+}
+
+.modal-cancel__content h2 {
+  margin-top: 0;
+  font-size: 1.6rem;
+  color: #111;
+}
+
+.modal-cancel__content p {
+  color: #555;
+  font-size: 1rem;
+  margin: 16px 0 24px;
+}
+
+.modal-cancel__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-secondary {
+  background: #e5e7ef;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #d7dae5;
+}
+
+.btn-danger {
+  background: #e63946;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  left: 30px;
+}
+
+.btn-danger:hover {
+  background: #c92f3b;
+}
+
+@keyframes modalScale {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+/* ===== EMPTY STATE HISTÓRICO ===== */
+.empty-state-history {
+  margin-top: 48px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 56px 32px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeUp 0.4s ease;
+}
+
+.empty-state-history img {
+  width: 160px;
+  margin-bottom: 24px;
+}
+
+.empty-state-history h3 {
+  font-size: 1.6rem;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.empty-state-history p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.empty-state-history .btn-primary {
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  border-radius: 12px;
+}
+
+/* animação suave */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

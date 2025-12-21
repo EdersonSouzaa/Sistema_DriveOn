@@ -21,6 +21,22 @@
     <link rel="stylesheet" href="styles/tela_historico.css" />
     <script defer src="js/tela_historico.js"></script>
 
+    <script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const btnHistorico = document.getElementById('btn-historico');
+    if (btnHistorico) {
+      btnHistorico.classList.add('active');
+    }
+  });
+</script>
+
+<style>
+  .active {
+    background-color: #1655f5 !important;
+  }
+</style>
+
+
     <title>Tela de Carros • DriveOn</title>
   </head>
   <body>
@@ -53,7 +69,7 @@
           Calculadora
         </button>
 
-        <button id="btn-perfil" class="botao_inicio4" onclick="window.location.href='/tela_perfil.html';">
+        <button id="btn-perfil" class="botao_inicio4" onclick="window.location.href='/tela_perfil_cliente.html';">
           <img src="./assets/icone_profile.png" alt="" class="icone_botao5" />
           Perfil
         </button>
@@ -77,7 +93,21 @@
 
 <section id="car-list" class="container-cards"></section>
 
-        <div class="empty-state" id="car-empty-state" hidden>
+        <div class="empty-state-history" id="car-empty-state" hidden>
+  <img src="./assets/empty-history.svg" alt="Histórico vazio" />
+  <h3>Seu histórico está vazio</h3>
+  <p>
+    Realize algumas locações para que seus carros apareçam aqui.
+  </p>
+  <button
+    type="button"
+    class="btn-primary"
+    onclick="window.location.href='tela_carros.html'"
+  >
+    Ver carros disponíveis
+  </button>
+</div>
+
           <img src="./assets/question.png" alt="" />
           <h3>Nenhum carro encontrado</h3>
           <p>
@@ -149,5 +179,20 @@
     </section>
 
     <div class="toast" id="toast" role="status" aria-live="assertive"></div>
+
+    <div class="modal-cancel" id="cancelModal">
+  <div class="modal-cancel__content">
+    <h2>Cancelar reserva</h2>
+    <p>
+      Tem certeza que deseja cancelar a reserva do carro
+      <strong id="cancelCarName"></strong>?
+    </p>
+
+    <div class="modal-cancel__actions">
+      <button class="btn-secondary" id="cancelNo">Não</button>
+      <button class="btn-danger" id="cancelYes">Sim, cancelar</button>
+    </div>
+  </div>
+</div>
   </body>
 </html>

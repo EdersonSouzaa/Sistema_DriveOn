@@ -6,6 +6,16 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  // ===== MODAL =====
+  const cancelModal = document.getElementById('cancelModal');
+  const cancelCarName = document.getElementById('cancelCarName');
+  const cancelNo = document.getElementById('cancelNo');
+  const cancelYes = document.getElementById('cancelYes');
+  const emptyState = document.getElementById('car-empty-state');
+
+
+  let selectedCard = null;
+
   // 🚗 DADOS MOCK (histórico)
   const cars = [
     {
@@ -14,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cambio: "Automático",
       lugares: 5,
       destaque: "Luxo",
-      imagem:  "./assets/cars/car_card4.jpg"
+      imagem: "./assets/cars/car_card4.jpg"
     },
     {
       nome: "Mini Cooper",
@@ -50,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
       lugares: 4,
       destaque: "Exotico",
       imagem: "./assets/cars/car_card5.png"
-  
     },
     {
       nome: "McLaren 720S",
@@ -61,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
       destaque: "Premium",
       imagem: "./assets/cars/car_card2.jpg"
     }
-
   ];
 
   if (!cars.length) {
@@ -69,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  // ===== RENDERIZA OS CARROS =====
   carList.innerHTML = cars.map(car => `
     <div class="car-card">
       <div class="car-card__image">
@@ -77,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <div class="car-card__content">
         <h3 class="car-card__title">${car.nome}</h3>
-        <p class="car-card__description">${car.categoria}</p>
+        <p class="car-card__description">${car.categoria ?? ''}</p>
 
         <ul class="car-card__features">
           <li>⛽ ${car.combustivel}</li>
@@ -86,9 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </ul>
 
         <div class="car-card__footer">
-          <div class="price">
-          </div>
-
           <div class="card-actions1">
             <button class="btn-primary1">Cancelar</button>
           </div>
@@ -100,4 +106,60 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     </div>
   `).join('');
+
+  if (!cars.length) {
+  carList.innerHTML = '';
+  document.getElementById('car-empty-state').hidden = false;
+} else {
+  document.getElementById('car-empty-state').hidden = true;
+}
+
+
+  // ===== EVENTO CANCELAR (DELEGAÇÃO) =====
+  carList.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-primary1')) {
+      const card = e.target.closest('.car-card');
+      const carName = card.querySelector('.car-card__title').textContent;
+
+      selectedCard = card;
+      cancelCarName.textContent = carName;
+      cancelModal.classList.add('active');
+    }
+  });
+
+  cancelYes.addEventListener('click', () => {
+  if (selectedCard) {
+    selectedCard.remove();
+  }
+
+  cancelModal.classList.remove('active');
+  selectedCard = null;
+
+  // 🔥 Se não tiver mais cards, mostra empty state
+  if (!carList.querySelector('.car-card')) {
+    document.getElementById('car-empty-state').hidden = false;
+  }
+});
+
+
+  // ===== FECHAR MODAL =====
+  cancelNo.addEventListener('click', () => {
+    cancelModal.classList.remove('active');
+    selectedCard = null;
+  });
+
+  cancelYes.addEventListener('click', () => {
+    if (selectedCard) {
+      selectedCard.remove();
+    }
+    cancelModal.classList.remove('active');
+    selectedCard = null;
+  });
+
+  cancelModal.addEventListener('click', (e) => {
+    if (e.target === cancelModal) {
+      cancelModal.classList.remove('active');
+      selectedCard = null;
+    }
+  });
 });
