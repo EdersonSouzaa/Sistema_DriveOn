@@ -1,165 +1,87 @@
 document.addEventListener('DOMContentLoaded', () => {
   const carList = document.getElementById('car-list');
+  const emptyState = document.getElementById('car-empty-state');
 
-  if (!carList) {
-    console.error('❌ Container #car-list não encontrado');
-    return;
-  }
-
-  // ===== MODAL =====
   const cancelModal = document.getElementById('cancelModal');
   const cancelCarName = document.getElementById('cancelCarName');
   const cancelNo = document.getElementById('cancelNo');
   const cancelYes = document.getElementById('cancelYes');
-  const emptyState = document.getElementById('car-empty-state');
-
 
   let selectedCard = null;
 
-  // 🚗 DADOS MOCK (histórico)
-  const cars = [
-    {
-      nome: "BMW X6",
-      combustivel: "Gasolina",
-      cambio: "Automático",
-      lugares: 5,
-      destaque: "Luxo",
-      imagem: "./assets/cars/car_card4.jpg"
-    },
-    {
-      nome: "Mini Cooper",
-      combustivel: "Gasolina",
-      cambio: "Automático",
-      lugares: 4,
-      destaque: "Novo",
-      imagem: "./assets/cars/car_card3.jpg"
-    },
-    {
-      nome: "Range Rover Evoque",
-      categoria: "SUV",
-      combustivel: "Gasolina",
-      cambio: "Automático",
-      lugares: 5,
-      destaque: "Novo",
-      imagem: "./assets/cars/car_card6.png"
-    },
-    {
-      nome: "Jeep Compass",
-      categoria: "SUV",
-      combustivel: "Gasolina",
-      cambio: "Automático",
-      lugares: 5,
-      destaque: "Offroad",
-      imagem: "./assets/cars/car_card1.jpg"
-    },
-    {
-      nome: "Maserati GranTurismo",
-      categoria: "Luxo",
-      combustivel: "Gasolina",
-      cambio: "Automático",
-      lugares: 4,
-      destaque: "Exotico",
-      imagem: "./assets/cars/car_card5.png"
-    },
-    {
-      nome: "McLaren 720S",
-      categoria: "Luxo",
-      combustivel: "Gasolina",
-      cambio: "Automático",
-      lugares: 2,
-      destaque: "Premium",
-      imagem: "./assets/cars/car_card2.jpg"
-    }
-  ];
+  // 🔐 USUÁRIO LOGADO
+  const userEmail = localStorage.getItem('userEmail');
 
-  if (!cars.length) {
-    carList.innerHTML = "<p>Nenhum carro encontrado.</p>";
+  if (!userEmail) {
+    alert('Faça login novamente.');
+    window.location.href = 'login.html';
     return;
   }
 
-  // ===== RENDERIZA OS CARROS =====
-  carList.innerHTML = cars.map(car => `
-    <div class="car-card">
-      <div class="car-card__image">
-        <img src="${car.imagem}" alt="${car.nome}">
-      </div>
+  // 🔑 CHAVE DO HISTÓRICO
+  const STORAGE_KEY = `historico_${userEmail}`;
 
-      <div class="car-card__content">
-        <h3 class="car-card__title">${car.nome}</h3>
-        <p class="car-card__description">${car.categoria ?? ''}</p>
+  // 📦 BUSCA HISTÓRICO (OU ARRAY VAZIO)
+  let cars = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-        <ul class="car-card__features">
-          <li>⛽ ${car.combustivel}</li>
-          <li>⚙ ${car.cambio}</li>
-          <li>👥 ${car.lugares} lugares</li>
-        </ul>
+  // ===== RENDER =====
+  function renderCars() {
+    if (!cars.length) {
+      carList.innerHTML = '';
+      emptyState.hidden = false;
+      return;
+    }
 
-        <div class="car-card__footer">
-          <div class="card-actions1">
+    emptyState.hidden = true;
+
+    carList.innerHTML = cars.map((car, index) => `
+      <article class="car-card" data-index="${index}">
+        <div class="car-card__image">
+          <img src="${car.imagem}" alt="${car.nome}">
+        </div>
+
+        <div class="car-card__content">
+          <h3 class="car-card__title">${car.nome}</h3>
+
+          <ul class="car-card__info">
+            <li><i class="fa-solid fa-user"></i> ${car.lugares}</li>
+            <li><i class="fa-solid fa-gas-pump"></i> ${car.combustivel}</li>
+            <li><i class="fa-solid fa-car"></i> ${car.categoria}</li>
+          </ul>
+
+          <div class="car-card__footer">
             <button class="btn-primary1">Cancelar</button>
           </div>
-
-          <div class="card-actions">
-            <button class="btn-primary">Reservar</button>
-          </div>
         </div>
-      </div>
-    </div>
-  `).join('');
+      </article>
+    `).join('');
+  }
 
-  if (!cars.length) {
-  carList.innerHTML = '';
-  document.getElementById('car-empty-state').hidden = false;
-} else {
-  document.getElementById('car-empty-state').hidden = true;
-}
+  renderCars();
 
-
-  // ===== EVENTO CANCELAR (DELEGAÇÃO) =====
+  // ===== CANCELAR =====
   carList.addEventListener('click', (e) => {
-    if (e.target.classList.contains('btn-primary1')) {
-      const card = e.target.closest('.car-card');
-      const carName = card.querySelector('.car-card__title').textContent;
+    if (!e.target.classList.contains('btn-primary1')) return;
 
-      selectedCard = card;
-      cancelCarName.textContent = carName;
-      cancelModal.classList.add('active');
-    }
+    selectedCard = e.target.closest('.car-card');
+    const index = selectedCard.dataset.index;
+
+    cancelCarName.textContent =
+      selectedCard.querySelector('.car-card__title').textContent;
+
+    cancelModal.classList.add('active');
+
+    cancelYes.onclick = () => {
+      cars.splice(index, 1);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cars));
+      cancelModal.classList.remove('active');
+      renderCars();
+    };
   });
 
-  cancelYes.addEventListener('click', () => {
-  if (selectedCard) {
-    selectedCard.remove();
-  }
-
-  cancelModal.classList.remove('active');
-  selectedCard = null;
-
-  // 🔥 Se não tiver mais cards, mostra empty state
-  if (!carList.querySelector('.car-card')) {
-    document.getElementById('car-empty-state').hidden = false;
-  }
-});
-
-
-  // ===== FECHAR MODAL =====
   cancelNo.addEventListener('click', () => {
     cancelModal.classList.remove('active');
     selectedCard = null;
   });
-
-  cancelYes.addEventListener('click', () => {
-    if (selectedCard) {
-      selectedCard.remove();
-    }
-    cancelModal.classList.remove('active');
-    selectedCard = null;
-  });
-
-  cancelModal.addEventListener('click', (e) => {
-    if (e.target === cancelModal) {
-      cancelModal.classList.remove('active');
-      selectedCard = null;
-    }
-  });
 });
+  

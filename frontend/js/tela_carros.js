@@ -167,7 +167,9 @@ function buildCarCard(car) {
           <li><i class="fa-solid fa-car"></i> ${car.categoria}</li>
         </ul>
 
+        <!-- PREÇO CORRIGIDO -->
         <div class="car-card__price">
+          <strong>${formatCurrency(car.preco_diaria)}</strong>
           <span>/ dia</span>
         </div>
 
@@ -179,6 +181,56 @@ function buildCarCard(car) {
     </article>
   `;
 }
+
+elements.reserveForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const userEmail = localStorage.getItem('userEmail');
+
+  if (!userEmail) {
+    alert('Faça login novamente.');
+    window.location.href = 'login.html';
+    return;
+  }
+
+  const carId = Number(elements.reserveCarId.value);
+
+  const car = localCars.find(c => c.id === carId);
+
+  if (!car) {
+    alert('Carro não encontrado.');
+    return;
+  }
+
+  const STORAGE_KEY = `historico_${userEmail}`;
+
+  const historicoAtual =
+    JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+  historicoAtual.push({
+    id: car.id,
+    nome: car.nome,
+    categoria: car.categoria,
+    combustivel: car.combustivel,
+    cambio: car.cambio,
+    lugares: car.lugares,
+    imagem: car.imagem
+  });
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(historicoAtual)
+  );
+
+  // Fecha modal
+  elements.reserveModal.classList.remove('modal--open');
+
+  // Feedback simples
+  alert('Reserva realizada com sucesso!');
+
+  // (opcional) redirecionar
+  // window.location.href = 'tela_historico.html';
+});
 
 
 function renderCars() {

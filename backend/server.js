@@ -164,6 +164,48 @@ app.post('/api/login', async (req, res) => {
 });
 
 
+// ================= PERFIL DO USUÁRIO =================
+app.get('/api/user/profile', async (req, res) => {
+  const { email } = req.query;
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email não informado' });
+  }
+
+  try {
+    const usuario = await Usuario.findOne({
+      where: { email },
+      attributes: [
+        'nome',
+        'email',
+        'telefone',
+        'cpf',
+        'cnh',
+        'createdAt'
+      ]
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    res.json({
+      nome: usuario.nome,
+      email: usuario.email,
+      telefone: usuario.telefone,
+      cpf: usuario.cpf,
+      cnh: usuario.cnh,
+      criado_em: usuario.createdAt
+    });
+
+  } catch (error) {
+    console.error('❌ ERRO PERFIL:', error);
+    res.status(500).json({ error: 'Erro interno' });
+  }
+});
+
+
+
 /* ================= FRONTEND =================== */
 app.use(express.static(path.join(__dirname, '../frontend')));
 
