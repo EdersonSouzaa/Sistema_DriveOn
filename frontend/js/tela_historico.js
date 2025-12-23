@@ -24,6 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // 📦 BUSCA HISTÓRICO (OU ARRAY VAZIO)
   let cars = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
+  function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('pt-BR');
+}
+
   // ===== RENDER =====
   function renderCars() {
     if (!cars.length) {
@@ -35,26 +40,33 @@ document.addEventListener('DOMContentLoaded', () => {
     emptyState.hidden = true;
 
     carList.innerHTML = cars.map((car, index) => `
-      <article class="car-card" data-index="${index}">
-        <div class="car-card__image">
-          <img src="${car.imagem}" alt="${car.nome}">
-        </div>
+  <article class="car-card" data-index="${index}">
+    <div class="car-card__image">
+      <img src="${car.imagem}" alt="${car.nome}">
+    </div>
 
-        <div class="car-card__content">
-          <h3 class="car-card__title">${car.nome}</h3>
+    <div class="car-card__content">
+      <h3 class="car-card__title">${car.nome}</h3>
 
-          <ul class="car-card__info">
-            <li><i class="fa-solid fa-user"></i> ${car.lugares}</li>
-            <li><i class="fa-solid fa-gas-pump"></i> ${car.combustivel}</li>
-            <li><i class="fa-solid fa-car"></i> ${car.categoria}</li>
-          </ul>
+      <!-- 📅 DATAS -->
+      <p class="car-card__dates">
+        <strong>Retirada:</strong> ${formatDate(car.retirada)} <br>
+        <strong>Devolução:</strong> ${formatDate(car.devolucao)}
+      </p>
 
-          <div class="car-card__footer">
-            <button class="btn-primary1">Cancelar</button>
-          </div>
-        </div>
-      </article>
-    `).join('');
+      <ul class="car-card__info">
+        <li><i class="fa-solid fa-user"></i> ${car.lugares}</li>
+        <li><i class="fa-solid fa-gas-pump"></i> ${car.combustivel}</li>
+        <li><i class="fa-solid fa-car"></i> ${car.categoria}</li>
+      </ul>
+
+      <div class="car-card__footer">
+        <button class="btn-primary1">Cancelar</button>
+      </div>
+    </div>
+  </article>
+`).join('');
+
   }
 
   renderCars();

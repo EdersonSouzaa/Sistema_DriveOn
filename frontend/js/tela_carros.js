@@ -194,7 +194,6 @@ elements.reserveForm.addEventListener('submit', (e) => {
   }
 
   const carId = Number(elements.reserveCarId.value);
-
   const car = localCars.find(c => c.id === carId);
 
   if (!car) {
@@ -202,8 +201,15 @@ elements.reserveForm.addEventListener('submit', (e) => {
     return;
   }
 
-  const STORAGE_KEY = `historico_${userEmail}`;
+  const retirada = elements.reserveStart.value;
+  const devolucao = elements.reserveEnd.value;
 
+  if (!retirada || !devolucao) {
+    alert('Selecione as datas de retirada e devolução.');
+    return;
+  }
+
+  const STORAGE_KEY = `historico_${userEmail}`;
   const historicoAtual =
     JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
@@ -214,7 +220,9 @@ elements.reserveForm.addEventListener('submit', (e) => {
     combustivel: car.combustivel,
     cambio: car.cambio,
     lugares: car.lugares,
-    imagem: car.imagem
+    imagem: car.imagem,
+    retirada,      // ✅ NOVO
+    devolucao      // ✅ NOVO
   });
 
   localStorage.setItem(
@@ -222,15 +230,10 @@ elements.reserveForm.addEventListener('submit', (e) => {
     JSON.stringify(historicoAtual)
   );
 
-  // Fecha modal
   elements.reserveModal.classList.remove('modal--open');
-
-  // Feedback simples
   alert('Reserva realizada com sucesso!');
-
-  // (opcional) redirecionar
-  // window.location.href = 'tela_historico.html';
 });
+
 
 
 function renderCars() {
