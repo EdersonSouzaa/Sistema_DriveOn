@@ -13,3 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
     locacoesAtivasEl.textContent = historico.length;
   }
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const carrosDisponiveisEl =
+    document.getElementById('carrosDisponiveis');
+
+  const totalCarros =
+    localStorage.getItem('totalCarrosDisponiveis');
+
+  if (carrosDisponiveisEl && totalCarros !== null) {
+    carrosDisponiveisEl.textContent = totalCarros;
+  }
+});

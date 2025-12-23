@@ -279,6 +279,18 @@ function loadCars() {
   renderCars();
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  wireEvents();
+  loadCars();
+
+  // ✅ SALVA QUANTIDADE TOTAL DE CARROS DISPONÍVEIS
+  localStorage.setItem(
+    'totalCarrosDisponiveis',
+    localCars.length
+  );
+});
+
+
 /* =========================
    EVENTOS
 ========================= */
