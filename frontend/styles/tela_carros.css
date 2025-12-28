@@ -108,7 +108,12 @@ select {
 
 .sidebar_cliente .botao_deslogar {
   margin-top: auto;
-  background: #e63946;
+  background: #d81c2c;
+  font-size: 14px;
+}
+
+.botao_deslogar:hover {
+  background-color: rgb(206, 32, 32) !important;
 }
 
 .icone_botao,
@@ -646,4 +651,76 @@ select {
   .modal-form__grid {
     grid-template-columns: 1fr;
   }
+}
+
+
+.rent-popup.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.rent-popup__card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 48px 40px;
+  width: 620px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(99, 97, 97, 0.25);
+}
+
+
+.rent-popup__icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.rent-popup__card h3 {
+  margin-bottom: 16px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #111;
+}
+
+.rent-popup__card p {
+  color: #3a3939;
+  font-size: 17px;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.rent-popup__card button {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 14px 36px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.rent-popup__card button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.rent-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition: opacity .25s ease, visibility .25s ease;
+  z-index: 99999;
 }

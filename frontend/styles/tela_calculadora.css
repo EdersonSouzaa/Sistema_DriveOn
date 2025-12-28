@@ -95,7 +95,15 @@ body {
 
 .sidebar_cliente .botao_deslogar {
   margin-top: auto;
-  background: #e63946;
+  background: #d81c2c;
+  font-size: 15px;
+    height: 45px;
+
+}
+
+
+.botao_deslogar:hover {
+  background-color: rgb(206, 32, 32) !important;
 }
 
 .icone_botao,

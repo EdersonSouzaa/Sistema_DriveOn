@@ -29,6 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
   return date.toLocaleDateString('pt-BR');
 }
 
+
+ document.querySelector('.botao_deslogar').addEventListener('click', () => {
+                localStorage.removeItem('userName');
+                window.location.href = 'login.html';
+ });
+
+
   // ===== RENDER =====
   function renderCars() {
     if (!cars.length) {
@@ -84,11 +91,29 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelModal.classList.add('active');
 
     cancelYes.onclick = () => {
-      cars.splice(index, 1);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(cars));
-      cancelModal.classList.remove('active');
-      renderCars();
-    };
+  // remove o carro do histórico
+  cars.splice(index, 1);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cars));
+
+  // 🔥 ZERA O TOTAL GASTO
+  localStorage.setItem('totalGasto', 0);
+
+  cancelModal.classList.remove('active');
+  renderCars();
+};
+
+function recalcularTotalGasto(cars) {
+  let total = 0;
+
+  cars.forEach(car => {
+    // ⚠️ ajuste se o nome da propriedade for diferente
+    total += Number(car.preco_diaria || 0);
+  });
+
+  localStorage.setItem('totalGasto', total);
+}
+
+
   });
 
   cancelNo.addEventListener('click', () => {

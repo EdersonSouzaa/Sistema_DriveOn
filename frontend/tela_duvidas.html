@@ -21,6 +21,21 @@
     <link rel="stylesheet" href="styles/tela_duvidas.css" />
     
     <title>Tela de Carros • DriveOn</title>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+        const btnDeslogar = document.querySelector('.botao_deslogar');
+
+        if (btnDeslogar) {
+           btnDeslogar.addEventListener('click', () => {
+           localStorage.removeItem('userName');
+           window.location.href = 'login.html';
+        });
+      }
+      
+    });
+
+    </script>
   </head>
   <body>
     <div class="dashboard-layout">

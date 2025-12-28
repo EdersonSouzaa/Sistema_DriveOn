@@ -186,26 +186,20 @@ elements.reserveForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
   const userEmail = localStorage.getItem('userEmail');
-
   if (!userEmail) {
-    alert('Faça login novamente.');
     window.location.href = 'login.html';
     return;
   }
 
   const carId = Number(elements.reserveCarId.value);
   const car = localCars.find(c => c.id === carId);
-
-  if (!car) {
-    alert('Carro não encontrado.');
-    return;
-  }
+  if (!car) return;
 
   const retirada = elements.reserveStart.value;
   const devolucao = elements.reserveEnd.value;
 
   if (!retirada || !devolucao) {
-    alert('Selecione as datas de retirada e devolução.');
+    alert('Selecione as datas.');
     return;
   }
 
@@ -213,26 +207,63 @@ elements.reserveForm.addEventListener('submit', (e) => {
   const historicoAtual =
     JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-  historicoAtual.push({
-    id: car.id,
-    nome: car.nome,
-    categoria: car.categoria,
-    combustivel: car.combustivel,
-    cambio: car.cambio,
-    lugares: car.lugares,
-    imagem: car.imagem,
-    retirada,      // ✅ NOVO
-    devolucao      // ✅ NOVO
-  });
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(historicoAtual)
+  // ✅ VERIFICA SOMENTE AQUI
+  const alreadyRented = historicoAtual.some(
+    item => item.id === car.id
   );
 
-  elements.reserveModal.classList.remove('modal--open');
-  alert('Reserva realizada com sucesso!');
+  if (alreadyRented) {
+    // 🔥 fecha modal de reserva
+    elements.reserveModal.classList.remove('modal--open');
+
+    // 🔥 mostra popup apenas após clique
+    setTimeout(() => {
+      showAlreadyRentedPopup(car.nome);
+    }, 150);
+
+    return;
+  }
+
+  historicoAtual.push({
+  id: car.id,
+  nome: car.nome,
+  categoria: car.categoria,
+  combustivel: car.combustivel,
+  cambio: car.cambio,
+  lugares: car.lugares,
+  imagem: car.imagem,
+  retirada,
+  devolucao,
+  preco_diaria: car.preco_diaria
 });
+
+localStorage.setItem(STORAGE_KEY, JSON.stringify(historicoAtual));
+
+/* =========================
+   🔥 TOTAL GASTO (AQUI!)
+========================= */
+let totalGasto = Number(localStorage.getItem('totalGasto')) || 0;
+totalGasto += car.preco_diaria;
+localStorage.setItem('totalGasto', totalGasto);
+
+// fecha modal
+elements.reserveModal.classList.remove('modal--open');
+
+// popup sucesso
+showSuccessPopup();
+
+// redireciona (opcional)
+setTimeout(() => {
+  window.location.href = 'tela_historico.html';
+}, 800);
+});
+
+
+ document.querySelector('.botao_deslogar').addEventListener('click', () => {
+                localStorage.removeItem('userName');
+                window.location.href = 'login.html';
+ });
+
 
 
 
@@ -348,3 +379,26 @@ document.addEventListener('DOMContentLoaded', () => {
   wireEvents();
   loadCars();
 });
+
+
+const popup = document.getElementById('rentPopup');
+const popupTitle = document.getElementById('rentPopupTitle');
+const popupText = document.getElementById('rentPopupText');
+
+function showAlreadyRentedPopup(carName) {
+  popupTitle.textContent = 'Carro já alugado';
+  popupText.textContent = `O veículo "${carName}" já está no seu histórico de locações.
+  Para alugá-lo novamente, finalize ou devolva a reserva atual.`;
+  popup.classList.add('active');
+}
+
+function showSuccessPopup() {
+  popupTitle.textContent = 'Reserva confirmada';
+  popupText.textContent = 'Seu veículo foi reservado com sucesso. Desejamos uma ótima experiência!';
+  popup.classList.add('active');
+}
+
+function closeRentPopup() {
+  popup.classList.remove('active');
+}
+

@@ -35,6 +35,18 @@
                 // Add additional functionality here if needed, e.g., redirect or show content
             });
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+    // TOTAL GASTO
+    const totalGasto = Number(localStorage.getItem('totalGasto')) || 0;
+    const totalGastoElement = document.getElementById('totalGasto');
+
+    if (totalGastoElement) {
+        totalGastoElement.textContent = `R$ ${totalGasto.toFixed(2)}`;
+    }
+
+});
   </script>
   <script>
     // On page load, set active sidebar button background color
@@ -165,7 +177,8 @@
                      </span>
                    <div class="info-metrica">
                        <p class="metrica-titulo">Total Gasto</p>
-                       <p class="metrica-valor">0</p>
+                       <p class="metrica-valor" id="totalGasto">R$ 0,00</p>
+
                    </div>
                </div>
                
