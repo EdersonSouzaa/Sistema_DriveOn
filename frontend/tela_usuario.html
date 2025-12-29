@@ -13,40 +13,27 @@
 
     <title>Dashboard - usuário</title>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const userName = localStorage.getItem('userName');
-            if (userName) {
-                document.getElementById('userGreeting').textContent = `Olá, ${userName}`;
-            } else {
-                // Fallback if no userName, perhaps redirect to login
-                window.location.href = 'login.html';
-            }
 
-            // Logout functionality
-            document.querySelector('.botao_deslogar').addEventListener('click', () => {
-                localStorage.removeItem('userName');
-                window.location.href = 'login.html';
-            });
+      document.addEventListener('DOMContentLoaded', () => {
+  const userEmail = localStorage.getItem('userEmail');
+  if (!userEmail) return;
 
-            // Ver Carros card click functionality
-            const verCarrosCard = document.getElementById('ver-carros-card');
-            verCarrosCard.addEventListener('click', () => {
-                verCarrosCard.classList.toggle('clicked');
-                // Add additional functionality here if needed, e.g., redirect or show content
-            });
-    });
+  const STORAGE_KEY = `historico_${userEmail}`;
+  const historico = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-    document.addEventListener('DOMContentLoaded', () => {
+  let total = 0;
 
-    // TOTAL GASTO
-    const totalGasto = Number(localStorage.getItem('totalGasto')) || 0;
-    const totalGastoElement = document.getElementById('totalGasto');
+  historico.forEach(car => {
+    total += Number(car.preco_diaria) || 0;
+  });
 
-    if (totalGastoElement) {
-        totalGastoElement.textContent = `R$ ${totalGasto.toFixed(2)}`;
-    }
-
+  const totalGastoElement = document.getElementById('totalGasto');
+  if (totalGastoElement) {
+    totalGastoElement.textContent = `R$ ${total.toFixed(2)}`;
+  }
 });
+   
+
   </script>
   <script>
     // On page load, set active sidebar button background color
