@@ -7,10 +7,12 @@
     <link rel="shortcut icon" href="./assets/icon_page.png" type="image/x-icon">
     <link rel="shortcut icon" href="./assets/icon_logo.png" type="image/x-icon">
 
+
     <!-- Fonte Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="styles/tela_admin.css">
+    <script defer src="js/tela_admin.js"></script>
 </head>
 <body>
     <div class="dashboard-layout">
@@ -33,7 +35,7 @@
                 <span class="text_inicio2">Gerenciar Carros</span>
             </button>
 
-            <button class="botao_inicio3">
+            <button class="botao_inicio3" onclick="window.location.href='tela_gerencia_clientes.html';">
                 <img src="./assets/icone_profile.png" alt="Usuários" class="icone_botao3">
                 <span class="text_inicio3">Gerenciar Usuários</span>
             </button>
@@ -48,9 +50,8 @@
                 <span class="text_inicio5">Gerar Relatórios</span>
             </button>
 
-            <button class="botao_deslogar" onclick="logout()">
-                <span>Sair</span>
-            </button>
+            <button class="botao_deslogar" type="button">Sair</button>
+
         </div>
 
         <!-- Main Content -->
