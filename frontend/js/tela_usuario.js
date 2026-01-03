@@ -14,6 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+ document.querySelector('.botao_deslogar').addEventListener('click', () => {
+                localStorage.removeItem('userName');
+                window.location.href = 'login.html';
+ });
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const carrosDisponiveisEl =
@@ -26,3 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
     carrosDisponiveisEl.textContent = totalCarros;
   }
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const userName = localStorage.getItem('userName');
+
+  if (userName) {
+    const greetingEl = document.getElementById('userGreeting');
+    greetingEl.textContent = `Olá, ${userName}`;
+  }
+});
+
+if (!localStorage.getItem('userName')) {
+  window.location.href = '/login.html';
+}
