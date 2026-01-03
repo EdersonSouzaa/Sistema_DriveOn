@@ -204,6 +204,44 @@ app.get('/api/user/profile', async (req, res) => {
   }
 });
 
+// ================= ROTAS API =======================
+
+app.get('/api/clientes', async (req, res) => {
+  try {
+    const clientes = await Usuario.findAll({
+      where: { tipo_usuario: 'Cliente' },
+      attributes: ['id', 'nome', 'email', 'telefone']
+    });
+
+    res.json(clientes);
+  } catch (error) {
+    console.error('Erro ao buscar clientes:', error);
+    res.status(500).json({ error: 'Erro ao buscar clientes' });
+  }
+});
+
+
+app.delete('/api/clientes/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const cliente = await Usuario.findOne({
+      where: { id, tipo_usuario: 'Cliente' }
+    });
+
+    if (!cliente) {
+      return res.status(404).json({ error: 'Cliente não encontrado' });
+    }
+
+    await cliente.destroy();
+
+    res.json({ message: 'Cliente excluído com sucesso' });
+
+  } catch (error) {
+    console.error('Erro ao excluir cliente:', error);
+    res.status(500).json({ error: 'Erro interno ao excluir cliente' });
+  }
+});
 
 
 /* ================= FRONTEND =================== */
@@ -230,3 +268,10 @@ app.get('*', (req, res) => {
     console.error('❌ Erro ao iniciar o servidor:', err.message);
   }
 })();
+
+
+
+
+
+
+
