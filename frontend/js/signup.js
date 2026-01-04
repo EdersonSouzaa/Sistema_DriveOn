@@ -29,6 +29,9 @@ function restrictToNumbers(event) {
         input.value = value
             .replace(/^(\d{2})(\d)/g, "($1) $2")
             .replace(/(\d{5})(\d)/, "$1-$2");
+    } else if (input.id === "cnh_input") {
+        value = value.substring(0, 11);
+        input.value = value;
     } else {
         input.value = value;
     }
