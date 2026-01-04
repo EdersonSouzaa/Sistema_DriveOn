@@ -13,8 +13,13 @@
 
 .text_title {
 
-    margin-left: 20%;
+    margin-left: 22%;
     font-size: 18px;
+}
+
+.action_input_search input{
+      margin-left: 2.5%;
+
 }
 
 .text_title h1 {
@@ -52,6 +57,11 @@
     color: white;
     font-weight: 600;
 
+}
+
+.botao_new_client:hover {
+
+    background-color: #5786ff;
 }
 
 .container_clients {
@@ -393,4 +403,50 @@ td:nth-child(5) {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+
+
+
+
+
+/* ===== EMPTY STATE (Nenhum cliente encontrado) ===== */
+
+.empty-row td {
+  padding: 60px 0;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  text-align: center;
+  color: #6b7280; /* cinza moderno */
+}
+
+.empty-state img {
+  width: 56px;
+  height: 56px;
+  opacity: 0.6;
+}
+
+.empty-state h3 {
+  font-size: 25px;
+  font-weight: 600;
+  color: #374151;
+  position: relative;
+  bottom: 50px;
+}
+
+.empty-state p {
+  font-size: 18px;
+  max-width: 560px;
+  line-height: 1.5;
+  position: relative;
+  bottom: 60px;
+  color: #363636;
 }

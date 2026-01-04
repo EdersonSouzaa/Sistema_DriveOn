@@ -16,7 +16,8 @@ async function carregarClientes() {
 
   try {
     const response = await fetch('http://localhost:3001/api/clientes');
-    const clientes = await response.json();
+    listaClientes = await response.json();
+    renderizarClientes(listaClientes);
 
     if (!clientes.length) {
       tbody.innerHTML = `
@@ -114,3 +115,85 @@ function formatarTelefone(telefone) {
 
   return telefone;
 }
+
+
+
+
+function renderizarClientes(clientes) {
+  const tbody = document.getElementById('clientesTableBody');
+  tbody.innerHTML = '';
+
+  if (!clientes.length) {
+    tbody.innerHTML = `
+  <tr class="empty-row">
+    <td colspan="5">
+      <div class="empty-state">
+        <img src="./assets/icone_profile.png" alt="Sem resultados">
+        <h3>Nenhum cliente encontrado</h3>
+        <p>Tente ajustar o nome, email ou telefone na busca.</p>
+      </div>
+    </td>
+  </tr>
+`;
+
+    return;
+  }
+
+  clientes.forEach(cliente => {
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td>${cliente.nome}</td>
+      <td>${cliente.email}</td>
+      <td>${cliente.telefone || 'Não informado'}</td>
+      <td>
+        <span class="status ativo">Ativo</span>
+      </td>
+      <td class="btns">
+        <button onclick="deletarUsuario(${cliente.id})">
+          <img src="./assets/delete.png" class="delete">
+        </button>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+}
+
+
+
+function buscarClientes() {
+  const termo = document
+    .getElementById('searchInput')
+    .value
+    .toLowerCase()
+    .trim();
+
+  if (!termo) {
+    renderizarClientes(listaClientes);
+    return;
+  }
+
+  const filtrados = listaClientes.filter(cliente =>
+    cliente.nome?.toLowerCase().includes(termo) ||
+    cliente.email?.toLowerCase().includes(termo) ||
+    cliente.telefone?.includes(termo)
+  );
+
+  renderizarClientes(filtrados);
+}
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  document
+    .getElementById('searchButton')
+    .addEventListener('click', buscarClientes);
+
+  document
+    .getElementById('searchInput')
+    .addEventListener('keyup', e => {
+      if (e.key === 'Enter') buscarClientes();
+    });
+});
+
