@@ -125,17 +125,12 @@ function renderizarClientes(clientes) {
 
   if (!clientes.length) {
     tbody.innerHTML = `
-  <tr class="empty-row">
-    <td colspan="5">
-      <div class="empty-state">
-        <img src="./assets/icone_profile.png" alt="Sem resultados">
-        <h3>Nenhum cliente encontrado</h3>
-        <p>Tente ajustar o nome, email ou telefone na busca.</p>
-      </div>
-    </td>
-  </tr>
-`;
-
+      <tr>
+        <td colspan="5" style="text-align:center;">
+          Nenhum cliente encontrado
+        </td>
+      </tr>
+    `;
     return;
   }
 
@@ -185,15 +180,4 @@ function buscarClientes() {
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
-  document
-    .getElementById('searchButton')
-    .addEventListener('click', buscarClientes);
-
-  document
-    .getElementById('searchInput')
-    .addEventListener('keyup', e => {
-      if (e.key === 'Enter') buscarClientes();
-    });
-});
 

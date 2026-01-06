@@ -47,7 +47,6 @@
 }
 
 .botao_new_client {
-
     margin-left: 2%;
     height: 45px;
     width: 150px;
@@ -55,13 +54,68 @@
     border: none;
     background-color: #3f7cff;
     color: white;
+
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    font-size: 16px;    
     font-weight: 600;
+    white-space: nowrap;
+    position: relative;
+    top: 3px; 
+}
+
+
+.botao_new_client2 {
+
+    margin-left: 2%;
+    height: 45px;
+    width: 150px;
+    border-radius: 10px;
+    border: none;
+    background-color: #50c024;
+    color: white;
+
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    font-size: 16px;    
+    font-weight: 600;
+    white-space: nowrap;
+    position: relative;
+    top: 3px;
 
 }
+
+
+.icone_filtro {
+    width: 18px;
+    height: 18px;
+    position: relative;
+    top: 3px;
+    right: 10px;
+}
+
+.icone_filtro2 {
+    width: 17px;
+    height: 17px;
+    position: relative;
+    top: 3px;
+    right: 7px;
+}
+
 
 .botao_new_client:hover {
 
     background-color: #5786ff;
+}
+
+
+.botao_new_client2:hover {
+
+    background-color: #5ad32a;
 }
 
 .container_clients {
@@ -155,17 +209,19 @@ height: 30px;
     text-align: left;
 }
 
-.botao_inicio3.active {
-    background-color: #1E63F7;
+
+
+.botao_inicio2.active {
+    background-color: #2969f5;
 }
 
-.botao_inicios:hover, .botao_inicio2:hover, .botao_inicio4:hover, .botao_inicio5:hover, .botao_inicio6:hover {
+.botao_inicios:hover, .botao_inicio4:hover, .botao_inicio5:hover, .botao_inicio6:hover {
     background-color: #3f434b;
     transform: translateX(5px);
 }
 
 
-.botao_inicio3:hover{
+.botao_inicio2:hover{
     background-color: #2969f5;
     transform: translateX(5px);
 }
@@ -236,15 +292,156 @@ height: 30px;
 
     /* TABLE */
     table {
-      width: 70%;
+      width: 80%;
       border-collapse: collapse;
-      background: #fff;
-      border-radius: 14px;
-      overflow: hidden;
-      position: relative;
-      top: 40px;
-      left: 22%;
+      margin-left: 21%;
+      border-spacing: 0;
+    
     }
+
+    table td {
+  padding: 1px 0; /* diminua aqui */
+}
+
+    
+thead {
+    display: none;
+}
+
+tbody tr {
+    display: block;
+    margin-bottom: 14px;
+}
+
+.car-card {
+    display: grid;
+    grid-template-columns: 110px 1fr 140px 140px 120px;
+    align-items: center;
+    gap: 16px;
+    margin: 4px 0;
+
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 14px 18px;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    transition: transform .2s ease, box-shadow .2s ease;
+    position: relative;
+    top: 20px;
+}
+
+.car-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.1);
+}
+
+/* IMAGEM */
+.car-card img {
+    width: 250px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* INFO */
+.car-info h4 {
+    margin-left: 140px;
+    font-size: 21px;
+    font-weight: 600;
+    color: #111;
+    position: relative;
+    bottom: 10px;
+}
+
+.car-plate {
+    font-size: 16px;
+    color: #242525;
+    margin-left: 140px;
+    position: relative;
+    bottom: 30px;
+}
+
+.car-location {
+    font-size: 12px;
+    color: #060707;
+    display: block;
+    margin-left: 140px;
+    position: relative;
+    bottom: 20px;
+}
+
+/* PREÇO */
+.car-price {
+    font-size: 25px;
+    font-weight: 700;
+    color: #111;
+}
+
+.car-price span {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+/* STATUS */
+.car-status {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Status cores */
+.status-available {
+    background: #e7f9ef;
+    color: #16a34a;
+}
+
+.status-rented {
+    background: #e0edff;
+    color: #2563eb;
+}
+
+.status-maintenance {
+    background: #fff3d6;
+    color: #d97706;
+}
+
+.status-inactive {
+    background: #fde8e8;
+    color: #dc2626;
+}
+
+/* AÇÕES */
+.car-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.car-actions button {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    background: #f3f4f6;
+    transition: background .2s ease;
+}
+
+.car-actions .btn-edit:hover {
+    background: #e0edff;
+}
+
+.car-actions .btn-delete:hover {
+    background: #fde8e8;
+}
+
+.car-row{
+    margin-top: 1px;
+}
 
    
 
@@ -254,7 +451,7 @@ height: 30px;
 }
 
     th, td {
-      padding: 14px 10px;
+      padding: 14px 0px;
       text-align: left;
     }
 
