@@ -1,7 +1,7 @@
 const carros = [
   {
     id: 1,
-    nome: "Compacto Mercedes",
+    nome: "Jeep Compass",
     placa: "ABC-1234",
     detalhes: "SUV, URBANO, 4 Portas",
     preco: 90,
@@ -10,63 +10,85 @@ const carros = [
   },
   {
     id: 2,
-    nome: "Sedan Mercedes",
+    nome: "Maserati GranTurismo",
     placa: "DEF-5678",
-    detalhes: "Fique lato",
+    detalhes: "Luxo, Esportivo, 2 Portas",
     preco: 150,
     status: "Alugado",
     imagem: "./assets/cars/car_card2.jpg"
   },
   {
     id: 3,
-    nome: "SUV Audi Q5",
+    nome: "Mini Cooper",
     placa: "GHI-9012",
-    detalhes: "Fique lato",
+    detalhes: "Popular econômico 4 portas",
     preco: 200,
     status: "Manutenção",
     imagem: "./assets/cars/car_card3.jpg"
+  },
+  {
+    id: 4,
+    nome: "BMW X6",
+    placa: "JKL-3456",
+    detalhes: "Luxo, Esportivo, 4 Portas",
+    preco: 120,
+    status: "Inativo",
+    imagem: "./assets/cars/car_card4.jpg"
+  },
+  {
+    id: 5,
+    nome: "McLaren 720S",
+    placa: "MNO-7890",
+    detalhes: "Luxo, Esportivo, 2 Portas",
+    preco: 180,
+    status: "Disponível",
+    imagem: "./assets/cars/car_card5.png"
+  },
+  {
+    id: 6,
+    nome: "Range Rover Evoque",
+    placa: "PQR-1234",
+    detalhes: "SUV, Urbano, 4 Portas",
+    preco: 160,
+    status: "Alugado",
+    imagem: "./assets/cars/car_card6.png"
   }
 ];
 
-const tbody = document.getElementById("clientesTableBody");
+const container = document.getElementById("carrosTableBody");
 
 function renderizarCarros(lista) {
-  tbody.innerHTML = "";
+  container.innerHTML = "";
 
   lista.forEach(carro => {
-    const tr = document.createElement("tr");
-    tr.classList.add("car-row");
+    const card = document.createElement("div");
+    card.classList.add("car-row");
 
-    tr.innerHTML = `
-      <td>
-        <div class="car-card">
-          <img src="${carro.imagem}" alt="${carro.nome}">
+    card.innerHTML = `
+      <div class="car-card">
+        <img src="${carro.imagem}">
 
-          <div class="car-info">
-            <h4>${carro.nome}</h4>
-            <span class="car-plate">${carro.placa}</span>
-            <span class="car-location"> ${carro.detalhes}</span>
-          </div>
-
-          <div class="car-price">
-            R$ ${carro.preco}<span>/dia</span>
-          </div>
-
-          <span class="car-status ${getStatusClass(carro.status)}">
-            ${carro.status}
-          </span>
-
-          <div class="car-actions">
-            <button class="btn-edit" onclick="editarCarro(${carro.id})">✏️</button>
-            <button class="btn-delete" onclick="abrirModalExcluir(${carro.id})">🗑️</button>
-          </div>
+        <div class="car-info">
+          <h4>${carro.nome}</h4>
+          <span class="car-plate">${carro.placa}</span>
+          <span class="car-location">${carro.detalhes}</span>
         </div>
-      </td>
+
+        <div class="car-price">R$ ${carro.preco}<span>/dia</span></div>
+        <span class="car-status ${getStatusClass(carro.status)}">${carro.status}</span>
+
+        <div class="car-actions">
+          <button class="btn-delete">
+            <img src="./assets/delete.png">
+          </button>
+        </div>
+      </div>
     `;
 
-    tbody.appendChild(tr);
+    container.appendChild(card);
   });
 }
+
 
 function getStatusClass(status) {
   switch (status) {
