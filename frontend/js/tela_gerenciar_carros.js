@@ -70,8 +70,7 @@ function renderizarCarros(lista) {
 
         <div class="car-info">
           <h4>${carro.nome}</h4>
-          <span class="car-plate">${carro.placa}</span>
-          <span class="car-location">${carro.detalhes}</span>
+          <p class="car-plate">${carro.placa}</p>
         </div>
 
         <div class="car-price">R$ ${carro.preco}<span>/dia</span></div>

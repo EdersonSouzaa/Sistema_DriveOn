@@ -368,18 +368,27 @@ tbody tr {
     130px       /* status */
     60px;       /* delete */
   align-items: center;
-  gap: 16px;
+  margin-top: 38px;
+  gap: 20px;
   position: relative;
+  left: 22%;
+  border-radius: 12px;
+  width: 80%;
+  
 }
 
-.car-price,
-.car-status,
 .car-actions {
   position: static !important;
+
+}
+
+.car-status {
+  position: relative;
+  right: 58px;
 }
 
 .car-meta {
-   margin-left: auto;
+  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 24px;
@@ -392,10 +401,11 @@ tbody tr {
 
 /* IMAGEM */
 .car-card img {
-    width: 240px;
-    height: 130px;
+    width: 230px;
+    height: 120px;
     object-fit: cover;
     border-radius: 12px;
+    margin-left: 1px;
 }
 
 /* INFO */
@@ -404,26 +414,26 @@ tbody tr {
     font-size: 20px;
     font-weight: 600;
     color: #111;
+    position: relative;
+    left: 30%;
 }
 
-.car-plate {
-    font-size: 14px;
-    color: #374151;
-    margin-top: 6px;
+.car-info .car-plate {
+    font-size: 18px;
+    color: #1f2225;
+    position: relative;
+    top: 6px;
+    left: 160px;
 }
 
-.car-location {
-    display: block;
-    font-size: 13px;
-    color: #6b7280;
-    margin-top: 4px;
-}
 
 /* PREÇO */
 .car-price {
   font-size: 22px;
   font-weight: 700;
   white-space: nowrap;
+  position: relative;
+  right: 50px;
 }
 
 .car-price span {
@@ -443,14 +453,14 @@ tbody tr {
 .status-available {
     background: #e7f9ef;
     color: #16a34a;
-    position: relative;
-    right: 140px;
+    
     
 }
 
 .status-rented {
     background: #e0edff;
     color: #2563eb;
+    
 }
 
 .status-maintenance {
@@ -494,7 +504,8 @@ tbody tr {
     background: #f3f4f6;
     transition: background .2s ease;
     position: relative;
-    right: 160px;
+    right: 30px;
+    top: 16px;
 }
 
 .car-actions .btn-delete img,
