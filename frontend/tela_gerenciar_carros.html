@@ -7,10 +7,122 @@
   <link rel="stylesheet" href="styles/tela_gerenciar_carros.css">
   <link rel="shortcut icon" href="./assets/icon_page.png" type="image/x-icon">
 </head>
-  <script defer src="js/tela_gerenciar_carros.js"></script>
+ 
   <div class="toast-success" id="toastSuccess">
   🚗 Carro excluído com sucesso
 </div>
+
+<!-- OVERLAY -->
+
+<!-- FILTER SIDEBAR -->
+<aside class="filter-sidebar" id="filterSidebar">
+
+  <header class="filter-header">
+    <h2>Filtrar carros</h2>
+    <button class="filter-close" onclick="closeFilter()">✕</button>
+  </header>
+
+  <div class="filter-content">
+
+    <div class="filter-group">
+      <label for="filterModel">Modelo</label>
+      <select id="filterModel">
+        <option value="">Todos</option>
+        <option>Jeep</option>
+        <option>Maseratti</option>
+        <option>Mini Cooper</option>
+        <option>BMW</option>
+        <option>McLaren</option>
+        <option>Range Rover</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="filterPlate">Placa</label>
+      <input id="filterPlate" type="text" placeholder="ABC-1234">
+    </div>
+
+    <div class="filter-group">
+      <label for="filterCategory">Categoria</label>
+      <select id="filterCategory">
+        <option value="">Todas</option>
+        <option>SUV</option>
+        <option>Esportivo</option>
+        <option>Sedan</option>
+        <option>Luxo</option>
+      </select>
+    </div>
+
+  </div>
+
+  <footer class="filter-actions">
+    <button class="btn-clear" onclick="clearFilters()">Limpar</button>
+    <button class="botao_new_client" onclick="openFilter()">
+  <img src="./assets/icone_filtro.png" class="icone_filtro">
+  Filtrar
+</button>
+
+  </footer>
+
+</aside>
+
+
+<script defer src="js/tela_gerenciar_carros.js"></script>
+
+<div class="filter-overlay" id="filterOverlay" onclick="closeFilter()"></div>
+
+<aside class="filter-sidebar" id="filterSidebar">
+
+  <header class="filter-header">
+    <h2>Filtrar carros</h2>
+    <button class="filter-close" onclick="closeFilter()">✕</button>
+  </header>
+
+  <div class="filter-content">
+
+    <div class="filter-group">
+      <label>Modelo</label>
+      <select id="filterModel">
+        <option value="">Todos</option>
+        <option>Jeep</option>
+        <option>Maseratti</option>
+        <option>Mini Cooper</option>
+        <option>BMW</option>
+        <option>McLaren</option>
+        <option>Range Rover</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Placa</label>
+      <input id="filterPlate" type="text" placeholder="ABC-1234">
+    </div>
+
+    <div class="filter-group">
+      <label>Categoria</label>
+      <select id="filterCategory">
+        <option value="">Todas</option>
+        <option>SUV</option>
+        <option>Esportivo</option>
+        <option>Sedan</option>
+        <option>Luxo</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="filter-actions">
+     <button type="button" class="btn-clear" onclick="clearFilters()">
+        Limpar
+     </button>
+
+     <button type="button" class="botao_new_client" onclick="applyFilters()">
+        Aplicar filtro
+     </button>
+  </div>
+
+
+</aside>
 
 <body>
   <div class="layout">
@@ -60,14 +172,15 @@
 
       <div class="action_input_search">
         <input type="text" id="searchInput" placeholder="Buscar carro(modelo, placa ou categoria)"/>
-        <button class="botao_new_client" id="searchButton">
-        <img src="./assets/icone_filtro.png" alt="filtro" class="icone_filtro">
-        Filtrar
+        <button class="botao_new_client" onclick="openFilter()">
+            <img src="./assets/icone_filtro.png" alt="filtro" class="icone_filtro">
+          Filtrar
         </button>
 
-        <button class="botao_new_client2" id="searchButton">
-        <img src="./assets/icone_plus.png" alt="filtro" class="icone_filtro2">
-        Novo carro
+
+        <button class="botao_new_client2" onclick="handleNovoCarro()">
+            <img src="./assets/icone_plus.png" alt="novo" class="icone_filtro2">
+          Novo carro
         </button>
 
 

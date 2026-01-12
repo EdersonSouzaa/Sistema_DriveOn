@@ -206,3 +206,68 @@ function confirmDelete() {
 function handleNovoCarro() {
   alert("Abrir modal ou tela de cadastro de novo carro 🚗");
 }
+
+
+
+function openFilter() {
+  document.getElementById("filterSidebar").classList.add("open");
+  document.getElementById("filterOverlay").classList.add("open");
+}
+
+function closeFilter() {
+  document.getElementById("filterSidebar").classList.remove("open");
+  document.getElementById("filterOverlay").classList.remove("open");
+}
+
+
+
+function applyFilters() {
+  const model = document.getElementById("filterModel").value.toLowerCase();
+  const plate = document.getElementById("filterPlate").value.toLowerCase();
+  const category = document.getElementById("filterCategory").value.toLowerCase();
+
+  const filtrados = carros.filter(carro => {
+    const matchModel = !model || carro.nome.toLowerCase().includes(model);
+    const matchPlate = !plate || carro.placa.toLowerCase().includes(plate);
+    const matchCategory = !category || carro.detalhes.toLowerCase().includes(category);
+
+    return matchModel && matchPlate && matchCategory;
+  });
+
+  renderizarCarros(filtrados);
+  closeFilter();
+}
+
+
+
+function clearFilters() {
+  document.getElementById("filterModel").value = "";
+  document.getElementById("filterPlate").value = "";
+  document.getElementById("filterCategory").value = "";
+
+  renderizarCarros(carros);
+}
+
+
+
+function openFilter() {
+  const sidebar = document.getElementById("filterSidebar");
+  const overlay = document.getElementById("filterOverlay");
+
+  if (!sidebar || !overlay) {
+    console.error("Filtro não encontrado no DOM");
+    return;
+  }
+
+  sidebar.classList.add("open");
+  overlay.classList.add("active");
+}
+
+function closeFilter() {
+  document.getElementById("filterSidebar").classList.remove("open");
+  document.getElementById("filterOverlay").classList.remove("active");
+}
+
+function openFilter() {
+  document.getElementById("filterSidebar").classList.add("open");
+}

@@ -951,4 +951,149 @@ td:nth-child(5) {
 
 
 
+/* Overlay */
+.filter-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 1000;
+}
+
+
+.filter-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Sidebar */
+.filter-sidebar {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 400px;
+  height: 100vh;
+  background: #ffffff;
+  box-shadow: -12px 0 30px rgba(0,0,0,0.12);
+  transition: right 0.3s ease;
+  z-index: 1001;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* OPEN STATE */
+.filter-sidebar.open {
+  right: 0;
+}
+
+.filter-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Header */
+.filter-header {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.filter-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.filter-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Body */
+.filter-body {
+  padding: 24px;
+  flex: 1;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.filter-group label {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+  margin-top: 30px;
+  margin-left: 14px;
+}
+
+.filter-group input,
+.filter-group select {
+  width: 90%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  outline: none;
+  margin-left: 12px;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+  border-color: #2563eb;
+}
+
+/* Footer */
+.filter-footer {
+  padding: 20px 24px;
+  display: flex;
+  gap: 12px;
+  border-top: 1px solid #eee;
+}
+
+.filter-actions {
+  padding: 20px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  gap: 12px;
+}
+
+
+.btn-clear {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #f3f4f6;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-apply {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+
+.btn-apply:hover {
+  background: #1d4ed8;
+}
+
 
