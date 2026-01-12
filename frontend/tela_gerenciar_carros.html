@@ -8,6 +8,10 @@
   <link rel="shortcut icon" href="./assets/icon_page.png" type="image/x-icon">
 </head>
   <script defer src="js/tela_gerenciar_carros.js"></script>
+  <div class="toast-success" id="toastSuccess">
+  🚗 Carro excluído com sucesso
+</div>
+
 <body>
   <div class="layout">
 
@@ -69,34 +73,54 @@
 
       </div>
 
-      <table>
-  <thead>
-    <!-- Pode ficar vazio ou só com colunas invisíveis -->
-  </thead>
+<div id="carrosTableBody" class="cars-list"></div>
 
-  <div id="carrosTableBody" class="cars-list"></div>
-
-</table>
+<div class="empty-state" id="emptyState">
+  <h2>Não há carros adicionados no momento</h2>
+  <p>Comece adicionando um novo veículo à sua frota.</p>
+  <button class="btn-empty-action" onclick="handleNovoCarro()">
+    ➕ Novo Carro
+  </button>
+</div>
 
     </main>
 
   </div>
 
+</div> <!-- FECHA .layout -->
 
-  <div class="modal-overlay" id="deleteModal">
-  <div class="modal-box">
-    <h2>Excluir Carro</h2>
-    <p>
-      Tem certeza que deseja excluir este carro ?<br>
-      <span class="modal-warning">Essa ação não poderá ser desfeita.</span>
+<!-- MODAL (FORA DO .layout) -->
+<div class="modal-overlay" id="deleteModal">
+
+  <div class="modal-box modal-danger">
+
+    <div class="modal-car-image-wrapper">
+      <img id="modalCarImage" src="" alt="Carro selecionado">
+    </div>
+
+    <div class="modal-car-details">
+      <h2 id="modalCarName"></h2>
+      <span id="modalCarPlate"></span>
+    </div>
+
+    <p class="modal-text">
+      Tem certeza que deseja excluir este carro?<br>
+      <strong>Essa ação não poderá ser desfeita.</strong>
     </p>
 
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeDeleteModal()">Cancelar</button>
-      <button class="btn-delete" id="confirmDeleteBtn">Excluir</button>
+
+      <button class="btn-delete btn-danger-big" onclick="confirmDelete()">
+        Excluir definitivamente
+      </button>
     </div>
+
   </div>
+
 </div>
+
+
 
 </body>
 </html>

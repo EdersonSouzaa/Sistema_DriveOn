@@ -1,3 +1,7 @@
+let carroSelecionadoId = null;
+
+
+
 const carros = [
   {
     id: 1,
@@ -60,33 +64,49 @@ const container = document.getElementById("carrosTableBody");
 function renderizarCarros(lista) {
   container.innerHTML = "";
 
+  const emptyState = document.getElementById("emptyState");
+
+  if (lista.length === 0) {
+    emptyState.style.display = "flex";
+    return;
+  }
+
+  emptyState.style.display = "none";
+
   lista.forEach(carro => {
-    const card = document.createElement("div");
-    card.classList.add("car-row");
+  const card = document.createElement("div");
+  card.classList.add("car-row");
 
-    card.innerHTML = `
-      <div class="car-card">
-        <img src="${carro.imagem}">
+  card.innerHTML = `
+    <div class="car-card">
+      <img src="${carro.imagem}" alt="${carro.nome}">
 
-        <div class="car-info">
-          <h4>${carro.nome}</h4>
-          <p class="car-plate">${carro.placa}</p>
-        </div>
-
-        <div class="car-price">R$ ${carro.preco}<span>/dia</span></div>
-        <span class="car-status ${getStatusClass(carro.status)}">${carro.status}</span>
-
-        <div class="car-actions">
-          <button class="btn-delete">
-            <img src="./assets/delete.png">
-          </button>
-        </div>
+      <div class="car-info">
+        <h4>${carro.nome}</h4>
+        <p class="car-plate">${carro.placa}</p>
       </div>
-    `;
 
-    container.appendChild(card);
-  });
+      <div class="car-price">
+        R$ ${carro.preco}<span>/dia</span>
+      </div>
+
+      <span class="car-status ${getStatusClass(carro.status)}">
+        ${carro.status}
+      </span>
+
+      <div class="car-actions">
+        <button class="btn-delete" onclick="openDeleteModal(${carro.id})">
+          <img src="./assets/delete.png" alt="Excluir">
+        </button>
+      </div>
+    </div>
+  `;
+
+  container.appendChild(card);
+});
+
 }
+
 
 
 function getStatusClass(status) {
@@ -106,3 +126,83 @@ function getStatusClass(status) {
 
 // Inicializa
 renderizarCarros(carros);
+
+
+
+function openDeleteModal(id) {
+  const carro = carros.find(c => c.id === id);
+  if (!carro) return;
+
+  carroSelecionadoId = id;
+
+  document.getElementById("modalCarImage").src = carro.imagem;
+  document.getElementById("modalCarName").textContent = carro.nome;
+  document.getElementById("modalCarPlate").textContent = carro.placa;
+
+  document.getElementById("deleteModal").style.display = "flex";
+}
+
+function closeDeleteModal() {
+  document.getElementById("deleteModal").style.display = "none";
+  carroSelecionadoId = null;
+}
+
+
+
+function confirmDelete() {
+  if (carroSelecionadoId === null) return;
+
+  const index = carros.findIndex(c => c.id === carroSelecionadoId);
+
+  if (index !== -1) {
+    carros.splice(index, 1);
+    renderizarCarros(carros);
+  }
+
+  closeDeleteModal();
+}
+
+
+document.getElementById("deleteModal").style.display = "flex";
+
+
+window.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("deleteModal");
+  if (modal) {
+    modal.style.display = "none";
+  }
+});
+
+
+
+function showSuccessToast() {
+  const toast = document.getElementById("toastSuccess");
+  if (!toast) return;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000); // 3 segundos
+}
+
+
+function confirmDelete() {
+  if (carroSelecionadoId === null) return;
+
+  const index = carros.findIndex(c => c.id === carroSelecionadoId);
+
+  if (index !== -1) {
+    carros.splice(index, 1);
+    renderizarCarros(carros);
+    showSuccessToast(); // 👈 AQUI
+  }
+
+  closeDeleteModal();
+}
+
+
+
+function handleNovoCarro() {
+  alert("Abrir modal ou tela de cadastro de novo carro 🚗");
+}
