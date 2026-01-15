@@ -1,4 +1,3 @@
-/* Frontend Stylesheet */
 * {
   margin: 0;
   padding: 0;
@@ -12,7 +11,6 @@ body {
   line-height: 1.6;
 }
 
-/* Container: Mantido para manter a largura máxima customizada */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -40,7 +38,6 @@ body {
   bottom: 6px;
 }
 
-/* --- HEADER --- */
 .header {
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -50,10 +47,8 @@ body {
 }
 
 .header-content {
-  /* Não precisa de regras aqui, as classes do Bootstrap cuidam disso */
 }
 
-/* Logo */
 .logo-box {
   width: 45px;
   height: 45px;
@@ -69,7 +64,7 @@ body {
 }
 
 .nav {
-  gap: 2rem; /* Mantido para o espaçamento entre links */
+  gap: 2rem; 
 }
 
 .nav-link {
@@ -82,7 +77,6 @@ body {
   color: #2F6FF7;
 }
 
-/* Auth Buttons */
 .btn-login,
 .btn-signup {
   font-weight: 600;
@@ -112,12 +106,10 @@ body {
   box-shadow: 0 4px 12px rgba(31, 99, 247, 0.3);
 }
 
-/* Ajuste de border-radius para o botão de signup */
 .btn-signup.text-white.text-decoration-none.px-3.py-2.ms-2 {
   border-radius: 12px;
 }
 
-/* Menu Button (Mobile) */
 .menu-button {
   display: none;
   flex-direction: column;
@@ -137,7 +129,6 @@ body {
   transform-origin: center;
 }
 
-/* Mobile Navigation */
 @media (max-width: 768px) {
   .header-content { position: relative; }
   .menu-button { display: flex; }
@@ -160,7 +151,6 @@ main {
   padding: 2rem 0;
 }
 
-/* --- HERO SECTION --- */
 .hero {
   padding: 100px 20px;
   min-height: 550px;
@@ -185,8 +175,7 @@ main {
   border-radius: 12px;
   font-weight: 700;
   font-size: 1rem;
-  /* Removido position: relative; bottom: 70px; */
-  /* Use mb-4 no HTML para controlar o espaçamento */
+ 
 }
 
 .hero-check {
@@ -209,10 +198,8 @@ main {
   line-height: 1.1;
   text-align: center;
   font-family: 'Poppins', sans-serif;
-  /* REMOVIDO: white-space: nowrap !important; -> para permitir que o texto quebre */
   width: 100%;
-  /* Removido position: relative; bottom: 50px; */
-  /* Use mb-3 no HTML para controlar o espaçamento */
+ 
 }
 
 .hero-title span {
@@ -226,8 +213,7 @@ main {
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-  /* Removido position: relative; bottom: 30px; */
-  /* Use mb-4 no HTML para controlar o espaçamento */
+  
 }
 
 .hero-button {
@@ -245,37 +231,30 @@ main {
   background-color: #155bd6 !important;
 }
 
-/* Mobile hero */
 @media (max-width: 768px) {
   .hero-title { 
     font-size: 40px; 
-    white-space: normal; /* Garante que o título quebre em telas menores */
+    white-space: normal; 
   }
   .hero-subtitle { font-size: 18px; }
   .hero { padding: 60px 16px; min-height: auto; }
 }
 
-/* --- SEÇÃO DE ESTATÍSTICAS --- */
 .stats-section {
   width: 100%;
   padding: 60px 0;
   border-top: 1px solid #b4b0b0;
   background-color: #fff; 
-  /* A classe d-flex justify-content-center no HTML já centraliza */
+ 
 }
 
-/* stats-grid é uma classe customizada no seu HTML */
 .stats-grid {
-  /* No HTML, você já tem 'row justify-content-center g-4 stats-grid'
-     Isso deve ser suficiente para responsividade.
-     Se houver um problema, é porque 'stats-item' tem largura fixa ou flex-basis.
-     Vamos garantir que 'stats-item' respeite as colunas do Bootstrap. */
+  
 }
 
 .stat-item {
-  /* Certifica-se de que cada item se encaixa na coluna definida pelo Bootstrap */
-  /* Removido flex: 1 ou widths fixos que poderiam causar problemas */
-  padding: 10px; /* Adiciona um pouco de padding interno para melhor visual */
+  
+  padding: 10px;
 }
 
 .stat-number {
@@ -295,16 +274,13 @@ main {
   .stat-number {
     font-size: 1.7rem;
   }
-  /* Garante que os itens de estatística fiquem em coluna em telas muito pequenas,
-     se o col-6 col-md-4 não estiver funcionando como esperado.
-     Você pode ter adicionado flex-basis diretamente em .stat-item que está causando o problema. */
-  .stats-grid .col-6 { /* Aponta para as colunas do Bootstrap */
-    flex-basis: 100%; /* Força cada item a ocupar a largura total em telas pequenas */
+  
+  .stats-grid .col-6 { 
+    flex-basis: 100%; 
     max-width: 100%;
   }
 }
 
-/* --- WHY CHOOSE US SECTION --- */
 .why-choose-us {
   padding: 80px 0 100px;
   text-align: center;
@@ -321,11 +297,10 @@ main {
 .wcu-subtitle {
   font-size: 16px;
   color: #666;
-  /* Removido position: relative; top: 7px; */
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 3rem; /* Adicionado margem para espaçamento */
+  margin-bottom: 3rem; 
 }
 
 .wcu-item {
@@ -339,7 +314,6 @@ main {
   margin-bottom: 1rem;
 }
 
-/* Estilos de cor para os ícones */
 .wcu-icon-blue {
   background-color: #145efc; 
 }
@@ -378,7 +352,6 @@ main {
   }
 }
 
-/* --- FLEET EXAMPLES SECTION --- */
 .fleet-examples {
   padding: 100px 0;
   text-align: center;
@@ -399,14 +372,165 @@ main {
 }
 
 .fleet-card {
-  overflow: hidden;
-  transition: transform 0.3s ease;
+    background: #f8f9fb;
+    border-radius: 20px;
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    height: 610px;
+
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.container_price {
+
+  background-color: #201f1f;
+  width: 102%;
+  height: 110px;
+  position: relative;
+  bottom: 2px;
+  border-radius: 12px;
+}
+
+.text_car {
+
+  color: white;
+  font-size: 18px;
+  position: relative;
+  top: 9px;
+}
+
+.text_preco_car {
+
+  position: relative;
+  top: 9px;
+  font-size: 26px;
+  color: white;
+}
+
+
+.fleet-image {
+    width: 100%;
+    height: 180px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 16px;
+}
+
+.fleet-image img {
+    max-width: 100%;
+    max-height: 100%;
+    position: relative;
+    top: 12px;
+
+    object-fit: contain; 
+}
+
+.fleet-description {
+    position: relative;
+    right: 38px;
+    font-size: 16px;
+    bottom: 23px;
+}
+
+.card_type {
+
+  background-color: #080808;
+  position: relative;
+  bottom: 40%;
+  right: 27%;
+  border-top-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  width: 60%;
+}
+
+.fleet-card h4 {
+    font-size: 23px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    position: relative;
+    left: -10%;
+    top: 14%;
+}
+
+.fleet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 230px;
 }
 
 .fleet-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
+
+.fleet-info img {
+  width: 26px;
+  height: 26px;
+  position: relative;
+  right: 85px;
+}
+
+.fleet-info .icone_estacionar{
+  width: 26px;
+  height: 26px;
+  position: relative;
+  top: 50px;
+  right: 114px;
+}
+
+.fleet-info .gasolina_consumo {
+  width: 26px;
+  height: 26px;
+  position: relative;
+  right: 148px;
+  top: 110px;
+}
+
+
+.fleet-info .text_economic {
+
+  position: relative;
+  right: 40px;
+  bottom: 23px;
+  color: rgb(20, 20, 20);
+  font-size: 16px;
+  font-weight: 400;
+ 
+}
+
+.fleet-info .text_estacionar {
+
+  position: relative;
+  right: 40px;
+  bottom: 15px;
+  color: rgb(20, 20, 20);
+  font-size: 16px;
+  font-weight: 400;
+ 
+}
+
+.fleet-info .text_consumo {
+
+  position: relative;
+  right: 40px;
+  top: 2px;
+  color: rgb(20, 20, 20);
+  font-size: 16px;
+  font-weight: 400;
+ 
+}
+
+
+
 
 .card-image-wrapper {
   position: relative;
@@ -417,7 +541,7 @@ main {
 }
 
 .card-image {
-  width: 100%;
+  width: 20%;
   height: 100%;
   object-fit: cover; 
   object-position: center;
@@ -480,7 +604,6 @@ main {
   color: #155bd6;
 }
 
-/* Responsividade de frota simplificada */
 @media (max-width: 992px) {
   .fleet-examples {
     padding: 60px 0;
@@ -488,16 +611,23 @@ main {
 }
 
 @media (max-width: 768px) {
-  .fleet-title {
-    font-size: 1.8rem;
-  }
-  .fleet-card {
-    max-width: 100%; 
-  }
+   .fleet-card-premium {
+        flex-direction: column;
+        height: auto;
+        text-align: center;
+    }
+
+    .fleet-car-image {
+        width: 100%;
+        height: 180px;
+    }
+
+    .fleet-info {
+        text-align: center;
+    }
 }
 
 
-/* --- HOW IT WORKS SECTION --- */
 .how-it-works {
   padding: 50px 0; 
   text-align: center;
@@ -572,7 +702,6 @@ main {
   top: 20px;
 }
 
-/* Responsividade para telas menores */
 @media (max-width: 768px) {
   .how-it-works {
     padding: 60px 0;
@@ -585,30 +714,26 @@ main {
   }
 }
 
-/* --- CTA SECTION --- */
 .cta-section {
     background-color: #2F6FF7;
     padding: 80px 0;
     text-align: center;
-    /* Removido position: relative; top: 40px; */
-    /* Use margin-top no elemento main ou na própria section se precisar */
+  
 }
 
 .cta-question {
     font-size: 20px;
     font-weight: 500;
     color: #ffffff; 
-    /* Removido position: relative; bottom: 10px; */
 }
 
 .cta-subtitle {
     font-size: 17px;
-    font-weight: 300; /* Ajuste para font-weight: 300; conforme solicitado */
+    font-weight: 300; 
     color: white;
 }
 
 .cta-buttons {
-    /* Removido position: relative; top: 10px; */
 }
 
 .btn-cta-white,
@@ -638,7 +763,6 @@ main {
     background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Responsividade CTA */
 @media (max-width: 600px) {
     .cta-section {
         padding: 50px 0;
@@ -663,7 +787,6 @@ main {
 }
 
 
-/* --- FOOTER --- */
 .footer {
     background-color: #1a1e26; 
     padding: 20px 0;
@@ -678,7 +801,6 @@ main {
     width: 100%; 
 }
 
-/* Responsividade Footer */
 @media (max-width: 480px) {
     .footer-content {
         gap: 15px;
@@ -690,60 +812,69 @@ main {
 
 
 
-/* ===== FLEET PREMIUM CARDS ===== */
-
 .fleet-card-premium {
-    position: relative;
-    height: 550px;
-    border-radius: 18px;
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.18);
-    transition: 
-        transform 0.35s cubic-bezier(.2,.8,.2,1),
-        box-shadow 0.35s ease;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    background: #f7f7f8;
+    border-radius: 20px;
+    padding: 24px;
+
+    height: 220px;
+
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* IMAGEM COMO BACKGROUND VISUAL DO CARD */
-.fleet-card-premium img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-    object-position: center center;
-
-    transform: scale(1);
-    transition: transform 0.5s ease;
+.fleet-card-premium:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.12);
 }
 
-/* Leve zoom no hover (igual ao da imagem referência) */
+.fleet-car-image {
+    flex: 0 0 260px;
+    height: 160px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.fleet-car-image img {
+    max-width: 100%;
+    max-height: 100%;
+
+    object-fit: contain; 
+}
+
+
+.fleet-info {
+    flex: 1;
+    text-align: left;
+}
+
+.fleet-info h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 6px;
+}
+
+.fleet-info p {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 16px;
+}
+
+
+
 .fleet-card-premium:hover img {
     transform: scale(1.06);
 }
 
-/* Gradiente escuro igual ao da primeira imagem */
-.fleet-card-premium::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.75),
-        rgba(0, 0, 0, 0.25),
-        transparent
-    );
-    z-index: 1;
-}
 
-/* Hover do card */
-.fleet-card-premium:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 35px 70px rgba(0, 0, 0, 0.28);
-}
-
-/* ===== BADGE ===== */
 
 .fleet-badge {
     position: absolute;
@@ -769,28 +900,6 @@ main {
     background: linear-gradient(135deg, #f39c12, #e67e22);
 }
 
-/* ===== OVERLAY ===== */
-
-.fleet-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 24px;
-    z-index: 2;
-
-    /* 🔥 BLUR DE VOLTA */
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-
-    /* fundo translúcido para o blur aparecer */
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.55),
-        rgba(0, 0, 0, 0.25),
-        transparent
-    );
-}
 
 
 .fleet-overlay h3 {
@@ -806,16 +915,17 @@ main {
     margin-bottom: 16px;
 }
 
-/* ===== PREÇO ===== */
 
 .fleet-price {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 800;
-    color: #ffffff;
+    color: #111827;
 }
 
+
+
 .fleet-price span {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
-    color: #dcdcdc;
+    color: #6b7280;
 }
