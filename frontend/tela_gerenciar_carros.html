@@ -12,9 +12,20 @@
   🚗 Carro excluído com sucesso
 </div>
 
-<!-- OVERLAY -->
 
-<!-- FILTER SIDEBAR -->
+
+<script defer src="js/tela_gerenciar_carros.js"></script>
+
+<div class="filter-overlay" id="filterOverlay" onclick="closeFilter()"></div>
+
+
+<body>
+
+  <div class="toast-success" id="toastSuccess"></div>
+
+  <div class="filter-overlay" id="filterOverlay" onclick="closeFilter()"></div>
+
+  <!-- FILTER SIDEBAR -->
 <aside class="filter-sidebar" id="filterSidebar">
 
   <header class="filter-header">
@@ -67,64 +78,7 @@
 </aside>
 
 
-<script defer src="js/tela_gerenciar_carros.js"></script>
 
-<div class="filter-overlay" id="filterOverlay" onclick="closeFilter()"></div>
-
-<aside class="filter-sidebar" id="filterSidebar">
-
-  <header class="filter-header">
-    <h2>Filtrar carros</h2>
-    <button class="filter-close" onclick="closeFilter()">✕</button>
-  </header>
-
-  <div class="filter-content">
-
-    <div class="filter-group">
-      <label>Modelo</label>
-      <select id="filterModel">
-        <option value="">Todos</option>
-        <option>Jeep</option>
-        <option>Maseratti</option>
-        <option>Mini Cooper</option>
-        <option>BMW</option>
-        <option>McLaren</option>
-        <option>Range Rover</option>
-      </select>
-    </div>
-
-    <div class="filter-group">
-      <label>Placa</label>
-      <input id="filterPlate" type="text" placeholder="ABC-1234">
-    </div>
-
-    <div class="filter-group">
-      <label>Categoria</label>
-      <select id="filterCategory">
-        <option value="">Todas</option>
-        <option>SUV</option>
-        <option>Esportivo</option>
-        <option>Sedan</option>
-        <option>Luxo</option>
-      </select>
-    </div>
-
-  </div>
-
-  <div class="filter-actions">
-     <button type="button" class="btn-clear" onclick="clearFilters()">
-        Limpar
-     </button>
-
-     <button type="button" class="botao_new_client" onclick="applyFilters()">
-        Aplicar filtro
-     </button>
-  </div>
-
-
-</aside>
-
-<body>
   <div class="layout">
 
     <aside class="sidebar_admin">

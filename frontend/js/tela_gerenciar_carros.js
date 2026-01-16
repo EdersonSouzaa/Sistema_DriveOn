@@ -209,34 +209,29 @@ function handleNovoCarro() {
 
 
 
-function openFilter() {
-  document.getElementById("filterSidebar").classList.add("open");
-  document.getElementById("filterOverlay").classList.add("open");
-}
-
-function closeFilter() {
-  document.getElementById("filterSidebar").classList.remove("open");
-  document.getElementById("filterOverlay").classList.remove("open");
-}
-
-
 
 function applyFilters() {
-  const model = document.getElementById("filterModel").value.toLowerCase();
-  const plate = document.getElementById("filterPlate").value.toLowerCase();
-  const category = document.getElementById("filterCategory").value.toLowerCase();
+  const model = document.getElementById("filterModel").value.trim().toLowerCase();
+  const plate = document.getElementById("filterPlate").value.trim().toLowerCase();
+  const category = document.getElementById("filterCategory").value.trim().toLowerCase();
 
   const filtrados = carros.filter(carro => {
-    const matchModel = !model || carro.nome.toLowerCase().includes(model);
-    const matchPlate = !plate || carro.placa.toLowerCase().includes(plate);
-    const matchCategory = !category || carro.detalhes.toLowerCase().includes(category);
+    const carroNome = carro.nome.toLowerCase();
+    const carroPlaca = carro.placa.toLowerCase();
+    const carroCategoria = carro.detalhes.toLowerCase();
+
+    const matchModel = !model || carroNome.includes(model);
+    const matchPlate = !plate || carroPlaca === plate; // 👈 EXATO
+    const matchCategory = !category || carroCategoria.includes(category);
 
     return matchModel && matchPlate && matchCategory;
   });
 
   renderizarCarros(filtrados);
-  closeFilter();
+  closeFilter(); // 👈 FECHA O POPUP
 }
+
+
 
 
 
@@ -248,26 +243,16 @@ function clearFilters() {
   renderizarCarros(carros);
 }
 
-
-
 function openFilter() {
   const sidebar = document.getElementById("filterSidebar");
   const overlay = document.getElementById("filterOverlay");
-
-  if (!sidebar || !overlay) {
-    console.error("Filtro não encontrado no DOM");
-    return;
-  }
 
   sidebar.classList.add("open");
   overlay.classList.add("active");
 }
 
+
 function closeFilter() {
   document.getElementById("filterSidebar").classList.remove("open");
   document.getElementById("filterOverlay").classList.remove("active");
-}
-
-function openFilter() {
-  document.getElementById("filterSidebar").classList.add("open");
 }

@@ -439,6 +439,50 @@ main {
     bottom: 23px;
 }
 
+.fleet-description2 {
+    position: relative;
+    right: 14px;
+    font-size: 16px;
+    bottom: 23px;
+}
+
+.fleet-description3 {
+    position: relative;
+    left: -3px;
+    font-size: 16px;
+    bottom: 23px;
+}
+
+.text_veiculos {
+  position: relative;
+  top: 60px;
+  color: #1E63F7;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.hiw-title.fw-bold.mb-2 {
+
+  margin-top: 30px;
+}
+
+.row.justify-content-center.hiw-grid {
+
+  margin-top: 90px;
+}
+
+.fleet-title.fw-bold.mb-2 {
+
+  position: relative;
+  top: 40px;
+}
+
+.fleet-subtitle.text-muted.mb-5 {
+
+  position: relative;
+  top: 60px;
+}
+
 .card_type {
 
   background-color: #080808;
@@ -479,6 +523,14 @@ main {
   right: 85px;
 }
 
+.fleet-info .img_estrada {
+  width: 26px;
+  height: 26px;
+  position: relative;
+  top: 3px;
+  right: 30px;
+}
+
 .fleet-info .icone_estacionar{
   width: 26px;
   height: 26px;
@@ -487,11 +539,46 @@ main {
   right: 114px;
 }
 
+.fleet-info .icone_estacionar2 {
+  width: 26px;
+  height: 26px;
+  position: relative;
+  top: 50px;
+  right: 116px;
+}
+
+.fleet-info .img_familia {
+  width: 26px;
+  height: 26px;
+  position: relative;
+  top: 54px;
+  right: 60px;
+}
+
+.fleet-info .img_comforto {
+  width: 28px;
+  height: 28px;
+  position: relative;
+  top: 110px;
+  right: 91px;
+}
+
+
+
+
 .fleet-info .gasolina_consumo {
   width: 26px;
   height: 26px;
   position: relative;
   right: 148px;
+  top: 110px;
+}
+
+.fleet-info .gasolina_consumo2 {
+  width: 26px;
+  height: 26px;
+  position: relative;
+  right: 146px;
   top: 110px;
 }
 
@@ -507,6 +594,20 @@ main {
  
 }
 
+
+
+.fleet-info .text_trajeto {
+
+  position: relative;
+  left: 18px;
+  bottom: 23px;
+  color: rgb(20, 20, 20);
+  font-size: 16px;
+  font-weight: 400;
+ 
+}
+
+
 .fleet-info .text_estacionar {
 
   position: relative;
@@ -518,10 +619,33 @@ main {
  
 }
 
+.fleet-info .text_family {
+
+  position: relative;
+  left: 20px;
+  bottom: 15px;
+  color: rgb(20, 20, 20);
+  font-size: 16px;
+  font-weight: 400;
+  bottom: 10px;
+ 
+}
+
 .fleet-info .text_consumo {
 
   position: relative;
   right: 40px;
+  top: 2px;
+  color: rgb(20, 20, 20);
+  font-size: 16px;
+  font-weight: 400;
+ 
+}
+
+.fleet-info .text_comforto {
+
+  position: relative;
+  left: 20px;
   top: 2px;
   color: rgb(20, 20, 20);
   font-size: 16px;
@@ -928,4 +1052,37 @@ main {
     font-size: 15px;
     font-weight: 500;
     color: #6b7280;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+  .fleet-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .fleet-grid {
+    grid-template-columns: 1fr;
+  }
 }
