@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveOn - Gerar Relatórios</title>
+    <link rel="shortcut icon" href="./assets/icon_page.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/tela_admin.css"> <link rel="stylesheet" href="styles/tela_relatorios.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar_admin">
+            <div class="logo-group">
+                <div class="container_img">
+                    <img src="./assets/icon_logo.png" alt="DriveOn Logo">
+                </div>
+                <div class="text_logo">DriveOn</div>
+            </div>
+
+            <button class="botao_inicios" onclick="window.location.href='tela_admin.html';">
+                <img src="./assets/icon_home.png" alt="Dashboard" class="icone_botao">
+                <span class="text_inicio">Dashboard</span>
+            </button>
+
+            <button class="botao_inicio2" onclick="window.location.href='tela_gerenciar_carros.html';">
+                <img src="./assets/icone_cars.png" alt="Carros" class="icone_botao2">
+                <span class="text_inicio2">Gerenciar Carros</span>
+            </button>
+
+            <button class="botao_inicio3" onclick="window.location.href='tela_gerencia_clientes.html';">
+                <img src="./assets/icone_profile.png" alt="Usuários" class="icone_botao3">
+                <span class="text_inicio3">Gerenciar Usuários</span>
+            </button>
+
+            <button class="botao_inicio5 active">
+                <img src="./assets/icone_historico.png" alt="Relatórios" class="icone_botao5">
+                <span class="text_inicio5">Gerar Relatórios</span>
+            </button>
+
+            <button class="botao_deslogar" type="button">Sair</button>
+        </aside>
+
+        <main class="main-content">
+            <header class="header-saudacao">
+                <h1 class="title-header">Central de Relatórios</h1>
+                <p class="subtitle-header">Selecione o tipo de dado que deseja exportar para análise</p>
+            </header>
+
+            <div class="report-grid">
+                <div class="report-card">
+                    <div class="report-icon icon-blue">
+                        <img src="./assets/icone_cars.png" alt="Frota">
+                    </div>
+                    <h3>Relatório de Frota</h3>
+                    <p>Status atual dos veículos, quilometragem e necessidade de manutenção.</p>
+                    <button class="btn-generate" onclick="gerarPDF('frota')">Gerar PDF</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon icon-orange">
+                        <img src="./assets/icone_profile.png" alt="Clientes">
+                    </div>
+                    <h3>Histórico de Clientes</h3>
+                    <p>Listagem completa de usuários ativos, reservas concluídas e inadimplência.</p>
+                    <button class="btn-generate" onclick="gerarPDF('clientes')">Gerar PDF</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon icon-green">
+                        <img src="./assets/dollar.png" alt="Financeiro">
+                    </div>
+                    <h3>Fluxo Financeiro</h3>
+                    <p>Receita bruta, faturamento por categoria e projeções mensais.</p>
+                    <button class="btn-generate" onclick="gerarPDF('financeiro')">Gerar PDF</button>
+                </div>
+            </div>
+
+            <section class="custom-report">
+                <h2>Relatório Personalizado</h2>
+                <div class="filter-form">
+                    <div class="input-group">
+                        <label>Data Início</label>
+                        <input type="date" id="dateStart">
+                    </div>
+                    <div class="input-group">
+                        <label>Data Fim</label>
+                        <input type="date" id="dateEnd">
+                    </div>
+                    <div class="input-group">
+                        <label>Tipo de Arquivo</label>
+                        <select id="fileType">
+                            <option value="pdf">PDF (.pdf)</option>
+                            <option value="csv">Excel (.csv)</option>
+                        </select>
+                    </div>
+                    <button class="btn-main-generate" onclick="gerarCustomizado()">
+                        Exportar Relatório
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function gerarPDF(tipo) {
+            alert(`Gerando relatório de ${tipo}... O download começará em breve.`);
+        }
+
+        function gerarCustomizado() {
+            const inicio = document.getElementById('dateStart').value;
+            const fim = document.getElementById('dateEnd').value;
+            if(!inicio || !fim) return alert("Selecione o período!");
+            alert(`Exportando dados de ${inicio} até ${fim}`);
+        }
+    </script>
+</body>
+</html>

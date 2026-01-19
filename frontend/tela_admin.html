@@ -7,16 +7,12 @@
     <link rel="shortcut icon" href="./assets/icon_page.png" type="image/x-icon">
     <link rel="shortcut icon" href="./assets/icon_logo.png" type="image/x-icon">
 
-
-    <!-- Fonte Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="styles/tela_admin.css">
-    <script defer src="js/tela_admin.js"></script>
 </head>
 <body>
     <div class="dashboard-layout">
-        <!-- Sidebar -->
         <div class="sidebar_admin">
             <div class="logo-group">
                 <div class="container_img">
@@ -25,12 +21,12 @@
                 <div class="text_logo">DriveOn</div>
             </div>
 
-            <button class="botao_inicios">
+            <button class="botao_inicios" onclick="window.location.href='tela_admin.html';">
                 <img src="./assets/icon_home.png" alt="Dashboard" class="icone_botao">
                 <span class="text_inicio">Dashboard</span>
             </button>
 
-            <button class="botao_inicio2 active" onclick="window.location.href='tela_gerenciar_carros.html';">
+            <button class="botao_inicio2" onclick="window.location.href='tela_gerenciar_carros.html';">
                 <img src="./assets/icone_cars.png" alt="Carros" class="icone_botao2">
                 <span class="text_inicio2">Gerenciar Carros</span>
             </button>
@@ -40,29 +36,20 @@
                 <span class="text_inicio3">Gerenciar Usuários</span>
             </button>
 
-            <button class="botao_inicio4">
-                <img src="./assets/icone_calculator.png" alt="Reservas" class="icone_botao4">
-                <span class="text_inicio4">Gerenciar Reservas</span>
-            </button>
-
-            <button class="botao_inicio5">
+            <button class="botao_inicio5" onclick="window.location.href='tela_gerar_relatorios.html';">
                 <img src="./assets/icone_historico.png" alt="Relatórios" class="icone_botao5">
                 <span class="text_inicio5">Gerar Relatórios</span>
             </button>
 
             <button class="botao_deslogar" type="button">Sair</button>
-
         </div>
 
-        <!-- Main Content -->
         <div class="main-content">
-            <!-- Header -->
             <div class="header-saudacao">
                 <h1 class="title-header">Bem-vindo ao Painel Administrativo</h1>
                 <p class="subtitle-header">Gerencie sua frota de veículos e usuários com eficiência</p>
             </div>
 
-            <!-- Progress Card -->
             <div class="card-progresso">
                 <div class="progresso-header">
                     <div class="icon-box">
@@ -82,7 +69,6 @@
                 </div>
             </div>
 
-            <!-- Metrics Grid -->
             <div class="cards-metricas-grid">
                 <div class="card-metrica">
                     <div class="icon-metrica icon-azul-escuro">
@@ -90,7 +76,7 @@
                     </div>
                     <div class="info-metrica">
                         <div class="metrica-titulo">Total de Carros</div>
-                        <div class="metrica-valor">24</div>
+                        <div class="metrica-valor" id="totalVeiculos">6</div>
                     </div>
                 </div>
 
@@ -100,15 +86,15 @@
                     </div>
                     <div class="info-metrica">
                         <div class="metrica-titulo">Reservas Ativas</div>
-                        <div class="metrica-valor">12</div>
+                        <div class="metrica-valor" id="totalReservas">0</div>
                     </div>
                 </div>
 
                 <div class="card-metrica">
                     <div class="icon-metrica3 icon-laranja">
-                    <img src="./assets/icone_profile.png" alt="Usuários" style="width: 30px; height: 30px;">
-                </div>
-                <div class="info-metrica">
+                        <img src="./assets/icone_profile.png" alt="Usuários" style="width: 30px; height: 30px;">
+                    </div>
+                    <div class="info-metrica">
                         <div class="metrica-titulo">Total de Usuários</div>
                         <div class="metrica-valor" id="totalClientes">0</div>
                     </div>
@@ -126,54 +112,17 @@
 
                 <div class="card-metrica">
                     <div class="icon-metrica5 icon-azul">
-                        <img src="./assets/calendar.png" alt="Reservas Hoje" style="width: 30px; height: 30px;">
+                        <img src="./assets/calendar.png" alt="Relatórios" style="width: 30px; height: 30px;">
                     </div>
                     <div class="info-metrica">
-                        <div class="metrica-titulo">Reservas Hoje</div>
+                        <div class="metrica-titulo">Relatórios Gerados</div>
                         <div class="metrica-valor">8</div>
                     </div>
                 </div>
-
-                <div class="card-metrica">
-                    <div class="icon-metrica6 icon-cinza">
-                        <img src="./assets/clock.png" alt="Disponibilidade" style="width: 30px; height: 30px;">
-                    </div>
-                    <div class="info-metrica">
-                        <div class="metrica-titulo">Taxa de Ocupação</div>
-                        <div class="metrica-valor">67%</div>
-                    </div>
-                </div>
             </div>
-
-          
         </div>
     </div>
 
-    <script>
-        // Logout function
-        function logout() {
-            localStorage.clear();
-            window.location.href = '/';
-        }
-
-        // Add click effects to metric cards
-        document.querySelectorAll('.card-metrica').forEach(card => {
-            card.addEventListener('click', function() {
-                this.classList.add('clicked');
-                setTimeout(() => {
-                    this.classList.remove('clicked');
-                }, 150);
-            });
-        });
-
-        // Load user name if available
-        document.addEventListener('DOMContentLoaded', function() {
-            const userName = localStorage.getItem('userName');
-            if (userName) {
-                const headerTitle = document.querySelector('.title-header');
-                headerTitle.textContent = `Bem-vindo, ${userName}`;
-            }
-        });
-    </script>
+    <script src="js/tela_admin.js"></script>
 </body>
 </html>
