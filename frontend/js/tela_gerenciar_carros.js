@@ -158,3 +158,17 @@ document.getElementById("searchInput")?.addEventListener("input", (e) => {
   );
   renderizarCarros(filtrados);
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  const btnDeslogar = document.querySelector('.botao_deslogar');
+    if (btnDeslogar) {
+        btnDeslogar.addEventListener('click', () => {
+            localStorage.removeItem('userName');
+            // localStorage.clear(); // Use clear se quiser limpar tudo
+            window.location.href = 'login.html';
+        });
+    }
+
+})

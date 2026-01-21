@@ -6,8 +6,11 @@
     <title>DriveOn - Gerar Relatórios</title>
     <link rel="shortcut icon" href="./assets/icon_page.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/tela_admin.css"> <link rel="stylesheet" href="styles/tela_relatorios.css">
+    <link rel="stylesheet" href="styles/tela_admin.css"> <link rel="stylesheet" href="styles/tela_relatorio.css">
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+
 <body>
     <div class="dashboard-layout">
         <aside class="sidebar_admin">
@@ -47,72 +50,215 @@
                 <p class="subtitle-header">Selecione o tipo de dado que deseja exportar para análise</p>
             </header>
 
-            <div class="report-grid">
-                <div class="report-card">
-                    <div class="report-icon icon-blue">
+    <div class="report-grid">
+
+            <div class="report-card">
+                   <div class="report-icon icon-blue">
                         <img src="./assets/icone_cars.png" alt="Frota">
-                    </div>
-                    <h3>Relatório de Frota</h3>
-                    <p>Status atual dos veículos, quilometragem e necessidade de manutenção.</p>
-                    <button class="btn-generate" onclick="gerarPDF('frota')">Gerar PDF</button>
-                </div>
-
-                <div class="report-card">
-                    <div class="report-icon icon-orange">
-                        <img src="./assets/icone_profile.png" alt="Clientes">
-                    </div>
-                    <h3>Histórico de Clientes</h3>
-                    <p>Listagem completa de usuários ativos, reservas concluídas e inadimplência.</p>
-                    <button class="btn-generate" onclick="gerarPDF('clientes')">Gerar PDF</button>
-                </div>
-
-                <div class="report-card">
-                    <div class="report-icon icon-green">
-                        <img src="./assets/dollar.png" alt="Financeiro">
-                    </div>
-                    <h3>Fluxo Financeiro</h3>
-                    <p>Receita bruta, faturamento por categoria e projeções mensais.</p>
-                    <button class="btn-generate" onclick="gerarPDF('financeiro')">Gerar PDF</button>
-                </div>
+                   </div>
+                   <h3>Relatório de Frota</h3>
+                   <p>Status atual dos veículos, quilometragem e necessidade de manutenção.</p>
+                   <button class="btn-generate blue" onclick="gerarPDF('frota')">Gerar PDF</button>
             </div>
 
-            <section class="custom-report">
-                <h2>Relatório Personalizado</h2>
-                <div class="filter-form">
-                    <div class="input-group">
-                        <label>Data Início</label>
-                        <input type="date" id="dateStart">
-                    </div>
-                    <div class="input-group">
-                        <label>Data Fim</label>
-                        <input type="date" id="dateEnd">
-                    </div>
-                    <div class="input-group">
-                        <label>Tipo de Arquivo</label>
-                        <select id="fileType">
-                            <option value="pdf">PDF (.pdf)</option>
-                            <option value="csv">Excel (.csv)</option>
-                        </select>
-                    </div>
-                    <button class="btn-main-generate" onclick="gerarCustomizado()">
-                        Exportar Relatório
-                    </button>
+            <div class="report-card">
+                <div class="report-icon icon-orange">
+                    <img src="./assets/icone_profile.png" alt="Clientes">
                 </div>
-            </section>
+                  <h3>Histórico de Clientes</h3>
+                  <p>Listagem completa de usuários ativos, reservas concluídas e inadimplência.</p>
+                  <button class="btn-generate orange"  onclick="gerarPDF('clientes')">Gerar PDF</button>
+            </div>
+
+          
+
+           
         </main>
     </div>
 
     <script>
-        function gerarPDF(tipo) {
-            alert(`Gerando relatório de ${tipo}... O download começará em breve.`);
-        }
 
-        function gerarCustomizado() {
-            const inicio = document.getElementById('dateStart').value;
-            const fim = document.getElementById('dateEnd').value;
-            if(!inicio || !fim) return alert("Selecione o período!");
-            alert(`Exportando dados de ${inicio} até ${fim}`);
-        }
+ /* =====================================================
+   VARIÁVEIS GLOBAIS
+===================================================== */
+let listaClientes = [];
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+
+  const btnDeslogar = document.querySelector('.botao_deslogar');
+  if (btnDeslogar) {
+    btnDeslogar.addEventListener('click', () => {
+      localStorage.removeItem('userName');
+      window.location.href = 'login.html';
+    });
+  }
+
+  // Carrega clientes assim que a página abre
+  carregarClientes();
+});
+
+/* =====================================================
+   CARREGAR CLIENTES (API)
+===================================================== */
+async function carregarClientes() {
+  try {
+    const response = await fetch('http://localhost:3001/api/clientes');
+    listaClientes = await response.json();
+  } catch (error) {
+    console.error('Erro ao carregar clientes:', error);
+    listaClientes = [];
+  }
+}
+
+/* =====================================================
+   DADOS DA FROTA (MOCK)
+===================================================== */
+const carros = [
+  { nome: "Jeep Compass", placa: "ABC-1234", detalhes: "SUV, Urbano", preco: 90, status: "Disponível" },
+  { nome: "Maserati GranTurismo", placa: "DEF-5678", detalhes: "Luxo, Esportivo", preco: 150, status: "Disponível" },
+  { nome: "Mini Cooper", placa: "GHI-9012", detalhes: "Econômico", preco: 200, status: "Disponível" },
+  { nome: "BMW X6", placa: "JKL-3456", detalhes: "Luxo, SUV", preco: 120, status: "Disponível" },
+  { nome: "McLaren 720S", placa: "MNO-7890", detalhes: "Superesportivo", preco: 180, status: "Disponível" },
+  { nome: "Range Rover Evoque", placa: "PQR-1234", detalhes: "SUV Premium", preco: 160, status: "Disponível" }
+];
+
+/* =====================================================
+   FORMATA TELEFONE
+===================================================== */
+function formatarTelefone(telefone) {
+  if (!telefone) return "Não informado";
+
+  const t = telefone.replace(/\D/g, '');
+
+  if (t.length === 11) {
+    return `(${t.slice(0, 2)}) ${t.slice(2, 7)}-${t.slice(7)}`;
+  }
+
+  if (t.length === 10) {
+    return `(${t.slice(0, 2)}) ${t.slice(2, 6)}-${t.slice(6)}`;
+  }
+
+  return telefone;
+}
+
+/* =====================================================
+   GERADOR DE PDF (FROTA + CLIENTES)
+===================================================== */
+function gerarPDF(tipo) {
+
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    alert("Erro: biblioteca jsPDF não carregada.");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  /* ===============================
+     RELATÓRIO DE FROTA
+  ================================ */
+  if (tipo === 'frota') {
+
+    doc.setFillColor(37, 99, 235);
+    doc.rect(0, 0, 210, 30, 'F');
+
+    doc.setTextColor(255);
+    doc.setFontSize(18);
+    doc.text("DriveOn - Relatório de Frota", 14, 20);
+
+    doc.setFontSize(10);
+    doc.text(`Gerado em: ${new Date().toLocaleDateString()}`, 160, 20);
+
+    doc.setTextColor(0);
+    doc.setFontSize(12);
+    doc.text("Resumo Geral da Frota", 14, 45);
+    doc.setFontSize(10);
+    doc.text(`Total de veículos: ${carros.length}`, 14, 52);
+
+    doc.autoTable({
+      startY: 60,
+      head: [["Modelo", "Placa", "Categoria", "Preço / Dia", "Status"]],
+      body: carros.map(c => [
+        c.nome,
+        c.placa,
+        c.detalhes,
+        `R$ ${c.preco}`,
+        c.status
+      ]),
+      theme: "grid",
+      headStyles: {
+        fillColor: [37, 99, 235],
+        textColor: 255
+      },
+      bodyStyles: {
+        fontSize: 9
+      },
+      alternateRowStyles: {
+        fillColor: [245, 247, 250]
+      }
+    });
+
+    doc.save("relatorio_frota_driveon.pdf");
+    return;
+  }
+
+  /* ===============================
+     RELATÓRIO DE CLIENTES
+  ================================ */
+  if (tipo === 'clientes') {
+
+    if (!listaClientes.length) {
+      alert("Nenhum cliente disponível para gerar relatório.");
+      return;
+    }
+
+    doc.setFillColor(234, 88, 12);
+    doc.rect(0, 0, 210, 30, 'F');
+
+    doc.setTextColor(255);
+    doc.setFontSize(18);
+    doc.text("DriveOn - Relatório de Clientes", 14, 20);
+
+    doc.setFontSize(10);
+    doc.text(`Gerado em: ${new Date().toLocaleDateString()}`, 160, 20);
+
+    doc.setTextColor(0);
+    doc.setFontSize(12);
+    doc.text("Resumo Geral de Clientes", 14, 45);
+    doc.setFontSize(10);
+    doc.text(`Total de clientes: ${listaClientes.length}`, 14, 52);
+
+    doc.autoTable({
+      startY: 60,
+      head: [["Nome", "Email", "Telefone", "Status"]],
+      body: listaClientes.map(c => [
+        c.nome,
+        c.email,
+        formatarTelefone(c.telefone),
+        "Ativo"
+      ]),
+      theme: "grid",
+      headStyles: {
+        fillColor: [234, 88, 12],
+        textColor: 255
+      },
+      bodyStyles: {
+        fontSize: 9
+      },
+      alternateRowStyles: {
+        fillColor: [255, 247, 237]
+      }
+    });
+
+    doc.save("relatorio_clientes_driveon.pdf");
+  }
+}
+
+
+
     </script>
 </body>
 </html>

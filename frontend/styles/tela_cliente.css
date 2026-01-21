@@ -1,5 +1,6 @@
 /* --- CORREÇÃO DA ALTURA VERTICAL (PREENCHIMENTO 100% VH) --- */
 html, body {
+    margin: 0;
     height: 100%; /* Garante que o html e o body tenham a altura total da viewport */
 }
 
@@ -9,15 +10,14 @@ html, body {
 
 body {
     font-family: 'Poppins', sans-serif;
-    margin: 0; 
-    padding: 0; 
-    min-height: 100vh;
+    min-height: 70vh;
+    overflow-y: auto; /* evita conteúdo cortado */
 }
 
 
 .dashboard-layout {
   display: flex;
-  min-height: 130vh;
+  min-height: 100vh;
   background-color: #141517;
 }
 
