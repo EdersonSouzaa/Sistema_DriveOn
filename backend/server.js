@@ -278,6 +278,8 @@ app.get('*', (req, res) => {
     });
 
   } catch (err) {
-    console.error('❌ Erro ao iniciar o servidor:', err.message);
+    console.error('❌ Erro ao iniciar o servidor:');
+    console.error(err);
+    process.exit(1);
   }
 })();
