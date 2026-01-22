@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const bcrypt = require('bcrypt');
 const express = require('express');
 const cors = require('cors');
@@ -5,7 +7,7 @@ const path = require('path');
 const { Sequelize, DataTypes } = require('sequelize');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 /* ================= MIDDLEWARES ================= */
 app.use(cors());
@@ -13,20 +15,47 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 /* ================= BANCO ======================= */
-const sequelize = new Sequelize('driveon_db', 'root', 'Eder12345678!@', {
-  host: 'localhost',
-  dialect: 'mysql',
-  logging: false
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: 'mysql',
+    logging: false
+  }
+);
+
 
 /* ================= MODEL ======================= */
 const Usuario = sequelize.define('Usuario', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
 
-  nome: { type: DataTypes.STRING, allowNull: false },
-  email: { type: DataTypes.STRING, allowNull: false, unique: true },
-  senha: { type: DataTypes.STRING, allowNull: false },
-  tipo_usuario: { type: DataTypes.STRING, allowNull: false },
+  nome: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+
+  senha: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+
+  tipo_usuario: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
 
   cpf: DataTypes.STRING,
   cnh: DataTypes.STRING,
@@ -50,7 +79,6 @@ app.get('/api/test', (req, res) => {
 // Cadastro
 app.post('/api/signup', async (req, res) => {
   try {
-    // ✅ PRIMEIRO extrair dados
     const {
       nome,
       email,
@@ -63,21 +91,18 @@ app.post('/api/signup', async (req, res) => {
       codigo_verificacao
     } = req.body;
 
-    // ✅ Validação básica
     if (!nome || !email || !senha || !tipoUsuario) {
       return res.status(400).json({
         error: 'Campos obrigatórios não preenchidos'
       });
     }
 
-    // ✅ Validar tipo de usuário
     if (!['Cliente', 'Administrador'].includes(tipoUsuario)) {
       return res.status(400).json({
         error: 'Tipo de usuário inválido'
       });
     }
 
-    // ✅ Verificar email duplicado
     const usuarioExistente = await Usuario.findOne({ where: { email } });
     if (usuarioExistente) {
       return res.status(409).json({
@@ -85,22 +110,18 @@ app.post('/api/signup', async (req, res) => {
       });
     }
 
-    // ✅ Criptografar senha
     const senhaHash = await bcrypt.hash(senha, 10);
 
-    // ✅ Criar usuário
     const novoUsuario = await Usuario.create({
       nome,
       email,
       senha: senhaHash,
       tipo_usuario: tipoUsuario,
 
-      // CLIENTE
       cpf: tipoUsuario === 'Cliente' ? cpf : null,
       cnh: tipoUsuario === 'Cliente' ? cnh : null,
       telefone: tipoUsuario === 'Cliente' ? telefone : null,
 
-      // ADMIN
       cargo: tipoUsuario === 'Administrador' ? cargo : null,
       codigo_verificacao:
         tipoUsuario === 'Administrador' ? codigo_verificacao : null
@@ -109,17 +130,14 @@ app.post('/api/signup', async (req, res) => {
     return res.status(201).json(novoUsuario);
 
   } catch (error) {
-  console.error('❌ ERRO CADASTRO COMPLETO:', error);
-  console.error(error.original); // 👈 MOSTRA ERRO DO MYSQL
+    console.error('❌ ERRO CADASTRO:', error);
 
-  return res.status(500).json({
-    error: error.original?.sqlMessage || 'Erro interno ao cadastrar usuário'
-  });
-}
-
+    return res.status(500).json({
+      error: error.original?.sqlMessage || 'Erro interno ao cadastrar usuário'
+    });
+  }
 });
 
-// Login
 // Login
 app.post('/api/login', async (req, res) => {
   try {
@@ -147,7 +165,6 @@ app.post('/api/login', async (req, res) => {
       });
     }
 
-    // Login OK
     return res.status(200).json({
       id: usuario.id,
       nome: usuario.nome,
@@ -157,14 +174,14 @@ app.post('/api/login', async (req, res) => {
 
   } catch (error) {
     console.error('❌ ERRO LOGIN:', error);
+
     return res.status(500).json({
       error: 'Erro interno ao fazer login'
     });
   }
 });
 
-
-// ================= PERFIL DO USUÁRIO =================
+// Perfil do usuário
 app.get('/api/user/profile', async (req, res) => {
   const { email } = req.query;
 
@@ -204,8 +221,7 @@ app.get('/api/user/profile', async (req, res) => {
   }
 });
 
-// ================= ROTAS API =======================
-
+// Clientes
 app.get('/api/clientes', async (req, res) => {
   try {
     const clientes = await Usuario.findAll({
@@ -220,7 +236,6 @@ app.get('/api/clientes', async (req, res) => {
   }
 });
 
-
 app.delete('/api/clientes/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -234,7 +249,6 @@ app.delete('/api/clientes/:id', async (req, res) => {
     }
 
     await cliente.destroy();
-
     res.json({ message: 'Cliente excluído com sucesso' });
 
   } catch (error) {
@@ -242,7 +256,6 @@ app.delete('/api/clientes/:id', async (req, res) => {
     res.status(500).json({ error: 'Erro interno ao excluir cliente' });
   }
 });
-
 
 /* ================= FRONTEND =================== */
 app.use(express.static(path.join(__dirname, '../frontend')));
@@ -261,17 +274,10 @@ app.get('*', (req, res) => {
     console.log('📦 Models sincronizados');
 
     app.listen(PORT, () => {
-      console.log(`🚀 Sistema DriveOn rodando em http://localhost:${PORT}`);
+      console.log(`🚀 Sistema DriveOn rodando na porta ${PORT}`);
     });
 
   } catch (err) {
     console.error('❌ Erro ao iniciar o servidor:', err.message);
   }
 })();
-
-
-
-
-
-
-
