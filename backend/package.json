@@ -13,7 +13,8 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^4.19.2",
-    "mysql2": "^3.16.1",
+    "pg": "^8.17.2",
+    "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.3"
   },
   "devDependencies": {
