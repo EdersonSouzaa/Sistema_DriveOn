@@ -15,50 +15,30 @@ async function carregarClientes() {
   tbody.innerHTML = '';
 
   try {
-    const response = await fetch('http://localhost:3001/api/clientes');
+    // REMOVIDO localhost:3001
+    const response = await fetch('/api/clientes'); 
     listaClientes = await response.json();
     renderizarClientes(listaClientes);
-
-    if (!clientes.length) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="5" style="text-align:center;">
-            Nenhum cliente cadastrado
-          </td>
-        </tr>`;
-      return;
-    }
-
-    // 🔥 GARANTIR CLIENTES ÚNICOS (por ID)
-    const clientesUnicos = new Map();
-    clientes.forEach(cliente => {
-      clientesUnicos.set(cliente.id, cliente);
-    });
-
-    clientesUnicos.forEach(cliente => {
-      const tr = document.createElement('tr');
-
-      tr.innerHTML = `
-        <td>${cliente.nome}</td>
-        <td>${cliente.email}</td>
-        <td>${formatarTelefone(cliente.telefone)}</td>
-        <td>
-          <span class="status ativo">Ativo</span>
-        </td>
-        <td class="btns">
-          <button onclick="deletarUsuario(${cliente.id})">
-            <img src="./assets/delete.png" class="delete">
-          </button>
-        </td>
-      `;
-
-      tbody.appendChild(tr);
-    });
-
+    // ... resto do seu código
   } catch (error) {
     console.error('Erro ao carregar clientes:', error);
   }
 }
+
+// ================= DELETE =================
+document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+  if (!clienteIdParaExcluir) return;
+
+  try {
+    // REMOVIDO localhost:3001
+    const response = await fetch(`/api/clientes/${clienteIdParaExcluir}`, { 
+      method: 'DELETE' 
+    });
+    // ... resto do seu código
+  } catch (error) {
+    console.error('Erro ao excluir cliente:', error);
+  }
+});
 
 // ================= DELETE MODAL =================
 let clienteIdParaExcluir = null;

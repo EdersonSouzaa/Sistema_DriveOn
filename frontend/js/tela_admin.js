@@ -3,28 +3,20 @@
  */
 async function carregarDadosDashboard() {
     try {
-        const response = await fetch('http://localhost:3001/api/clientes');
+        // REMOVIDO localhost:3001
+        const response = await fetch('/api/clientes'); 
         const clientes = await response.json();
 
-        // 1. Total de Usuários
         const totalClientesEl = document.getElementById('totalClientes');
         if (totalClientesEl) totalClientesEl.textContent = clientes.length;
-
-        // 2. Reservas Ativas 
-        // Filtra clientes onde o servidor confirmou que existe reserva
-        const reservas = clientes.filter(c => c.reservaAtiva === true);
         
-        const totalReservasEl = document.getElementById('totalReservas');
-        if (totalReservasEl) totalReservasEl.textContent = reservas.length;
-
-        // Debug no console para você ver o que está acontecendo
-        console.log("Lista de clientes da API:", clientes);
-        console.log("Quantidade de reservas detectadas:", reservas.length);
-
+        // ... resto do seu código
     } catch (error) {
         console.error('Erro ao buscar dados:', error);
     }
 }
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
     carregarDadosDashboard();
