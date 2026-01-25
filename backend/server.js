@@ -153,10 +153,13 @@ app.delete('/api/clientes/:id', async (req, res) => {
 
 /* ================= FRONTEND =================== */
 // Ajuste o caminho conforme a pasta do seu projeto no Render
-app.use(express.static(path.join(__dirname, '../frontend'))); 
+app.use(express.static(path.join(__dirname, '../frontend'), {
+    extensions: ['html']
+})); 
 
+// Rota padrão para páginas não encontradas (opcional)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/home.html'));
+    res.sendFile(path.join(__dirname, '../frontend/home.html'));
 });
 
 /* ================= START ====================== */
