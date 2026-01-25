@@ -129,7 +129,7 @@ Nesta área, o **cliente** pode visualizar os veículos disponíveis para locaç
 
 📸 *Exemplo de tela – Lista de Veículos (Cliente)*
 
-![Lista de Veículos - Cliente](./imagens_projeto/tela_gerenciar_carros_cliente.png)
+![Lista de Veículos - Cliente](./imagens_projeto/tela_gerenciar_carros_cliente2.png)
 
 ---
 
