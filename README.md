@@ -112,7 +112,7 @@ Nesta área, o **administrador** tem controle total sobre a frota de veículos, 
 
 📸 *Exemplo de tela – Gestão de Veículos (Admin)*
 
-![Gestão de Veículos - Admin](./imagens_projeto/admin-gestao-veiculos.png)
+![Gestão de Veículos - Admin](./imagens_projeto/tela_gerenciar_carros_admin.png)
 
 ---
 
@@ -129,7 +129,7 @@ Nesta área, o **cliente** pode visualizar os veículos disponíveis para locaç
 
 📸 *Exemplo de tela – Lista de Veículos (Cliente)*
 
-![Lista de Veículos - Cliente](./imagens_projeto/cliente-lista-veiculos.png)
+![Lista de Veículos - Cliente](./imagens_projeto/tela_gerenciar_carros_cliente.png)
 
 ---
 
