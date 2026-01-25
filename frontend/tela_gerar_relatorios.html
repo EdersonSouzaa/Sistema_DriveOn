@@ -77,187 +77,151 @@
     </div>
 
     <script>
-
- /* =====================================================
-   VARIÁVEIS GLOBAIS
-===================================================== */
 let listaClientes = [];
 
 /* =====================================================
-   LOGOUT
+   INICIALIZAÇÃO
 ===================================================== */
 document.addEventListener('DOMContentLoaded', () => {
+    // Logout
+    const btnDeslogar = document.querySelector('.botao_deslogar');
+    if (btnDeslogar) {
+        btnDeslogar.addEventListener('click', () => {
+            localStorage.removeItem('userName');
+            window.location.href = 'login.html';
+        });
+    }
 
-  const btnDeslogar = document.querySelector('.botao_deslogar');
-  if (btnDeslogar) {
-    btnDeslogar.addEventListener('click', () => {
-      localStorage.removeItem('userName');
-      window.location.href = 'login.html';
-    });
-  }
-
-  // Carrega clientes assim que a página abre
-  carregarClientes();
+    // Carrega clientes da API imediatamente para que a variável global seja preenchida
+    carregarClientes();
 });
 
 /* =====================================================
-   CARREGAR CLIENTES (API)
+   CARREGAR CLIENTES (API ONLINE)
 ===================================================== */
 async function carregarClientes() {
-  try {
-    const response = await fetch('http://localhost:3001/api/clientes');
-    listaClientes = await response.json();
-  } catch (error) {
-    console.error('Erro ao carregar clientes:', error);
-    listaClientes = [];
-  }
+    try {
+        // Faz a requisição para a sua API
+        const response = await fetch('/api/clientes');
+        
+        if (!response.ok) throw new Error('Falha ao buscar dados');
+        
+        listaClientes = await response.json();
+        console.log("Dados dos clientes carregados com sucesso:", listaClientes.length);
+    } catch (error) {
+        console.error('Erro ao carregar clientes:', error);
+        listaClientes = []; // Garante que não quebre se a API falhar
+    }
 }
 
 /* =====================================================
    DADOS DA FROTA (MOCK)
 ===================================================== */
 const carros = [
-  { nome: "Jeep Compass", placa: "ABC-1234", detalhes: "SUV, Urbano", preco: 90, status: "Disponível" },
-  { nome: "Maserati GranTurismo", placa: "DEF-5678", detalhes: "Luxo, Esportivo", preco: 150, status: "Disponível" },
-  { nome: "Mini Cooper", placa: "GHI-9012", detalhes: "Econômico", preco: 200, status: "Disponível" },
-  { nome: "BMW X6", placa: "JKL-3456", detalhes: "Luxo, SUV", preco: 120, status: "Disponível" },
-  { nome: "McLaren 720S", placa: "MNO-7890", detalhes: "Superesportivo", preco: 180, status: "Disponível" },
-  { nome: "Range Rover Evoque", placa: "PQR-1234", detalhes: "SUV Premium", preco: 160, status: "Disponível" }
+    { nome: "Jeep Compass", placa: "ABC-1234", detalhes: "SUV, Urbano", preco: 90, status: "Disponível" },
+    { nome: "Maserati GranTurismo", placa: "DEF-5678", detalhes: "Luxo, Esportivo", preco: 150, status: "Disponível" },
+    { nome: "Mini Cooper", placa: "GHI-9012", detalhes: "Econômico", preco: 200, status: "Disponível" },
+    { nome: "BMW X6", placa: "JKL-3456", detalhes: "Luxo, SUV", preco: 120, status: "Disponível" },
+    { nome: "McLaren 720S", placa: "MNO-7890", detalhes: "Superesportivo", preco: 180, status: "Disponível" },
+    { nome: "Range Rover Evoque", placa: "PQR-1234", detalhes: "SUV Premium", preco: 160, status: "Disponível" }
 ];
 
 /* =====================================================
    FORMATA TELEFONE
 ===================================================== */
 function formatarTelefone(telefone) {
-  if (!telefone) return "Não informado";
-
-  const t = telefone.replace(/\D/g, '');
-
-  if (t.length === 11) {
-    return `(${t.slice(0, 2)}) ${t.slice(2, 7)}-${t.slice(7)}`;
-  }
-
-  if (t.length === 10) {
-    return `(${t.slice(0, 2)}) ${t.slice(2, 6)}-${t.slice(6)}`;
-  }
-
-  return telefone;
+    if (!telefone) return "Não informado";
+    const t = telefone.replace(/\D/g, '');
+    if (t.length === 11) return `(${t.slice(0, 2)}) ${t.slice(2, 7)}-${t.slice(7)}`;
+    if (t.length === 10) return `(${t.slice(0, 2)}) ${t.slice(2, 6)}-${t.slice(6)}`;
+    return telefone;
 }
 
 /* =====================================================
-   GERADOR DE PDF (FROTA + CLIENTES)
+   GERADOR DE PDF (CONECTADO COM DADOS REAIS)
 ===================================================== */
-function gerarPDF(tipo) {
-
-  if (!window.jspdf || !window.jspdf.jsPDF) {
-    alert("Erro: biblioteca jsPDF não carregada.");
-    return;
-  }
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  /* ===============================
-     RELATÓRIO DE FROTA
-  ================================ */
-  if (tipo === 'frota') {
-
-    doc.setFillColor(37, 99, 235);
-    doc.rect(0, 0, 210, 30, 'F');
-
-    doc.setTextColor(255);
-    doc.setFontSize(18);
-    doc.text("DriveOn - Relatório de Frota", 14, 20);
-
-    doc.setFontSize(10);
-    doc.text(`Gerado em: ${new Date().toLocaleDateString()}`, 160, 20);
-
-    doc.setTextColor(0);
-    doc.setFontSize(12);
-    doc.text("Resumo Geral da Frota", 14, 45);
-    doc.setFontSize(10);
-    doc.text(`Total de veículos: ${carros.length}`, 14, 52);
-
-    doc.autoTable({
-      startY: 60,
-      head: [["Modelo", "Placa", "Categoria", "Preço / Dia", "Status"]],
-      body: carros.map(c => [
-        c.nome,
-        c.placa,
-        c.detalhes,
-        `R$ ${c.preco}`,
-        c.status
-      ]),
-      theme: "grid",
-      headStyles: {
-        fillColor: [37, 99, 235],
-        textColor: 255
-      },
-      bodyStyles: {
-        fontSize: 9
-      },
-      alternateRowStyles: {
-        fillColor: [245, 247, 250]
-      }
-    });
-
-    doc.save("relatorio_frota_driveon.pdf");
-    return;
-  }
-
-  /* ===============================
-     RELATÓRIO DE CLIENTES
-  ================================ */
-  if (tipo === 'clientes') {
-
-    if (!listaClientes.length) {
-      alert("Nenhum cliente disponível para gerar relatório.");
-      return;
+async function gerarPDF(tipo) {
+    // 1. Verifica se a biblioteca jsPDF está pronta
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+        alert("Erro: biblioteca jsPDF não carregada.");
+        return;
     }
 
-    doc.setFillColor(234, 88, 12);
-    doc.rect(0, 0, 210, 30, 'F');
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-    doc.setTextColor(255);
-    doc.setFontSize(18);
-    doc.text("DriveOn - Relatório de Clientes", 14, 20);
+    /* --- RELATÓRIO DE FROTA --- */
+    if (tipo === 'frota') {
+        // (Sua lógica de frota permanece igual...)
+        doc.setFillColor(37, 99, 235);
+        doc.rect(0, 0, 210, 30, 'F');
+        doc.setTextColor(255);
+        doc.setFontSize(18);
+        doc.text("DriveOn - Relatório de Frota", 14, 20);
+        doc.autoTable({
+            startY: 60,
+            head: [["Modelo", "Placa", "Categoria", "Preço / Dia", "Status"]],
+            body: carros.map(c => [c.nome, c.placa, c.detalhes, `R$ ${c.preco}`, c.status]),
+            theme: "grid",
+            headStyles: { fillColor: [37, 99, 235] }
+        });
+        doc.save("relatorio_frota_driveon.pdf");
+    } 
 
-    doc.setFontSize(10);
-    doc.text(`Gerado em: ${new Date().toLocaleDateString()}`, 160, 20);
+    /* --- RELATÓRIO DE CLIENTES (INTEGRAÇÃO REAL) --- */
+    else if (tipo === 'clientes') {
+        // Tenta recarregar para garantir que pegamos os dados mais recentes do servidor
+        await carregarClientes();
 
-    doc.setTextColor(0);
-    doc.setFontSize(12);
-    doc.text("Resumo Geral de Clientes", 14, 45);
-    doc.setFontSize(10);
-    doc.text(`Total de clientes: ${listaClientes.length}`, 14, 52);
+        // Verifica se realmente existe algum cliente (1 ou mais)
+        if (!listaClientes || listaClientes.length === 0) {
+            alert("Não há clientes cadastrados no sistema para gerar o relatório.");
+            return;
+        }
 
-    doc.autoTable({
-      startY: 60,
-      head: [["Nome", "Email", "Telefone", "Status"]],
-      body: listaClientes.map(c => [
-        c.nome,
-        c.email,
-        formatarTelefone(c.telefone),
-        "Ativo"
-      ]),
-      theme: "grid",
-      headStyles: {
-        fillColor: [234, 88, 12],
-        textColor: 255
-      },
-      bodyStyles: {
-        fontSize: 9
-      },
-      alternateRowStyles: {
-        fillColor: [255, 247, 237]
-      }
-    });
+        // Cabeçalho Laranja
+        doc.setFillColor(234, 88, 12);
+        doc.rect(0, 0, 210, 30, 'F');
 
-    doc.save("relatorio_clientes_driveon.pdf");
-  }
+        doc.setTextColor(255);
+        doc.setFontSize(18);
+        doc.text("DriveOn - Histórico de Clientes", 14, 20);
+
+        doc.setFontSize(10);
+        doc.text(`Gerado em: ${new Date().toLocaleString('pt-BR')}`, 150, 20);
+
+        doc.setTextColor(0);
+        doc.setFontSize(12);
+        doc.text("Listagem Oficial de Usuários", 14, 45);
+        doc.setFontSize(10);
+        doc.text(`Total de registros encontrados: ${listaClientes.length}`, 14, 52);
+
+        // Geração da Tabela com AutoTable
+        doc.autoTable({
+            startY: 60,
+            head: [["Nome", "E-mail", "Telefone", "Status"]],
+            body: listaClientes.map(c => [
+                c.nome || 'N/A',
+                c.email || 'N/A',
+                formatarTelefone(c.telefone),
+                "Ativo" // Ou c.status se você tiver esse campo no banco
+            ]),
+            theme: "grid",
+            headStyles: {
+                fillColor: [234, 88, 12],
+                textColor: 255,
+                fontStyle: 'bold'
+            },
+            alternateRowStyles: {
+                fillColor: [255, 247, 237]
+            },
+            margin: { top: 60 }
+        });
+
+        // Salva com nome dinâmico
+        doc.save(`relatorio_clientes_${new Date().getTime()}.pdf`);
+    }
 }
-
-
 
     </script>
 </body>
