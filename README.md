@@ -4,7 +4,7 @@
 
 O **DriveOn** é um sistema web desenvolvido para **gestão e locação de veículos**, com foco em simplicidade, organização e eficiência. Ele permite que empresas de aluguel de carros controlem sua frota, clientes e contratos de locação de forma centralizada e intuitiva.
 
-Este projeto foi idealizado para atender **locadoras de pequeno, médio e grande porte**, automatizando processos que normalmente são feitos de forma manual.
+Este projeto foi idealizado para aplicação de conhecimentos práticos das ferramentas
 
 ---
 
