@@ -73,7 +73,7 @@ O objetivo principal do **DriveOn** é:
 
 ### Banco de Dados
 
-* PostgreSQL / MySQL / Supabase
+* MySQL
 
 > As tecnologias podem variar conforme a evolução do projeto.
 
