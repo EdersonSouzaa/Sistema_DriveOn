@@ -75,10 +75,6 @@ O objetivo principal do **DriveOn** é:
 
 * MySQL
 
-> As tecnologias podem variar conforme a evolução do projeto.
-
----
-
 ## 📂 Estrutura do Projeto (Exemplo)
 
 ```bash
