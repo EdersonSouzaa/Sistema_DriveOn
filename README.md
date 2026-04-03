@@ -49,6 +49,49 @@ O objetivo principal do **DriveOn** é:
 * Cálculo automático de valores
 * Associação entre cliente e veículo
 
+---
+
+## 🚀 Como Rodar e Executar o Sistema
+
+### Pré-requisitos
+
+- Node.js (versão 14 ou superior)
+- MySQL (para banco de dados local) ou conta no Railway para hospedagem do DB
+
+### Passos para Execução
+
+1. **Clone ou baixe o repositório** (se aplicável) e navegue até a pasta `Sistema_DriveOn`.
+
+2. **Instale as dependências:**
+   - Na raiz do projeto: `npm install`
+   - No backend: `cd backend && npm install`
+   - No frontend: `cd ../frontend && npm install`
+
+3. **Configure o banco de dados:**
+   - Para local: Instale e configure um servidor MySQL. Crie um banco de dados (ex: `driveon`).
+   - Defina as variáveis de ambiente no arquivo `.env` na pasta `backend`:
+     ```
+     MYSQLDATABASE=driveon
+     MYSQLUSER=seu_usuario
+     MYSQLPASSWORD=sua_senha
+     MYSQLHOST=localhost
+     MYSQLPORT=3306
+     PORT=3001
+     ```
+   - Para Railway: Configure as variáveis conforme sua conta.
+
+4. **Execute o sistema:**
+   - Na raiz do projeto: `npm start`
+   - Isso iniciará o backend e o servidor na porta 3001.
+
+5. **Acesse o sistema:**
+   - Abra o navegador e vá para `http://localhost:3001`
+
+### Desenvolvimento
+
+- Para desenvolvimento com hot reload no backend: `cd backend && npm run dev`
+- Para servir apenas o frontend: `cd frontend && npm start` (porta 3000)
+
 ### 📊 Relatórios e Controle
 
 * Listagem de veículos disponíveis e alugados
